@@ -387,7 +387,7 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
 
   useEffect(() => {
     if (!enabled) return
-    for (const pose of ['front', 'front-nofly', 'fly', 'heart', 'glasses', 'teary', 'back']) {
+    for (const pose of ['front', 'body', 'wing', 'fly', 'heart', 'glasses', 'teary', 'back']) {
       const image = new Image()
       image.src = `/sunny-pet/${pose}.webp`
     }
