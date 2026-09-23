@@ -19,7 +19,7 @@ src/
 │   ├── auth/                    session (SessionProvider, useSession), access and roles, sign-in pages
 │   ├── dashboard/               home page and department cards
 │   ├── departments/             department page, department grid, Vy's department layout
-│   ├── tasks/                   hq_tasks data, rules, list, create dialog, tasks page
+│   ├── tasks/                   hq_tasks data, grouping rules + tests, task rows, new-task and details dialogs, My tasks page
 │   ├── updates/                 hq_updates data, list, composer, updates page
 │   ├── calendar/                team calendar (lazy-loaded), recurrence model + tests
 │   ├── workspace/               app shell: rail, top bar, mobile tabs, placeholder page
