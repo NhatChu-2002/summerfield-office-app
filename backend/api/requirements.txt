@@ -1,0 +1,5 @@
+# Runtime dependencies for the HQ API. Pinned so every environment runs the same versions.
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+pydantic==2.13.5
+pydantic-settings==2.15.0

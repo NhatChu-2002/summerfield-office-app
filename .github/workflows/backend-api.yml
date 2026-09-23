@@ -1,0 +1,24 @@
+name: backend-api
+
+on:
+  pull_request:
+    paths: ["backend/api/**", ".github/workflows/backend-api.yml"]
+  push:
+    branches: [main]
+    paths: ["backend/api/**", ".github/workflows/backend-api.yml"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/api/requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -W error

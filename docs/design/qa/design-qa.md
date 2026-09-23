@@ -1,0 +1,79 @@
+# HQ sign-in design QA
+
+- Source: `C:/Users/chunh/AppData/Local/Temp/codex-clipboard-a083373e-8c72-4b04-8230-37df81cb9600.png` (1891 x 972, access-check state).
+- Implementation: `http://127.0.0.1:8531/#/` (1900 x 972 desktop and 390 x 844 phone, sign-in state), visually inspected in the in-app browser on September 22, 2026.
+- State difference: the source shows a short loading message; the implemented sign-in state adds account and password controls. Both states use the same `AuthFrame`. The transient loading state was inspected in code, but was not separately captured.
+
+## Comparison
+
+- Typography: Caudex wordmark and headings with Work Sans body copy match the HQ reference. The sign-in form uses smaller functional labels.
+- Layout: centered white panel, rounded corners, striped sage background, and sloped pale footer match the reference. The sign-in panel is taller because of the form; at 1900 x 972 the whole panel is visible.
+- Color: sage background, white panel, and pale blue quote area follow the reference.
+- Imagery: the exact Sunny base and wing artwork from the reference HTML loads; the wing waves and Sunny gently bobs. Reduced-motion preference disables the movement.
+- Copy: the reference's Claude/PIN explanation was replaced with accurate Supabase account and department-access language.
+- Interaction: password visibility toggles correctly, the development-only design preview opens, and the phone layout has no horizontal overflow. Real-account authentication was not exercised because no test credentials were supplied.
+
+Final result: passed for the sign-in visual and local interactions. Live credential and role verification remains a separate authenticated test.
+
+## Team Calendar Rebuild - September 22, 2026
+
+- Reference source: `docs/design/reference/Summerfield HQ.html`, `vCalendar`, `calToggles`, and `evForm`. Existing brand fonts, department colours, navigation, and button styles were retained.
+- Scope: `#/calendar`, isolated React module, UI-first. Preview events are in-memory only. No Supabase calendar writes, Google Calendar calls, or invitations.
+- Source capture limitation: the in-app browser blocked the local HTML URL. No workaround was used. A matched reference screenshot could not be captured, so exact visual fidelity remains unverified.
+- Implementation screenshots inspected at phone width (398px) and desktop (1440 x 1000). Phone defaults to list; desktop defaults to month. The event dialog scrolls internally and keeps its actions visible.
+- Verified: create weekly event, display multiple occurrences, department hide/show, edit, time validation, persisted form values, inclusive recurrence cutoff, navigation persistence, keyboard-open event, and confirmed series deletion.
+- A date/time input-state mismatch was caught in browser testing and corrected with immediate native input handling. Reopened values and rendered recurrence cutoff were verified afterward.
+- Six focused model tests pass, including leap dates, inclusive all-day ends, invalid ranges, overnight duration, biweekly cutoff, and custom recurrence validation. Production build succeeds. The existing main-bundle size warning remains; calendar code is a separate lazy-loaded chunk.
+- Not verified: physical printing/PDF output, live account permissions, or external calendar integration. These are not claimed as complete production workflows.
+- Functional result: passed for tested local interactions. Visual comparison final result: blocked pending a source calendar screenshot.
+
+Next page: Department folders. Remaining pages continue to show their conversion-pending view.
+
+## New Event Screenshot Match - September 22, 2026
+
+- Source visual truth: `C:/Users/chunh/AppData/Local/Temp/codex-clipboard-1abb0b0f-dada-411d-a167-e25b358b44d8.png` (1843 x 991 including approximately 36px browser chrome).
+- Implementation: `docs/design/qa/evidence/calendar-new-event-desktop.png`, captured at 1843 x 955 CSS pixels, approximately 1x device density. The browser output display may rescale the image; layout measurements use CSS pixels.
+- State: September calendar, New event, Finance, September 9 start, blank optional end, all-day, department colour, invitations collapsed. Both images were opened together in one comparison input. Full-view and focused form-region comparison were performed from those images.
+- Typography: shared Caudex 32px heading and Work Sans 16px form labels/inputs; no changed brand assets. Footer disclosure uses smaller secondary text intentionally.
+- Layout: centered 700px dialog, 30px horizontal padding, paired fields, circular swatches, optional end, disclosure, Where and Notes in the reference order. Rounded white surface and shadow follow the source. Close icon and a blurred backdrop retain the app's accessible modal convention.
+- Colour and assets: original department palette plus reference olive/pink swatches; white form, charcoal actions, pale borders. Native date icons and Lucide close/diamond are used; no image assets needed for the form. Sunny and existing sidebar assets are unchanged.
+- Content differences are intentional: preview-only disclosure replaces the source's shared-edit promise. Location is company-wide or a named temporary location, not a fake live store directory. People selection is disabled with an explicit disconnected message. Team choices are local only.
+- Iteration 1: desktop comparison passed; phone paired selects truncated Location and Repeats (P2).
+- Fix: stack input grids and invitation choices below 480px.
+- Iteration 2: `docs/design/qa/evidence/calendar-new-event-mobile.png` and `docs/design/qa/evidence/calendar-new-event-mobile-notes.png`, 390 x 844 CSS viewport. Select labels fit, lower fields are reachable by internal scrolling, and Cancel/Save remain visible. Field scrollWidth equals clientWidth (326px); no document horizontal overflow. No remaining actionable P0/P1/P2 findings for this dialog.
+- Functional verification: blank-cell click, keyboard date activation, date prefill, optional-end save, custom location, colour change, team disclosure, saved HR selection, notes, reopen, invalid timed range rejection, test-event deletion, and Escape close. Browser console error/warning list empty. Synthetic QA event removed; no real data modified.
+- Build succeeds and all eight model tests pass. Existing main-bundle size warning remains. No new packages or API calls were added for this update.
+- Residual scope: live calendar persistence, people/store directories, outbound invitations, and external calendar integration are not connected. Full-calendar reference fidelity outside the event dialog is not certified by this comparison.
+
+final result: passed
+
+## Calendar Hover and Sunny Sleep Check - September 22, 2026
+
+- Added the reference's whole-date hover treatment to the month grid, with matching keyboard focus feedback. Removed the permanent current-day cell fill; the black current-date circle is unchanged.
+- Browser verification in the user's local Edge preview: September 23 hover computed to `rgb(240, 245, 239)`; today remained transparent with a `rgb(35, 31, 32)` date circle. Keyboard focus on September 25 showed the same cell colour. Evidence: `docs/design/qa/evidence/calendar-date-hover.png`.
+- Sunny's existing sleep behavior was not broken in this session, so no animation/timer code was changed. Observed sleep initially, clicked to wake (wake response and animation), observed idle after 37 seconds, then sleeping after the full 90-second threshold (observed at 105 seconds). Verified sleepy face, snooze animation, and three sleep marks. User navigation during the wait did not prevent sleep. Evidence: `docs/design/qa/evidence/sunny-idle-sleep-verified.png`.
+- Entering/exiting design preview remounts Sunny and starts a fresh idle timer. Normal interactions elsewhere do not restart it. Clicking or dragging Sunny does.
+- Build and eight calendar model tests passed; no browser warnings/errors were captured during this check. Existing bundle-size warning is unchanged.
+
+final result: passed
+
+## Compact Event Dialog and Sunny Drop - September 22, 2026
+
+- User refinement supersedes the earlier exact-size dialog target: width 700px to 580px; measured desktop height 905px to 742px. Heading, field padding, gaps, swatches and footer were reduced without removing fields. The reference order, fonts and palette remain intact.
+- Desktop (1440 x 1000) and phone (390 x 844) screenshots inspected: `docs/design/qa/evidence/calendar-compact-desktop.png`, `docs/design/qa/evidence/calendar-compact-mobile.png`. Desktop form fits without internal scrolling; phone retains readable 16px inputs, stacked fields, internal scrolling and visible actions. No field horizontal overflow (326px client and scroll widths on phone).
+- Sunny drop uses the browser Web Animations API with quadratic acceleration and no per-frame React rendering or physics dependency. Release ends at the viewport floor, clamped around the toggle and above mobile navigation. A fall pose flaps wings and tucks feet; a brief landing squash/bounce follows.
+- Browser-tested: desktop fall captured while moving with `fall` motion and `sunny-flap` wings, landing at y=860 in a 1000px viewport, catching mid-fall and re-dropping at a new x position, click showing three animated Lucide hearts, phone drop ending 10px above navigation, and hide/re-enable during a fall. Heart particles are pointer-transparent and removed after 1.2 seconds.
+- Reduced-motion, resize and unmount cancellation paths reviewed in code; OS reduced-motion was not changed for browser testing. Idle sleep timer remains 90 seconds and resets on landing.
+- Build succeeds. Existing bundle-size warning remains. Scope remains local and calendar preview-only.
+
+final result: passed
+
+## Sunny Expressions and Animation - September 22, 2026
+
+- Live face over `front.webp`: vector whites with the original raster pupils, so the resting face matches the artwork. Checked at 4x scale. Pupils follow the pointer. Lids blink, with an occasional double blink. Added happy, wink, surprised, dizzy, drowsy, and sleepy faces, plus blush and a beak that opens as lines type out. Heart, glasses, and teary sprite faces are unchanged.
+- Dragonfly split into `fly.webp` and `front-nofly.webp`. The fur under the dragonfly was filled in using a circle fitted to the head outline. It hovers, lags behind jumps, lifts off during falls, dozes, and takes an idle lap. With the dragonfly away, the head showed no hole or stray pixels.
+- Browser-verified with scripted pointer input in the design preview: the click reply types out while the beak chatters, then closes. Dragging swings her with pointer speed. A hard shake gives dizzy eyes, orbiting stars, dust on landing, and the dizzy line. Rubbing with the mouse gives the happy face, blush, nuzzle, hearts, and a pet line. Idle life ran on its own (dragonfly lap, stretch, look-around, blinks). The boba craving appeared at 34s, and clicking showed the cup, sip, and drain. The 4-minute craving cooldown held. Drowsy and yawn came at 81s and sleep at 90s, with a breathing bubble. At 375px the bubble stayed on screen with no horizontal overflow. No console errors.
+- Not verified in the browser: OS reduced-motion (reviewed in code only), real touch input, the final "brown sugar boba" line (its timer is set in code; it had already passed when checked), and the greeting's day-specific lines.
+- Build and type-check pass. The existing bundle-size warning is unchanged.
+
+final result: passed for tested interactions
