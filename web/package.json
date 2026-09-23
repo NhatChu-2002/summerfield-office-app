@@ -9,10 +9,17 @@
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.21",
+    "@fullcalendar/daygrid": "^6.1.21",
+    "@fullcalendar/interaction": "^6.1.21",
+    "@fullcalendar/list": "^6.1.21",
+    "@fullcalendar/react": "^6.1.21",
+    "@fullcalendar/rrule": "^6.1.21",
     "@supabase/supabase-js": "^2.0.0",
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "rrule": "^2.8.1"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

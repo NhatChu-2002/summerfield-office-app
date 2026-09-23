@@ -1,0 +1,117 @@
+.vy-calendar-page { min-width: 0; }
+.vy-calendar-head, .vy-calendar-period, .vy-calendar-actions { display: flex; align-items: center; gap: 10px; }
+.vy-calendar-head { justify-content: space-between; flex-wrap: wrap; margin: 20px 0; gap: 16px; }
+.vy-calendar-period { flex-wrap: wrap; }
+.vy-calendar-period h1 { font: 400 32px/1.2 'Caudex', Georgia, serif; margin: 0; min-width: 11ch; text-align: center; }
+.vy-calendar-actions { flex-wrap: wrap; }
+.vy-calendar-page .vy-icon-button { width: 36px; height: 36px; flex: none; }
+.vy-calendar-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 20px; align-items: start; }
+.vy-calendar-filters h2 { font: 400 22px/1.25 'Caudex', Georgia, serif; margin: 0 0 10px; }
+.vy-calendar-filter-row { display: flex; align-items: center; gap: 4px; min-height: 38px; }
+.vy-calendar-filter-row label { display: flex; flex: 1; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; }
+.vy-calendar-filter-row input { width: 17px; height: 17px; accent-color: #231f20; flex: none; }
+.vy-calendar-swatch { width: 13px; height: 13px; border: 1px solid #231f2033; border-radius: 3px; flex: none; }
+.vy-calendar-filter-row button { font-size: 12px; color: #53675a; background: none; border: 0; padding: 6px; cursor: pointer; text-decoration: underline; }
+.vy-calendar-filter-row:has(input:not(:checked)) label { opacity: .55; }
+.vy-calendar-filter-actions { display: flex; gap: 5px; margin: 12px 0 18px; }
+.vy-calendar-legend { border-top: 1px solid #d7e1da; padding-top: 14px; font-size: 13px; }
+.vy-calendar-legend summary { cursor: pointer; }
+.vy-calendar-legend > div { display: flex; gap: 8px; margin-top: 12px; align-items: start; }
+.vy-calendar-legend small { display: block; color: #5c6b63; margin-top: 3px; }
+.vy-calendar-google { margin-top: 22px; padding-top: 16px; border-top: 1px solid #d7e1da; }
+.vy-calendar-google h3 { font: 400 18px 'Caudex', Georgia, serif; margin: 0; }
+.vy-calendar-google p { font-size: 12px; color: #657269; }
+.vy-calendar-google .vy-button { white-space: normal; text-align: left; }
+.vy-calendar-filter-toggle { display: none; }
+.vy-calendar-surface { min-width: 0; overflow-x: auto; background: white; border-radius: 8px; }
+.vy-calendar-surface .fc { --fc-border-color: #d7e1da; --fc-today-bg-color: transparent; --fc-neutral-bg-color: #f4f7f3; --fc-list-event-hover-bg-color: #f0f5ef; font-size: 13px; }
+.vy-calendar-surface .fc .fc-daygrid-day:hover,
+.vy-calendar-surface .fc .fc-daygrid-day:has(.vy-calendar-day:focus-visible) { background: #f0f5ef; }
+.vy-calendar-surface .fc .fc-daygrid-day:has(.vy-calendar-day:not(:disabled)) { cursor: pointer; }
+.vy-calendar-surface .fc .fc-col-header-cell-cushion { padding: 10px 4px; color: #5c6b63; font-weight: 500; }
+.vy-calendar-surface .fc .fc-daygrid-day-frame { min-height: 108px; }
+.vy-calendar-surface .fc .fc-daygrid-day-top { flex-direction: row; }
+.vy-calendar-surface .fc .fc-daygrid-day-number { padding: 4px; }
+.vy-calendar-day { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; font-size: 12px; }
+.vy-calendar-day[aria-current="date"] { background: #231f20; color: white; }
+.vy-calendar-day:disabled { opacity: 1; cursor: default; }
+.vy-calendar-surface .fc .fc-daygrid-event { border-radius: 4px; margin: 2px 3px; padding: 2px 4px; font-size: 11px; cursor: pointer; }
+.vy-calendar-surface .fc .fc-event-title { overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.vy-calendar-surface .fc-list-event { cursor: pointer; }
+.vy-calendar-surface .fc .fc-list-day-cushion { background: #edf3eb; padding: 12px 14px; }
+.vy-calendar-surface .fc .fc-list-event td { padding: 13px 10px; }
+.vy-calendar-surface .fc .fc-list-empty { min-height: 220px; background: #f8faf7; color: #5c6b63; }
+.vy-calendar-message { display: flex; align-items: center; justify-content: space-between; padding: 4px 10px; margin-bottom: 12px; background: #edf4ec; font-size: 13px; }
+.vy-event-dialog { width: min(580px, calc(100vw - 28px)); max-height: calc(100dvh - 36px); padding: 0; border: 0; border-radius: 16px; background: white; color: #231f20; box-shadow: 0 20px 80px #13231b33; }
+.vy-event-dialog::backdrop { background: #19291f66; backdrop-filter: blur(5px); }
+.vy-event-dialog form { display: flex; flex-direction: column; max-height: calc(100dvh - 38px); }
+.vy-event-dialog header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px 12px; flex: none; }
+.vy-event-dialog h2 { margin: 0; font: 400 26px/1.2 'Caudex', Georgia, serif; }
+.vy-event-fields { padding: 4px 24px; overflow-y: auto; min-height: 0; display: grid; gap: 12px; }
+.vy-event-fields label { display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 500; min-width: 0; }
+.vy-event-fields input:not([type="checkbox"]), .vy-event-fields select, .vy-event-fields textarea { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #cfdad2; border-radius: 8px; background: white; padding: 9px 10px; font: 400 14px/1.4 'Work Sans', system-ui, sans-serif; color: #231f20; }
+.vy-event-fields :is(input, select, textarea):focus-visible { outline: 2px solid #231f20; outline-offset: 3px; }
+.vy-event-fields textarea { resize: vertical; }
+.vy-event-fields .vy-event-checkbox { flex-direction: row; align-items: center; gap: 8px; }
+.vy-event-checkbox input { width: 17px; height: 17px; accent-color: #231f20; }
+.vy-event-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.vy-event-colors { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; font-size: 13px; color: #596159; }
+.vy-event-colors button { width: 26px; height: 26px; padding: 0; flex: none; border: 1px solid #231f2038; border-radius: 50%; background: var(--swatch); cursor: pointer; }
+.vy-event-colors button[aria-pressed="true"] { outline: 2px solid #231f20; outline-offset: 3px; }
+.vy-event-colors .vy-event-default-color { display: grid; place-items: center; color: #231f20; background: #e3e8e3; }
+.vy-event-color-name { margin-left: 4px; }
+.vy-event-invites { font-size: 14px; }
+.vy-event-invites summary { cursor: pointer; padding: 6px 0; }
+.vy-event-invites fieldset { border: 0; padding: 8px 0 16px; margin: 8px 0; min-width: 0; }
+.vy-event-invites legend, .vy-event-invites p { font-size: 13px; color: #596159; }
+.vy-event-invite-teams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.vy-event-invites input:disabled { background: #f4f6f3; }
+.vy-event-dialog footer { display: flex; align-items: center; gap: 10px; padding: 14px 24px 18px; flex: none; }
+.vy-event-dialog footer > span { flex: 1; font-size: 13px; color: #596159; }
+.vy-event-delete { color: #a63b32; }
+.vy-event-error { padding: 10px; margin: 0; background: #f7e8e4; color: #863a30; font-size: 13px; border-radius: 4px; }
+.vy-event-error p { margin: 0 0 8px; }
+.vy-event-series { margin: 0; color: #5c6b63; font-size: 12px; }
+@media (max-width: 1100px) {
+  .vy-shell:not(.vy-force-desktop) .vy-calendar-layout { grid-template-columns: 1fr; }
+  .vy-shell:not(.vy-force-desktop) .vy-calendar-filters h2 { display: none; }
+  .vy-shell:not(.vy-force-desktop) .vy-calendar-filter-toggle { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; border-bottom: 1px solid #d7e1da; background: none; padding: 10px 0; cursor: pointer; }
+  .vy-shell:not(.vy-force-desktop) .vy-calendar-filter-toggle span { margin-left: auto; font-size: 12px; color: #5c6b63; }
+  .vy-shell:not(.vy-force-desktop) .vy-calendar-filter-body { display: none; padding: 12px 0; }
+  .vy-shell:not(.vy-force-desktop) .vy-calendar-filters.is-open .vy-calendar-filter-body { display: block; }
+}
+.vy-force-phone .vy-calendar-layout { grid-template-columns: 1fr; }
+.vy-force-phone .vy-calendar-filters h2 { display: none; }
+.vy-force-phone .vy-calendar-filter-toggle { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; padding: 10px 0; background: none; }
+.vy-force-phone .vy-calendar-filter-toggle span { margin-left: auto; }
+.vy-force-phone .vy-calendar-filter-body { display: none; }
+.vy-force-phone .vy-calendar-filters.is-open .vy-calendar-filter-body { display: block; }
+.vy-force-phone .vy-calendar-period h1 { font-size: 25px; min-width: 0; }
+@media (max-width: 600px) {
+  .vy-calendar-period { gap: 4px; width: 100%; }
+  .vy-calendar-period h1 { font-size: 25px; min-width: 0; flex: 1; }
+  .vy-calendar-actions { width: 100%; justify-content: space-between; gap: 5px; }
+  .vy-calendar-surface .fc-dayGridMonth-view { min-width: 660px; }
+  .vy-event-dialog header, .vy-event-fields { padding: 16px; }
+  .vy-event-dialog footer { padding: 12px 16px; }
+  .vy-event-dialog footer { flex-wrap: wrap; justify-content: flex-end; }
+  .vy-event-dialog footer > span { flex-basis: 100%; }
+  .vy-event-dialog h2 { font-size: 26px; }
+  .vy-event-fields input:not([type="checkbox"]), .vy-event-fields select, .vy-event-fields textarea { font-size: 16px; }
+  .vy-event-grid { gap: 10px; }
+}
+@media (max-width: 480px) {
+  .vy-event-grid, .vy-event-invite-teams { grid-template-columns: 1fr; }
+}
+@media print {
+  .vy-shell:has(.vy-calendar-page) { display: block; background: white; }
+  .vy-shell:has(.vy-calendar-page) :is(.vy-rail,.vy-utility,.vy-topbar,.vy-mobile-tabs,.vy-pet,.vy-pet-toggle,.vy-preview-note,.vy-calendar-actions,.vy-calendar-message,.vy-calendar-google,.vy-calendar-filter-actions,.vy-calendar-period button,.vy-calendar-filter-row button) { display: none !important; }
+  .vy-shell:has(.vy-calendar-page) .vy-body { margin: 0; width: 100%; }
+  .vy-shell:has(.vy-calendar-page) .vy-main { padding: 0; max-width: none; }
+  .vy-calendar-layout { grid-template-columns: 140px minmax(0, 1fr) !important; gap: 10px; }
+  .vy-calendar-filter-body { display: block !important; }
+  .vy-calendar-filter-toggle { display: none !important; }
+  .vy-calendar-surface { overflow: visible; print-color-adjust: exact; }
+  .vy-calendar-surface .fc-dayGridMonth-view { min-width: 0; }
+  .vy-calendar-surface .fc .fc-daygrid-day-frame { min-height: 75px; }
+}

@@ -1,0 +1,139 @@
+.vy-pet { position: fixed; z-index: 25; left: 0; top: 0; width: 104px; height: 130px; padding: 0; border: 0; background: transparent; cursor: grab; touch-action: none; visibility: hidden; }
+.vy-pet.is-ready { visibility: visible; }
+.vy-pet:active { cursor: grabbing; }
+.vy-pet:focus-visible { outline: 2px solid #175d40; outline-offset: 3px; border-radius: 8px; }
+.vy-pet { user-select: none; transition: none; }
+.vy-pet-ground { position: absolute; bottom: -3px; left: 23%; width: 54%; height: 10px; border-radius: 50%; background: radial-gradient(ellipse, #263d4652, #263d461c 45%, transparent 72%); pointer-events: none; }
+/* Held by the pointer, Sunny swings from the top of her head and springs back when let go. */
+.vy-pet-swing { position: absolute; inset: 0; transform: rotate(var(--sunny-swing, 0deg)); transform-origin: 50% 8%; transition: transform .7s cubic-bezier(.3, 1.9, .45, 1); pointer-events: none; }
+.vy-pet:is(.vy-pet-held, .vy-pet-walk) .vy-pet-swing { transition: transform .16s ease-out; }
+.vy-pet-puppet { position: absolute; inset: 0; transform-origin: 50% 80%; filter: drop-shadow(0 1px 1px #27414c38) drop-shadow(3px 5px 4px #27414c26); pointer-events: none; }
+.vy-pet:is(.vy-pet-idle, .vy-pet-wave) .vy-pet-puppet { animation: vy-pet-breathe 3.1s ease-in-out infinite; }
+.vy-pet-idle[data-act="hop"] .vy-pet-puppet { animation: vy-pet-hop .9s ease-in-out; transform-origin: 50% 100%; }
+.vy-pet-idle[data-act="hop"] .vy-pet-ground { animation: vy-pet-hop-shadow .9s ease-in-out; }
+.vy-pet-idle[data-act="stretch"] .vy-pet-puppet { animation: vy-pet-stretch 1.6s ease-in-out; transform-origin: 50% 100%; }
+.vy-pet-walk .vy-pet-puppet { animation: vy-pet-step .48s ease-in-out infinite; }
+.vy-pet-held .vy-pet-puppet { transform: none; }
+.vy-pet:is(.vy-pet-held, .vy-pet-walk) .vy-pet-ground { opacity: .35; transform: scale(.75); }
+.vy-pet-fall .vy-pet-puppet { transform: scale(.97, 1.04); }
+.vy-pet-fall .vy-pet-ground { opacity: 0; }
+.vy-pet-land .vy-pet-puppet { animation: vy-pet-land .46s ease-out; transform-origin: 50% 100%; }
+.vy-pet-pet .vy-pet-puppet { animation: vy-pet-nuzzle .62s ease-in-out infinite; transform-origin: 50% 100%; }
+.vy-pet-dizzy .vy-pet-puppet { animation: vy-pet-dizzy .9s ease-in-out 2; transform-origin: 50% 100%; }
+.vy-pet-sip .vy-pet-puppet { animation: vy-pet-sip .55s ease-in-out infinite; transform-origin: 50% 100%; }
+.vy-pet-hearts { position: absolute; inset: 0; pointer-events: none; }
+.vy-pet-hearts svg { position: absolute; top: 24%; width: 19px; height: 19px; color: #c34d69; fill: #f1a4b6; stroke-width: 1.5; opacity: 0; animation: vy-pet-heart 1s ease-out both; }
+.vy-pet-hearts svg:nth-child(1) { left: 5%; --heart-drift: -14px; }
+.vy-pet-hearts svg:nth-child(2) { left: 42%; top: 8%; --heart-drift: 0px; animation-delay: .08s; }
+.vy-pet-hearts svg:nth-child(3) { right: 5%; --heart-drift: 14px; animation-delay: .16s; }
+.vy-pet-react .vy-pet-puppet { animation: vy-pet-pop var(--sunny-jump-duration) ease-in-out; }
+.vy-pet-react .vy-pet-ground { animation: vy-pet-jump-shadow var(--sunny-jump-duration) ease-in-out; }
+.vy-pet-settle .vy-pet-puppet { animation: vy-pet-settle .3s ease-out; }
+.vy-pet-wake .vy-pet-puppet { animation: vy-pet-wake .6s ease-in-out; }
+.vy-pet-sleep .vy-pet-puppet { animation: vy-pet-snooze 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
+.vy-pet-sleep-marks { position: absolute; top: 5%; right: 8%; width: 28px; height: 35px; color: #487562; pointer-events: none; font: 600 16px/1 Georgia, serif; }
+.vy-pet-sleep-marks span { position: absolute; opacity: 0; animation: vy-pet-zzz 3.6s ease-out infinite; }
+.vy-pet-sleep-marks span:nth-child(1) { left: 0; bottom: 0; }
+.vy-pet-sleep-marks span:nth-child(2) { left: 7px; bottom: 9px; animation-delay: 1.2s; }
+.vy-pet-sleep-marks span:nth-child(3) { left: 14px; bottom: 18px; animation-delay: 2.4s; }
+/* A sleep bubble that swells and shrinks with each breath. */
+.vy-pet-snore { position: absolute; left: 56%; top: 43%; width: 15%; aspect-ratio: 1; border: 1px solid #8fc0e2b3; border-radius: 50%; background: radial-gradient(circle at 34% 32%, #fff 0 14%, #e4f4ffd9 26%, #b9ddf566 70%); transform-origin: 0 60%; pointer-events: none; animation: vy-pet-snore 3.6s ease-in-out infinite; }
+.vy-pet-stars { position: absolute; left: 50%; top: 7%; width: 0; height: 0; pointer-events: none; }
+.vy-pet-stars svg { position: absolute; width: 14px; height: 14px; margin: -7px; color: #c98a1c; fill: #f6d573; stroke-width: 1.6; animation: vy-pet-orbit 1.1s linear infinite; }
+.vy-pet-stars svg:nth-child(2) { animation-delay: -.37s; }
+.vy-pet-stars svg:nth-child(3) { animation-delay: -.73s; }
+.vy-pet-dust { position: absolute; left: 50%; bottom: 0; width: 0; height: 0; pointer-events: none; }
+.vy-pet-dust span { position: absolute; left: -8px; bottom: -4px; width: 16px; height: 10px; border-radius: 50%; background: #e2ebe4; box-shadow: inset 0 -2px 0 #cfdcd2; opacity: 0; animation: vy-pet-dust .62s ease-out both; }
+.vy-pet-dust span:nth-child(1) { --dust-x: -34px; }
+.vy-pet-dust span:nth-child(2) { --dust-x: 34px; animation-delay: .03s; }
+.vy-pet-dust span:nth-child(3) { --dust-x: 0px; --dust-y: -4px; width: 12px; animation-delay: .06s; }
+/* Boba craving and the sip that follows. */
+.vy-pet-thought { position: absolute; z-index: 3; bottom: 88%; left: 66%; display: flex; align-items: center; gap: 5px; padding: 5px 10px 5px 7px; border: 1px solid #c8dbc9; border-radius: 16px; background: #fff; box-shadow: 0 4px 14px #263a3022; color: #203a2b; font: 600 12px/1 system-ui, sans-serif; white-space: nowrap; pointer-events: none; transform-origin: 0 100%; animation: vy-pet-thought-in .32s cubic-bezier(.3, 1.6, .5, 1) both, vy-pet-thought-bob 2.4s ease-in-out .32s infinite; }
+.vy-pet-thought svg { width: 17px; height: 24px; flex: none; }
+.vy-pet-thought::before, .vy-pet-thought::after { content: ''; position: absolute; border: 1px solid #c8dbc9; border-radius: 50%; background: #fff; }
+.vy-pet-thought::before { left: 2px; bottom: -9px; width: 8px; height: 8px; }
+.vy-pet-thought::after { left: -5px; bottom: -16px; width: 5px; height: 5px; }
+.vy-pet-thought.side-left { left: auto; right: 66%; transform-origin: 100% 100%; }
+.vy-pet-thought.side-left::before { left: auto; right: 2px; }
+.vy-pet-thought.side-left::after { left: auto; right: -5px; }
+.vy-pet-boba { position: absolute; left: 53%; top: 41%; width: 21%; pointer-events: none; transform: scaleX(-1) rotate(-8deg); transform-origin: 50% 100%; }
+.vy-pet-boba svg { display: block; width: 100%; height: auto; overflow: visible; }
+.vy-pet-boba.is-in { animation: vy-pet-boba-in .45s cubic-bezier(.3, 1.6, .5, 1) both; }
+.vy-pet-boba.is-sip { animation: vy-pet-boba-sip .55s ease-in-out infinite; }
+.vy-pet-boba.is-out { animation: vy-pet-boba-out .4s ease-in both; }
+.vy-boba-tea { transform-box: fill-box; transform-origin: 50% 100%; }
+.vy-pet-boba:is(.is-sip, .is-out) .vy-boba-tea { animation: vy-boba-drain 2.2s ease-in forwards; }
+.vy-pet-boba.is-out .vy-boba-tea { animation-duration: 0s; }
+.vy-pet-bubble { position: absolute; z-index: 4; left: 50%; bottom: calc(100% + 7px); width: max-content; max-width: min(260px, calc(100vw - 24px)); padding: 9px 12px; border: 1px solid #c8dbc9; border-radius: 9px; background: #fff; box-shadow: 0 5px 18px #263a3026; color: #203a2b; font: 600 13px/1.4 system-ui, sans-serif; text-align: left; white-space: normal; overflow-wrap: anywhere; pointer-events: none; transform: translateX(-50%); animation: vy-pet-bubble-in .16s ease-out; }
+.vy-pet-bubble-rest { visibility: hidden; }
+.vy-pet-bubble.align-left { left: auto; right: 0; transform: none; }
+.vy-pet-bubble.align-right { left: 0; transform: none; }
+.vy-pet-bubble.position-below { bottom: auto; top: calc(100% + 7px); }
+.vy-pet-toggle { position: fixed; z-index: 31; left: 14px; bottom: 12px; display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 5px 8px; border: 1px solid #a9c3ad; border-radius: 8px; background: #f8fbf8; box-shadow: 0 3px 12px #233a2b1f; color: #234435; font: 600 12px/1 system-ui, sans-serif; cursor: pointer; }
+.vy-pet-toggle input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.vy-pet-toggle:has(input:focus-visible) { outline: 2px solid #175d40; outline-offset: 2px; }
+.vy-pet-switch { position: relative; width: 28px; height: 16px; margin-left: 1px; border-radius: 10px; background: #aebbb0; transition: background .2s; }
+.vy-pet-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px #0003; transition: transform .2s; }
+.vy-pet-toggle input:checked + .vy-pet-switch { background: #246143; }
+.vy-pet-toggle input:checked + .vy-pet-switch::after { transform: translateX(12px); }
+@keyframes vy-pet-breathe { 50% { transform: translateY(-3px) scale(1.015); } }
+@keyframes vy-pet-step { 0%, 50%, 100% { transform: translateY(0); } 25%, 75% { transform: translateY(-1px); } }
+@keyframes vy-pet-settle { 40% { transform: scale(1.05, .95); } 75% { transform: scale(.98, 1.02); } }
+@keyframes vy-pet-land { 0% { transform: scale(1.1, .89); } 40% { transform: translateY(-9px) scale(.98, 1.02); } 72% { transform: scale(1.03, .97); } 100% { transform: none; } }
+@keyframes vy-pet-heart { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 18% { opacity: 1; } 75% { opacity: .8; } 100% { opacity: 0; transform: translate(var(--heart-drift), -48px) scale(1.15); } }
+@keyframes vy-pet-wake { 30% { transform: scale(.97, 1.06) rotate(-3deg); } 65% { transform: scale(1.03, .98) rotate(3deg); } }
+@keyframes vy-pet-snooze { 0%, 100% { transform: rotate(-3deg) scale(1, .97); } 50% { transform: rotate(-1deg) scale(1.025, 1); } }
+@keyframes vy-pet-zzz { 0%, 100% { opacity: 0; transform: translateY(0) scale(.8); } 25% { opacity: .75; } 80% { opacity: 0; transform: translate(3px, -12px) scale(1.1); } }
+@keyframes vy-pet-snore { 0%, 100% { transform: scale(.3); opacity: .7; } 50% { transform: scale(1); opacity: 1; } }
+@keyframes vy-pet-pop {
+  0%, 100% { transform: translateY(0) scale(1); }
+  12% { transform: translateY(2px) scale(1.025, .975); }
+  44%, 52% { transform: translateY(-38px) scale(1); }
+  86% { transform: translateY(0) scale(1.025, .975); }
+}
+@keyframes vy-pet-jump-shadow { 0%, 100% { transform: scale(1); opacity: 1; } 44%, 52% { transform: scale(.7); opacity: .4; } }
+@keyframes vy-pet-hop {
+  0%, 50%, 100% { transform: none; }
+  8%, 58% { transform: scale(1.04, .96); }
+  25% { transform: translateY(-11px) scale(.98, 1.02); }
+  75% { transform: translateY(-7px) scale(.98, 1.02); }
+  45%, 95% { transform: scale(1.03, .97); }
+}
+@keyframes vy-pet-hop-shadow { 0%, 50%, 100% { transform: none; } 25%, 75% { transform: scale(.82); opacity: .6; } }
+@keyframes vy-pet-stretch { 0%, 100% { transform: none; } 30%, 68% { transform: scale(.98, 1.04); } 80% { transform: scale(1.02, .98); } }
+@keyframes vy-pet-nuzzle { 0%, 100% { transform: rotate(0) scale(1); } 25% { transform: rotate(-4deg) scale(1.02, .98); } 75% { transform: rotate(4deg) scale(1.02, .98); } }
+@keyframes vy-pet-dizzy { 0%, 100% { transform: none; } 25% { transform: translateX(-3px) rotate(-6deg); } 75% { transform: translateX(3px) rotate(6deg); } }
+@keyframes vy-pet-sip { 50% { transform: translateY(1px) scale(1.012, .988); } }
+@keyframes vy-pet-orbit {
+  0% { transform: translate(0, 7px) scale(1); opacity: 1; z-index: 2; }
+  12.5% { transform: translate(21px, 5px) scale(.94); }
+  25% { transform: translate(30px, 0) scale(.84); }
+  37.5% { transform: translate(21px, -5px) scale(.72); opacity: .7; }
+  50% { transform: translate(0, -7px) scale(.64); opacity: .55; }
+  62.5% { transform: translate(-21px, -5px) scale(.72); opacity: .7; }
+  75% { transform: translate(-30px, 0) scale(.84); }
+  87.5% { transform: translate(-21px, 5px) scale(.94); }
+  100% { transform: translate(0, 7px) scale(1); opacity: 1; }
+}
+@keyframes vy-pet-dust { 0% { opacity: .95; transform: translate(0, 0) scale(.4); } 100% { opacity: 0; transform: translate(var(--dust-x), var(--dust-y, -9px)) scale(1.35); } }
+@keyframes vy-pet-thought-in { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes vy-pet-thought-bob { 50% { translate: 0 -4px; } }
+@keyframes vy-pet-boba-in { from { opacity: 0; transform: translate(40%, 25%) scaleX(-1) rotate(10deg); } to { opacity: 1; transform: scaleX(-1) rotate(-8deg); } }
+@keyframes vy-pet-boba-sip { 50% { transform: translate(-2%, -3%) scaleX(-1) rotate(-11deg); } }
+@keyframes vy-pet-boba-out { to { opacity: 0; transform: translate(35%, 20%) scaleX(-1) rotate(12deg); } }
+@keyframes vy-boba-drain { to { transform: scaleY(.18); } }
+@keyframes vy-pet-bubble-in { from { opacity: 0; scale: .9; } to { opacity: 1; scale: 1; } }
+@media(max-width:840px) {
+  .vy-shell:not(.vy-force-desktop) .vy-pet { width: 84px; height: 105px; }
+  .vy-shell:not(.vy-force-desktop) .vy-pet-toggle { bottom: 73px; }
+}
+.vy-force-phone .vy-pet { width: 84px; height: 105px; }
+.vy-force-phone .vy-pet-toggle { left: max(12px, calc(50% - 200px)); bottom: 73px; }
+@media(prefers-reduced-motion: reduce) {
+  .vy-pet-puppet, .vy-pet-ground, .vy-pet-sleep-marks span, .vy-pet-bubble, .vy-pet-switch, .vy-pet-switch::after,
+  .vy-pet-swing, .vy-pet-snore, .vy-pet-stars svg, .vy-pet-thought, .vy-pet-boba, .vy-boba-tea { animation: none !important; transition: none !important; }
+  .vy-pet-swing { transform: none; }
+  .vy-pet-sleep-marks span { opacity: .65; }
+  .vy-pet-hearts svg { animation: none; opacity: 1; }
+  .vy-pet-fall .vy-pet-puppet { transform: none; }
+}
