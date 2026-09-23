@@ -10,12 +10,18 @@
 
 ## Environments
 
-| Environment | Supabase project | Frontend | API |
-| --- | --- | --- | --- |
-| Local | Test project | `npm run dev` in `frontend/` | `uvicorn` in `backend/api/` |
-| Production | Production project | Render Static Site | Render Web Service (when enabled) |
+Each long-lived Git branch maps to one environment. Code reaches production only by moving up this chain through pull requests (see "Branches and releases" in `../CLAUDE.md`).
 
-Add a staging environment (a separate Supabase project and Render services) before HQ has many users. Until then, the test project stands in for staging.
+| Branch | Environment | Supabase project | Frontend and API hosting | Status |
+| --- | --- | --- | --- | --- |
+| `feature/*` | Local | Test project | `npm run dev` and `uvicorn` on your machine | Ready |
+| `dev` | Development: everyone's merged work | Test project | Render services that auto-deploy from `dev` | To set up |
+| `test` | Test: QA checks a release candidate | Test project | Render services that auto-deploy from `test` | To set up |
+| `stage` | Staging: a production copy for final sign-off | Staging project, same schema as production | Render services that auto-deploy from `stage` | To set up |
+| `main` | Production | Production project | Render services in `render.yaml` | Defined, not connected |
+
+- **Setting up an environment:** add a copy of each service in Render with a suffix (for example `summerfield-hq-frontend-dev`), set its branch, and enter that environment's variables. Add these services when the team needs them. Each one costs a Render service.
+- **Test and staging data:** `dev` and `test` share the test Supabase project. `stage` needs its own project, so migrations can be rehearsed on a production-shaped database before they touch production. None of these projects may hold copies of production personal data.
 
 ## Environment variables
 
@@ -41,12 +47,12 @@ Secrets the API will need later, such as the Supabase service-role key and integ
 
 ## Deploying changes
 
-- **Frontend or API:** merge to `main`. Render rebuilds only the service whose `rootDir` changed.
-- **Database:** apply the new migration first, then merge the code that depends on it.
+- **Frontend or API:** merge the pull request into the branch for that environment, following the order `dev` → `test` → `stage` → `main`. Each environment's Render services rebuild only when files under their `rootDir` changed.
+- **Database:** apply the new migration to that environment's Supabase project first, then merge the code that depends on it. A migration moves up the same chain: the test project (for `dev` and `test`), then staging, then production.
 
 ## Rollback
 
-- **Frontend or API:** in the Render dashboard, redeploy the previous successful deploy. It's worth keeping auto-deploy on only for `main`.
+- **Frontend or API:** in the Render dashboard, redeploy the previous successful deploy. Then fix forward with a `hotfix/*` branch, or revert the merge on `main`.
 - **Database:** write a new migration that reverses the change. Never edit or delete an applied migration. Take a backup before any destructive migration.
 
 ## Hardening still to do

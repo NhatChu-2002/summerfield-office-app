@@ -4,7 +4,7 @@ on:
   pull_request:
     paths: ["backend/api/**", ".github/workflows/backend-api.yml"]
   push:
-    branches: [main]
+    branches: [dev, test, stage, main]
     paths: ["backend/api/**", ".github/workflows/backend-api.yml"]
 
 jobs:

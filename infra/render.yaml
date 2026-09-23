@@ -1,11 +1,13 @@
 # Render Blueprint for Summerfield HQ.
 # Not applied yet. Read infra/README.md before connecting it. When creating the Blueprint in Render,
 # set its file path to infra/render.yaml. Secret values are entered in the Render dashboard (sync: false).
+# These are the production services (branch main). dev, test, and stage get copies when needed: see infra/README.md.
 services:
   # Frontend: static React build. Hash routes mean no rewrite rules are needed.
   - type: web
     name: summerfield-hq-frontend
     runtime: static
+    branch: main
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
@@ -31,6 +33,7 @@ services:
   # - type: web
   #   name: summerfield-hq-api
   #   runtime: python
+  #   branch: main
   #   rootDir: backend/api
   #   buildCommand: pip install -r requirements.txt
   #   startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT

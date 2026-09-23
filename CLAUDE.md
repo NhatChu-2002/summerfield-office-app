@@ -74,7 +74,34 @@ summerfield-hq/
 
    Each step must work with the previous version of the next step. For example, add a column before the UI reads it, and never rename a column in the same release that the UI switches to the new name.
 3. **Never import across part folders.** The frontend never imports from `backend/`, and the API never reads frontend files. If two parts need the same data, it goes through a contract.
-4. **One concern per branch.** Name the branch after what it does, for example `calendar-persistence`.
+4. **One concern per branch.** See "Branches and releases" below.
+
+## Branches and releases
+
+Code moves up one environment at a time, and only through pull requests:
+
+```
+feature/*  ──PR──▶  dev  ──PR──▶  test  ──PR──▶  stage  ──PR──▶  main
+(your work)       (merged work)  (QA)          (final check)    (production)
+                                                                  │
+hotfix/*  ◀─── branched from main for urgent production fixes ────┘
+```
+
+| Branch | Purpose | Who merges into it | What must pass first |
+| --- | --- | --- | --- |
+| `feature/<short-name>` | One change, branched from `dev`. Also `fix/<name>` for bugs, `chore/<name>` for tooling. | You, by pushing | Nothing yet. Push early. |
+| `dev` | Everyone's finished work, integrated | PR from a feature branch | CI green, one review |
+| `test` | Release candidate for QA | PR from `dev` | CI green, and QA has tested the changes in the test environment |
+| `stage` | Production copy for final sign-off | PR from `test` | Migrations rehearsed on the staging database, and the owner's approval |
+| `main` | Production. Every commit here is live or about to be. | PR from `stage`, or from `hotfix/*` | Staging approved. Tag the release. |
+
+Rules:
+- **Never commit directly to `dev`, `test`, `stage`, or `main`.** Protect them on GitHub: require pull requests and passing CI, and block force-pushes.
+- **Branch from `dev`, and keep your branch current** by merging `dev` into it. Delete the branch after it merges.
+- **Promotion PRs (`dev`→`test`, `test`→`stage`, `stage`→`main`) carry no new code.** If something breaks while testing, fix it on a `fix/*` branch into `dev` and promote again.
+- **Hotfixes** branch from `main` and go back into `main` by PR. Then merge `main` back down into `stage`, `test`, and `dev`, so the fix isn't lost at the next release.
+- **Releases:** after merging to `main`, tag it `vYYYY.MM.DD` (add `.2`, `.3` for more than one release in a day). Write what changed in the GitHub release notes.
+- **Commit messages** start with a verb in the imperative ("Add calendar persistence"), with a body explaining why when that isn't obvious.
 
 ## Commands
 
