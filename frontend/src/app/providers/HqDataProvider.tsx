@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { errorText } from '@/shared/lib/format'
 import { useToast } from '@/shared/ui/toast'
 import type { Access } from '@/features/auth'
-import { loadTasks, setTaskStatus, type HqTask } from '@/features/tasks'
+import { listDepartmentPeople, loadTasks, setTaskStatus, type HqTask, type PeopleNames } from '@/features/tasks'
 import { loadUpdates, type HqUpdate } from '@/features/updates'
 
 type HqData = {
@@ -14,6 +14,8 @@ type HqData = {
   error: string
   refresh: () => Promise<void>
   busyTaskId: string | null
+  /** Teammates' display names, looked up for departments whose tasks involve someone else. */
+  names: PeopleNames
   toggleTask: (task: HqTask) => Promise<void>
   /** Adds a record created on this screen. Returns false if it belongs to another organization. */
   addTask: (task: HqTask) => boolean
@@ -33,6 +35,8 @@ export function HqDataProvider({ access, children }: { access: Access; children:
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [busyTaskId, setBusyTaskId] = useState<string | null>(null)
+  const [names, setNames] = useState<PeopleNames>({})
+  const namedDepartments = useRef(new Set<string>())
   const mounted = useRef(false)
 
   useEffect(() => {
@@ -53,6 +57,22 @@ export function HqDataProvider({ access, children }: { access: Access; children:
   }, [organizationId])
 
   useEffect(() => { void refresh() }, [refresh])
+
+  // Look up each department's people once, and only where a task involves someone other than you.
+  useEffect(() => {
+    const needed = new Set(tasks.filter((task) => (task.assigned_to && task.assigned_to !== access.userId) || task.created_by !== access.userId)
+      .map((task) => task.department_code))
+    const missing = [...needed].filter((code) => !namedDepartments.current.has(code))
+    if (!missing.length) return
+    missing.forEach((code) => namedDepartments.current.add(code))
+    void Promise.allSettled(missing.map((code) => listDepartmentPeople(organizationId, code))).then((results) => {
+      if (!mounted.current) return
+      const found: PeopleNames = {}
+      for (const result of results) if (result.status === 'fulfilled') for (const person of result.value) found[person.user_id] = person.display_name
+      setNames((current) => ({ ...current, ...found }))
+    })
+  }, [tasks, access.userId, organizationId])
+
   useEffect(() => {
     const onVisible = () => { if (document.visibilityState === 'visible') void refresh() }
     document.addEventListener('visibilitychange', onVisible)
@@ -87,7 +107,7 @@ export function HqDataProvider({ access, children }: { access: Access; children:
     return true
   }, [organizationId])
 
-  return <HqDataContext.Provider value={{ tasks, updates, dataReady, loading, error, refresh, busyTaskId, toggleTask, addTask, addUpdate }}>
+  return <HqDataContext.Provider value={{ tasks, updates, dataReady, loading, error, refresh, busyTaskId, names, toggleTask, addTask, addUpdate }}>
     {children}
   </HqDataContext.Provider>
 }

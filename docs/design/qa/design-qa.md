@@ -77,3 +77,25 @@ final result: passed
 - Build and type-check pass. The existing bundle-size warning is unchanged.
 
 final result: passed for tested interactions
+
+## My Tasks Rebuild - September 23, 2026
+
+- Reference: `vTasks()`, `taskRow()`, `taskList()` and the task dialog in `docs/design/reference/Summerfield HQ.html`. The prototype was served locally and inspected at 1440 x 900. Its standalone mode doesn't keep tasks, so rows were built from its own `taskRow` markup and rendered with its own stylesheet to capture the real look. Row, group, and dialog CSS values were read from the prototype's rules.
+- Built: the hero with New task, "Email me my week", "Draft everyone's week" (admins only), and Projects. Groups are Overdue, Today, This week, Later, and Done (last 15), plus "You asked others to do" and the empty state. The prototype's task rows are now the shared `TaskList` on the dashboard, department pages, and My tasks. The New task dialog has a department picker and "Assign to", defaulting to you on My tasks. A details dialog opens from Open.
+- Intentional differences:
+  - HQ tasks don't store priority, status stages, start dates, locations, projects, files, or comments. Those parts of the row and dialog are left out, and the dialog says so.
+  - The email digest buttons are disabled.
+  - The prototype's `.btn.pri` clashes with the priority tag's `.pri` class, which shrinks "New task" and "Save task" into tiny pills. Here they use full-size dark buttons.
+- Verified in Design preview, with sample tasks relative to today: the grouping, completing a task, and reopening from the details dialog, Escape to close, and creating a task that lands in Today. On a 375px phone, rows stack with Open underneath, the dialog fields stack at 16px, and there's no horizontal overflow.
+- Verified signed in, against a local mock Supabase:
+  - Only writable departments are offered, and "Assign to" defaults to you.
+  - A task delegated to a teammate appears under "You asked others to do" with their name.
+  - The checkbox uses `set_hq_task_status` and the task moves to Done.
+  - Open shows who asked.
+  - Department "Add a task", posting an update, switching organization, and sign-out still work.
+  - The console is clean.
+- Fixed during testing: the new dialogs closed right after opening in development. React runs effects twice, and the cleanup's `close()` fired `onClose`. The dialogs now open only if not already open and don't close on cleanup.
+- Tests: 5 new grouping tests (date boundaries, each group, done limit and order, delegated). All 13 tests pass. Type-check, boundary check, and build pass.
+- Not verified: a real Supabase project, and people lookups where a department has no listed members (names fall back to "Teammate").
+
+final result: passed

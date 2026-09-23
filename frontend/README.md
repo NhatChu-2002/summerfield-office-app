@@ -27,6 +27,7 @@ Sunny's face is drawn live over the original artwork. Her eyes follow the pointe
 - Read tasks and updates for accessible departments.
 - Create department tasks, set a due date, and assign an active department teammate.
 - Complete or reopen a task as its creator, assignee, or department lead.
+- See **My tasks** (`#/tasks`), rebuilt from Vy's design: your tasks grouped as Overdue, Today, This week, Later, and Done (last 15), plus the open tasks you asked others to do. **New task** can go to any department you can write to, and defaults to you. **Open** shows a task's details, with done or reopen. Projects, priority, status, start dates, locations, files, comments, and the weekly email digest aren't stored by HQ yet, so they aren't shown. The email buttons are visible but disabled.
 - Post a department update as a member or lead.
 - Switch organizations if the account belongs to more than one.
 
