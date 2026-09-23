@@ -93,7 +93,7 @@ The sign-in screen offers **Preview the HQ design** in development builds only. 
 ## Sunny
 
 - **`components/SunnyCharacter.tsx`** layers the artwork (`public/sunny-pet/*.webp`) and draws a live face over it. The eye, beak, and cheek coordinates are measured from `front.webp`, so re-measure them if the art changes.
-- **`front-nofly.webp` and `fly.webp`** come from `scripts/split_sunny_dragonfly.py`, which needs Python with Pillow and NumPy. Rerun it when `front.webp` changes.
+- **`body.webp`, `wing.webp`, and `fly.webp`** are layers split from `front.webp` by `scripts/split_sunny_layers.py`, which needs Python with Pillow and NumPy. The body has the wings and dragonfly removed, and the fur and shirt under them filled in, so nothing is left behind when they move. Rerun the script whenever `front.webp` changes. Facing forward, the wings draw in front of the body, as in the art. The right wing is the left one mirrored.
 - **`components/SunnyPet.tsx`** is her behaviour on the page. Gaze and swing are CSS variables, so pointer tracking doesn't re-render React. Timers read state through the `live` ref. Clear every timer you add on unmount and when she is toggled off.
 
 ## Checks

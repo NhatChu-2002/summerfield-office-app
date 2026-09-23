@@ -11,9 +11,11 @@ export type SunnyMotion = 'idle' | 'react' | 'walk' | 'held' | 'sleep' | 'wake' 
 export type SunnyAct = 'look' | 'tilt' | 'stretch' | 'hop' | 'fly' | 'wish'
 
 const FRONT = '/sunny-pet/front.webp'
-// front.webp split in two, so the dragonfly can leave Sunny's head without leaving a hole.
-const BODY = '/sunny-pet/front-nofly.webp'
+// Layers split from front.webp by scripts/split_sunny_layers.py, so the dragonfly and wings can move
+// without leaving pieces of themselves behind on the body.
+const BODY = '/sunny-pet/body.webp'
 const FLY = '/sunny-pet/fly.webp'
+const WING = '/sunny-pet/wing.webp'
 const SPRITE_FACES: ReadonlySet<SunnyFace> = new Set(['heart', 'glasses', 'teary'])
 const LID = '#b3d2e7'
 // Measured from front.webp: sclera centres and the pupils, which sit slightly toward the beak.
@@ -72,21 +74,28 @@ export const SunnyCharacter = memo(function SunnyCharacter({
   const away = direction === 'away'
   const source = away ? '/sunny-pet/back.webp' : BODY
   const liveFace = !SPRITE_FACES.has(face)
-  const part = (clip: string, className: string, image = source, children?: ReactNode) => <g className={className}>
-    <g clipPath={`url(#${id}-${clip})`}>
+  const part = (clip: string | null, className: string, image = source, children?: ReactNode, mask = 'alpha') => {
+    const layer = <>
       <image href={image} width="208" height="260" />
       {children}
-      <rect width="208" height="260" fill={`url(#${id}-light)`} mask={`url(#${id}-alpha)`} className="sunny-light" />
+      <rect width="208" height="260" fill={`url(#${id}-light)`} mask={`url(#${id}-${mask})`} className="sunny-light" />
+    </>
+    return <g className={className}>{clip ? <g clipPath={`url(#${id}-${clip})`}>{layer}</g> : layer}</g>
+  }
+  // The right wing is the left wing mirrored.
+  const wings = <>
+    {part(null, 'sunny-wing sunny-wing-left', WING, undefined, 'alpha-wing')}
+    <g transform="translate(208 0) scale(-1 1)">
+      {part(null, 'sunny-wing sunny-wing-right', WING, undefined, 'alpha-wing')}
     </g>
-  </g>
+  </>
 
   return <svg className="sunny-character" data-motion={motion} data-direction={direction} data-face={face}
     data-mouth={mouth} data-act={act ?? undefined} data-blush={blush} data-blink={blinking}
     viewBox="0 0 208 260" aria-hidden="true" focusable="false">
     <defs>
-      {/* The torso excludes the original wings and feet; only the separate joints move. */}
+      {/* The torso outline. Wings and feet are separate layers that move on their own. */}
       <clipPath id={`${id}-body`}><path d="M0 0H208V140H180Q173 155 157 166Q164 175 167 190L171 214Q166 238 146 248H62Q42 238 37 216L40 195Q42 177 52 166Q37 155 28 140H0Z" /></clipPath>
-      <clipPath id={`${id}-wing`}><path d="M3 158Q17 144 34 145L55 153Q62 165 51 175L47 178Q20 191 3 177Q-3 167 3 158Z" /></clipPath>
       <clipPath id={`${id}-foot-left`}><path d="M62 246H103V260H62Z" /></clipPath>
       <clipPath id={`${id}-foot-right`}><path d="M105 246H148V260H105Z" /></clipPath>
       <clipPath id={`${id}-face`}><rect x="24" y="48" width="160" height="94" /></clipPath>
@@ -96,6 +105,9 @@ export const SunnyCharacter = memo(function SunnyCharacter({
       {EYES.map(eye => <clipPath key={eye.side} id={`${id}-pupil-${eye.side}`}><ellipse cx={eye.pupil} cy={PUPIL_Y} rx="14.4" ry="17.4" /></clipPath>)}
       <mask id={`${id}-alpha`} maskUnits="userSpaceOnUse" x="0" y="0" width="208" height="260" style={{ maskType: 'alpha' }}>
         <image href={source} width="208" height="260" />
+      </mask>
+      <mask id={`${id}-alpha-wing`} maskUnits="userSpaceOnUse" x="0" y="0" width="208" height="260" style={{ maskType: 'alpha' }}>
+        <image href={WING} width="208" height="260" />
       </mask>
       <linearGradient id={`${id}-light`} x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stopColor="#ffffff" stopOpacity=".35" />
@@ -112,10 +124,8 @@ export const SunnyCharacter = memo(function SunnyCharacter({
       <filter id={`${id}-soft`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" /></filter>
     </defs>
     <g className="sunny-tilt"><g className="sunny-rig">
-      {part('wing', 'sunny-wing sunny-wing-left', FRONT)}
-      <g transform="translate(208 0) scale(-1 1)">
-        {part('wing', 'sunny-wing sunny-wing-right', FRONT)}
-      </g>
+      {/* From behind, the wings sit behind the body. Facing forward they're in front, as in the art. */}
+      {away && wings}
       {part('foot-left', 'sunny-foot sunny-foot-left', FRONT)}
       {part('foot-right', 'sunny-foot sunny-foot-right', FRONT)}
       {part('body', 'sunny-body')}
@@ -130,6 +140,7 @@ export const SunnyCharacter = memo(function SunnyCharacter({
           <g className="sunny-jaw"><g clipPath={`url(#${id}-jaw)`}><image href={FRONT} width="208" height="260" /></g></g>
         </g>
       </>)}
+      {!away && wings}
       {!away && <g className="sunny-fly"><image href={FLY} width="208" height="260" /></g>}
     </g></g>
   </svg>

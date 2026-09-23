@@ -78,6 +78,15 @@ final result: passed
 
 final result: passed for tested interactions
 
+## Sunny Wing Layers - September 23, 2026
+
+- Issue: on the sign-in page, the waving wing left a light-blue sliver along the shirt's left edge. The body layer still held the part of the original wing that overlaps the shoulder and shirt corner. The wing's cut shape also trimmed a few pixels off its lower edge.
+- Fix: `scripts/split_sunny_layers.py` now also writes `wing.webp` (the complete left wing, mirrored for the right) and `body.webp` (no wings or dragonfly). Under the wings, the neck fur and the shirt, following its measured edge, are filled in. Facing forward, the wings draw in front of the body, as in the art, with their own lighting mask. `front-nofly.webp` was removed. `fly.webp` is unchanged.
+- Verified: at rest, the left half matches the original art except along the new layer edges. Checked in the browser at 5x and at actual size: rest, wave up (32°), wave back (6°), and the pet's stretch (56°), flap (38°) and sip poses. No stump, no sliver, and no shirt spike.
+- Not verified: the back view (dragging upward) still uses `back.webp`, which has its wings baked in, drawn behind the body as before.
+
+final result: passed
+
 ## My Tasks Rebuild - September 23, 2026
 
 - Reference: `vTasks()`, `taskRow()`, `taskList()` and the task dialog in `docs/design/reference/Summerfield HQ.html`. The prototype was served locally and inspected at 1440 x 900. Its standalone mode doesn't keep tasks, so rows were built from its own `taskRow` markup and rendered with its own stylesheet to capture the real look. Row, group, and dialog CSS values were read from the prototype's rules.
