@@ -8,6 +8,7 @@ import { CalendarPage } from '@/features/calendar'
 import { DashboardPage } from '@/features/dashboard'
 import { DepartmentPage, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
+import { HelpPage } from '@/features/help'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { UpdateList, UpdatesPage } from '@/features/updates'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
@@ -45,6 +46,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <DepartmentsPage access={access} tasks={tasks} />
   } else if (route.page === 'folders') {
     content = <DepartmentFoldersPage departments={access.departments.map(referenceForDepartment)} dashboardCodes={access.departments.map((item) => item.code)} />
+  } else if (route.page === 'help') {
+    content = <Suspense fallback={<p role="status">Loading guides...</p>}><HelpPage departments={access.departments} /></Suspense>
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}

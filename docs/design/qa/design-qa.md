@@ -156,3 +156,13 @@ final result: passed (drop landing to recheck with the pane visible)
 - Verified: offline, the resting pose matches the art in the head, wing and shirt area (92 of 6,560 pixels differ by more than 12, all along soft edges). There are no tan pixels left in the wing layer, and no stray tan beside the shirt. In the browser, close up and at normal size, rest, wave, stretch, and sleep show no seam or rim. The Python preview showed a dotted edge that Chrome doesn't, because Pillow rotates without premultiplied alpha.
 
 final result: passed
+
+## How HQ Works Rebuild
+
+- Source: `docs/design/reference/Summerfield HQ.html`, `vHelp`, guide cards, first-day list, and tour. The React page keeps the blue striped hero, Caudex/Work Sans typography, guide grid, and side column.
+- The prototype's Claude PIN, Drive, ticket, SOP, and shared-calendar claims were not copied as working instructions. Guides describe available tasks, updates, dashboard, folders, and calendar viewing; unfinished connections are named plainly.
+- The dashboard's Show me around link and the help page open one five-step front-end tour. Its completion marker is local to this browser; no backend writes occur. The page is lazy-loaded.
+- Checked desktop and phone browser layouts, the dashboard-to-tour link, modal paging, and phone width without horizontal overflow. The source HTML tab could not be visually compared because browser access to that local file was blocked.
+- Build, type-check, boundary check, and all frontend tests pass. Live account permissions and backend guides remain for a later integration pass.
+
+final result: passed for the UI-first scope
