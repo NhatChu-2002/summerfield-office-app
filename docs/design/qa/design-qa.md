@@ -273,3 +273,12 @@ final result: passed for the UI-first scope
 - Typecheck, boundary check, 46 frontend tests, and production build pass. Focused tests cover role sorting, search, and department toggling.
 
 final result: passed for the UI-first scope
+
+## Locations Pages - September 24, 2026
+
+- Converted the prototype's location list and five-tab location file into `frontend/src/features/locations/`. The feature owns typed location/equipment records, search, location and equipment editors, folder links, history from recorded opening/install dates, a local equipment CSV export, and focused tests.
+- Design preview uses labeled sample locations and memory-only edits. Signed-in views show an explicit unconnected state instead of sample company records. Shared storage, catalog synchronization, actual file attachments, audits, and location calendar events are not connected.
+- Browser checked the phone-pane list, detail overview, equipment tab and editor, saving preview equipment, and horizontal width. The page remained within the 347px viewport. Desktop screenshot verification and signed-in service flows remain untested.
+- Typecheck, import-boundary check, frontend tests, and production build pass. CSV tests cover quoting and spreadsheet-formula protection.
+
+final result: passed for the UI-first scope

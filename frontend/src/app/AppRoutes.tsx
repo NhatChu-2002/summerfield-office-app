@@ -10,6 +10,7 @@ import { DepartmentPage, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage } from '@/features/learning'
+import { LocationPage, LocationsPage } from '@/features/locations'
 import { MeetingsPage } from '@/features/meetings'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { PeoplePage } from '@/features/people'
@@ -71,6 +72,10 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
       liveTaskStats={dataReady ? { overdue: tasks.filter((task) => task.status === 'open' && !!task.due_date && task.due_date < todayLocal()).length, mine: myOpenTasks.length } : undefined} />
   } else if (route.page === 'project') {
     content = <ProjectPage id={route.code || ''} departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} messages={[]} preview={false} />
+  } else if (route.page === 'locations') {
+    content = <LocationsPage locations={[]} equipment={[]} preview={false} />
+  } else if (route.page === 'location') {
+    content = <LocationPage id={route.code || ''} locations={[]} equipment={[]} preview={false} />
   } else if (route.page === 'learn') {
     content = <Suspense fallback={<p role="status">Loading Learning...</p>}><LearningPage departments={access.departments.map(referenceForDepartment)} lessons={[]} progress={{ done: {}, scores: {} }} preview={false} /></Suspense>
   } else if (route.page === 'lesson') {

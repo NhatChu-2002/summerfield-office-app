@@ -9,6 +9,7 @@ import { DepartmentLayout } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage, previewLessons, type LearningProgress, type Lesson } from '@/features/learning'
+import { LocationPage, LocationsPage, previewLocationEquipment, previewLocations, type LocationEquipment, type LocationRecord } from '@/features/locations'
 import { MeetingsPage, previewMeetings, type MeetingRecord } from '@/features/meetings'
 import { todayLocal } from '@/shared/lib/format'
 import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
@@ -51,6 +52,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   const [projectMessages, setProjectMessages] = useState<ProjectMessage[]>(previewProjectMessages)
   const [ticketManager, setTicketManager] = useState('')
   const [lessons, setLessons] = useState<Lesson[]>(previewLessons)
+  const [locations, setLocations] = useState<LocationRecord[]>(previewLocations)
+  const [locationEquipment, setLocationEquipment] = useState<LocationEquipment[]>(previewLocationEquipment)
   const [learningProgress, setLearningProgress] = useState<LearningProgress>({ done: {}, scores: {} })
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>(previewTimeEntries)
   const [timeCorrections, setTimeCorrections] = useState<TimeCorrection[]>(previewTimeCorrections)
@@ -89,6 +92,10 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <ProjectsPage departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} preview ticketManager={ticketManager} onTicketManagerChange={setTicketManager} onProjectsChange={setProjects} onTasksChange={setProjectTasks} />
   } else if (route.page === 'project') {
     content = <ProjectPage id={route.code || ''} departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} messages={projectMessages} preview onProjectsChange={setProjects} onTasksChange={setProjectTasks} onMessagesChange={setProjectMessages} />
+  } else if (route.page === 'locations') {
+    content = <LocationsPage locations={locations} equipment={locationEquipment} preview onLocationsChange={setLocations} />
+  } else if (route.page === 'location') {
+    content = <LocationPage key={route.code} id={route.code || ''} locations={locations} equipment={locationEquipment} projects={projects} tasks={projectTasks} preview onLocationsChange={setLocations} onEquipmentChange={setLocationEquipment} />
   } else if (route.page === 'learn') {
     content = <Suspense fallback={<p role="status">Loading Learning...</p>}><LearningPage departments={referenceDepartments} lessons={lessons} progress={learningProgress} preview onLessonsChange={setLessons} /></Suspense>
   } else if (route.page === 'lesson') {
