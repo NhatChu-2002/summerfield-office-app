@@ -8,3 +8,7 @@ __pycache__/
 *.pyc
 .DS_Store
 .pytest_cache/
+
+# Claude Code settings and guides stay on each developer's machine, not in the repository.
+.claude/
+CLAUDE.md

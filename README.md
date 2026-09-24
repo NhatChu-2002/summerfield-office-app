@@ -6,13 +6,13 @@ Summerfield Tea Bar's internal workspace: department dashboards, tasks, team upd
 
 | Folder | What it is | Guide |
 | --- | --- | --- |
-| `frontend/` | React + TypeScript app, built with Vite | [frontend/CLAUDE.md](frontend/CLAUDE.md), [frontend/README.md](frontend/README.md) |
-| `backend/supabase/` | Database schema, access policies (RLS), and functions | [backend/CLAUDE.md](backend/CLAUDE.md) |
-| `backend/api/` | FastAPI service for integrations and server-side jobs (skeleton) | [backend/CLAUDE.md](backend/CLAUDE.md) |
+| `frontend/` | React + TypeScript app, built with Vite | [frontend/README.md](frontend/README.md) |
+| `backend/supabase/` | Database schema, access policies (RLS), and functions | [backend/README.md](backend/README.md) |
+| `backend/api/` | FastAPI service for integrations and server-side jobs (skeleton) | [backend/README.md](backend/README.md) |
 | `infra/` | Render deployment Blueprint, environments, runbook | [infra/README.md](infra/README.md) |
 | `docs/design/` | Vy's design prototype and the design QA log | [docs/README.md](docs/README.md) |
 
-Each part builds, tests, and deploys on its own. [CLAUDE.md](CLAUDE.md) explains the architecture and the rules for working on one part at a time.
+Each part builds, tests, and deploys on its own.
 
 ## Quick start (frontend)
 

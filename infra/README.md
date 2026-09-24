@@ -10,7 +10,7 @@
 
 ## Environments
 
-Each long-lived Git branch maps to one environment. Code reaches production only by moving up this chain through pull requests (see "Branches and releases" in `../CLAUDE.md`).
+Each long-lived Git branch maps to one environment. Code reaches production only by moving up this chain through pull requests.
 
 | Branch | Environment | Supabase project | Frontend and API hosting | Status |
 | --- | --- | --- | --- | --- |

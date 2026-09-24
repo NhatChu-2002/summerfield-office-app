@@ -1,4 +1,4 @@
-// Fails when an import breaks the frontend's layering (see frontend/CLAUDE.md):
+// Fails when an import breaks the frontend's layering:
 //   app → features → shared, features talk to each other only through their index.ts.
 // Run: npm run check:boundaries
 import { readdirSync, readFileSync, statSync } from 'node:fs'
