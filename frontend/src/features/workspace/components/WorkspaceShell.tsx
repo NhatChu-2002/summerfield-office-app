@@ -30,7 +30,7 @@ export function WorkspaceShell({ access, route, preview, children, onRefresh, re
   const [notificationOpen, setNotificationOpen] = useState(false)
   useEffect(() => { setMoreOpen(false); setSearchOpen(false); window.scrollTo(0, 0) }, [route.page, route.code])
   const visibleDepartments = preview ? [companyDepartment, ...referenceDepartments] : sortLikeReference(access.departments.map(referenceForDepartment))
-  const selected = route.page === 'department' ? route.code : route.page === 'project' ? 'projects' : route.page
+  const selected = route.page === 'department' ? route.code : route.page === 'project' ? 'projects' : route.page === 'lesson' ? 'learn' : route.page
   const mobile = layout === 'phone'
   const departmentOptions = visibleDepartments.filter((item) => item.code !== 'company')
   const myDepartmentOptions = [{ value: '', label: 'Choose…' }, ...departmentOptions.map((item) => ({ value: item.code, label: item.name }))]
