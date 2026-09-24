@@ -90,6 +90,46 @@ def split_dragonfly(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return body, fly
 
 
+def box_mean(values: np.ndarray, weights: np.ndarray, radius: int) -> np.ndarray:
+    """Weighted mean of `values` over a (2r+1)-square window, using integral images."""
+    def window_sum(array: np.ndarray) -> np.ndarray:
+        padded = np.pad(array, ((radius + 1, radius), (radius + 1, radius)) + ((0, 0),) * (array.ndim - 2))
+        total = padded.cumsum(0).cumsum(1)
+        size = 2 * radius + 1
+        return total[size:, size:] - total[:-size, size:] - total[size:, :-size] + total[:-size, :-size]
+    weight = window_sum(weights)
+    return window_sum(values * weights[..., None]) / np.maximum(weight, 1e-6)[..., None]
+
+
+def unmix_shirt(wing: np.ndarray, a: np.ndarray, overlap: np.ndarray, xx: np.ndarray, yy: np.ndarray) -> np.ndarray:
+    """Where the wing's soft edge was painted over the tan shirt, keep only the wing.
+
+    Each edge pixel is a mix: colour = coverage * wing + (1 - coverage) * shirt. Knowing the nearby pure
+    wing colour and the shirt colour, solve for coverage, then store pure wing colour with that coverage
+    as alpha. The wing then keeps a soft blue edge wherever it moves, instead of a grey-tan rim.
+    Returns the shirt's share of each pixel, so the body layer can supply that shirt underneath.
+    """
+    rgb = a[..., :3]
+    shirt = (a[..., 0] > a[..., 2] + 25) & (a[..., 3] > 240)
+    shirt_colour = rgb[shirt & (yy >= 165) & (yy <= 200) & (xx >= 55) & (xx <= 80)].mean(0)
+    feathers = (wing[..., 3] > 240) & (a[..., 2] > a[..., 0] + 15)
+    local_wing = box_mean(rgb, feathers.astype(float), 4)
+    # Too far from any clean feather to borrow a local colour: use the wing's overall colour.
+    nearby = box_mean(np.ones_like(rgb), feathers.astype(float), 4)[..., 0] > 0
+    local_wing[~nearby] = rgb[feathers].mean(0)
+    towards_wing = local_wing - shirt_colour
+    coverage = ((rgb - shirt_colour) * towards_wing).sum(-1) / np.maximum((towards_wing ** 2).sum(-1), 1e-6)
+    coverage = np.clip(coverage, 0, 1)
+    # Only pixels that really are blended: over the torso and warm enough to contain some tan.
+    # (Pure fur is ~55 bluer than red; the head's darker blue must not be mistaken for a blend.)
+    blended = overlap & (coverage < 0.97) & (rgb[..., 0] - rgb[..., 2] > -35)
+    wing[blended, :3] = local_wing[blended]
+    wing[blended, 3] *= coverage[blended]
+    shirt_share = np.zeros(a.shape[:2])
+    shirt_share[blended] = 1 - coverage[blended]
+    return shirt_share
+
+
 def split_wings(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Returns (sprite without either wing, left wing layer)."""
     yy, xx = np.mgrid[0:HEIGHT, 0:WIDTH]
@@ -106,9 +146,7 @@ def split_wings(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
     wing = np.zeros_like(a)
     wing[wing_mask] = a[wing_mask]
-    # Over the torso, fade out shirt-coloured pixels, so no tan fringe travels with the wing when it lifts.
-    tan = np.clip((a[..., 0] - a[..., 2] - 5) / 25, 0, 1)
-    wing[overlap, 3] *= 1 - tan[overlap]
+    shirt_share = unmix_shirt(wing, a, overlap, xx, yy)
 
     # The shirt's left edge, measured where it shows: it starts at its top corner (y 162) and runs down and out.
     def shirt_edge(y: int) -> float:
@@ -120,7 +158,7 @@ def split_wings(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     # The art's right wing is the mirror image of the left, so both sides are cleared the same way.
     for mirrored in (False, True):
         flip = (lambda m: m[:, ::-1]) if mirrored else (lambda m: m)
-        cover, stray, is_shirt = flip(overlap | gap), flip(outside), flip(shirt)
+        cover, stray, is_shirt, share = flip(overlap | gap), flip(outside), flip(shirt), flip(shirt_share)
         opaque = flip(a[..., 3] > 200)
         body[stray] = 0
         inward = -1 if mirrored else 1
@@ -128,14 +166,25 @@ def split_wings(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
             local_x = WIDTH - 1 - x if mirrored else x
             # How much of this pixel lies on the shirt side of its edge, so the edge is smooth, not stepped.
             coverage = float(np.clip(local_x + 1 - shirt_edge(y), 0, 1)) if y >= 161 else 1.0
+            # Where the art shows shirt under the wing's soft edge, keep at least that much shirt.
+            # Only right at the shirt's edge: further out, a lone tan pixel would show once the wing lifts.
+            if y >= 158 and local_x >= shirt_edge(y) - 2.5:
+                coverage = max(coverage, float(share[y, x]))
             if coverage <= 0:
                 body[y, x] = 0  # beside the shirt, outside the bird
                 continue
             # Copy the nearest uncovered, opaque shirt (on shirt rows) or fur (above the shirt) toward the body's centre.
-            want_shirt = y >= 161
-            source = x
-            while 0 <= source < WIDTH and (cover[y, source] or not opaque[y, source] or is_shirt[y, source] != want_shirt):
-                source += inward
+            def nearest(want_shirt: bool) -> int | None:
+                source = x
+                while 0 <= source < WIDTH and (cover[y, source] or not opaque[y, source] or is_shirt[y, source] != want_shirt):
+                    source += inward
+                return source if 0 <= source < WIDTH else None
+            want_shirt = y >= 161 or (share[y, x] > 0 and local_x >= shirt_edge(y) - 2.5)
+            source = nearest(want_shirt)
+            if source is None:
+                source = nearest(not want_shirt)
+            if source is None:
+                continue  # nothing opaque on this row to copy from; keep the art's pixel
             body[y, x, :3] = np.clip(a[y, source, :3] + noise.normal(0, 1.8), 0, 255)
             body[y, x, 3] = 255 * coverage
     return body, wing
