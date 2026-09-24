@@ -156,3 +156,58 @@ final result: passed (drop landing to recheck with the pane visible)
 - Verified: offline, the resting pose matches the art in the head, wing and shirt area (92 of 6,560 pixels differ by more than 12, all along soft edges). There are no tan pixels left in the wing layer, and no stray tan beside the shirt. In the browser, close up and at normal size, rest, wave, stretch, and sleep show no seam or rim. The Python preview showed a dotted edge that Chrome doesn't, because Pillow rotates without premultiplied alpha.
 
 final result: passed
+
+## How HQ Works Rebuild
+
+- Source: `docs/design/reference/Summerfield HQ.html`, `vHelp`, guide cards, first-day list, and tour. The React page keeps the blue striped hero, Caudex/Work Sans typography, guide grid, and side column.
+- The prototype's Claude PIN, Drive, ticket, SOP, and shared-calendar claims were not copied as working instructions. Guides describe available tasks, updates, dashboard, folders, and calendar viewing; unfinished connections are named plainly.
+- The dashboard's Show me around link and the help page open one five-step front-end tour. Its completion marker is local to this browser; no backend writes occur. The page is lazy-loaded.
+- Checked desktop and phone browser layouts, the dashboard-to-tour link, modal paging, and phone width without horizontal overflow. The source HTML tab could not be visually compared because browser access to that local file was blocked.
+- Build, type-check, boundary check, and all frontend tests pass. Live account permissions and backend guides remain for a later integration pass.
+
+final result: passed for the UI-first scope
+
+## Market Watch Rebuild - September 24, 2026
+
+- Source: `docs/design/reference/Summerfield HQ.html`, Market watch's four tabs, blue striped hero, empty states, setup instructions, saved-item cards, and add/edit dialog. The original prototype was opened through a local HTTP server for comparison.
+- Structure: `frontend/src/features/watch/` owns the page, dialog, preview examples, item types, filtering, link validation, and styles. App routes only provide departments and preview state. The page loads in its own chunk.
+- In Design preview, sample inbox messages are labeled as examples; no email is read. Adding, editing, removing, filtering, and saving a sample alert change temporary in-memory items. The signed-in workspace shows the screen but clearly marks shared data, email, analysis, and task conversion as unconnected; it does not pretend to save.
+- Checked in the browser at desktop and 375px: the hero, tabs, saved-item card, and dialog fit without horizontal page overflow. Keyboard arrows switch tabs. The dialog focuses the title, rejects whitespace-only titles, and saves a valid item. The browser reported no console errors.
+- Typecheck, import-boundary check, all 15 frontend tests, and build pass. Real account permissions and backend data were not tested because Market watch has no HQ database or email contract yet.
+
+final result: passed for the UI-first scope
+
+## Market Watch Add Dialog Refinement - September 24, 2026
+
+- Source: the supplied screenshot of the original `Add something` dialog and `docs/design/reference/Summerfield HQ.html` (`watchSave` and `askForm`). The source form measures 560 x 502 CSS pixels; the React form measures 560 x 504 in its open state.
+- The React dialog now follows the reference's two-column field order, Caudex heading, Work Sans labels, department icons, exact introductory copy, compact actions, white surface, and grey backdrop. It uses the existing Sunny and shell assets; no image assets were changed.
+- Both `Add something` buttons open the dialog. Design preview Save creates a temporary item and Cancel closes the form. In the signed-in workspace the form can be inspected, while Save is disabled with an explicit connection message until shared storage exists.
+- Checked desktop and 375px browser layouts. At 375px the fields stack, the dialog scrolls to its actions, and the page has no horizontal overflow. The title receives focus on open. No browser console errors were reported.
+- Typecheck, import-boundary check, all 15 frontend tests, and build pass. Signed-in behavior was checked in code; a live account was not available for browser verification.
+
+final result: passed for the UI-first scope
+
+## Shared Dropdown and Date/Time Controls - September 24, 2026
+
+- Replaced browser-native selects and date/time inputs in the workspace shell, Market watch, My tasks, and Team calendar with reusable controls in `frontend/src/shared/ui/`. The source values and callbacks remain unchanged: ISO local dates, 24-hour `HH:mm` times, department codes, and existing form submissions.
+- Dropdowns use Radix keyboard navigation and a styled option list. Dates use a lazily loaded DayPicker calendar with minimum-date and clear-date handling. Time uses hour, exact-minute, and AM/PM selections.
+- Checked in Design preview at desktop and 375px: Market watch option selection and a saved preview item date, task due-date calendar, Calendar event time, the phone header department menu, popup bounds, focus, and keyboard selection. No horizontal page overflow or browser console errors were observed. Temporary QA item was removed.
+- Typecheck, boundary check, all 17 frontend tests, and build pass. The existing main-chunk size warning remains. Signed-in forms and a live Supabase save were not tested.
+
+final result: passed
+
+## Compact Date Picker Navigation - September 24, 2026
+
+- Compared the current React DayPicker navigation options and retained its accessible calendar grid. The shared `DateField` now has a compact month/year header using the app's Radix select controls, plus previous/next month buttons. Day cells and spacing are reduced without changing stored ISO dates.
+- In Design preview, selecting February 2030 and a day saved the expected Market watch date. Calendar end-date navigation starts at the event start month; earlier days and months remain unavailable. At 375px the picker measures about 272 x 256 CSS pixels, stays inside the viewport, and causes no horizontal overflow. Browser console errors: none.
+- Existing date, time, and form behavior outside the shared date control is unchanged. Typecheck, boundary check, tests, and build pass. No live account save was tested.
+
+final result: passed
+
+## Ownership Pages - September 24, 2026
+
+- Converted `Who to ask` and `Decision chart` from the HTML reference into a shared React ownership feature. Both have the prototype's hero, tabs, search/filter views, owner and decision details, and edit dialogs. The design preview uses labeled sample records and memory-only edits; signed-in views show explicit unconnected states, without invented live assignments or active ticket controls.
+- Browser checked ownership search for "ice machine broken," adding an area and navigating to the directory, plus an $800 repair question escalating above a $500 sample limit. Inspected desktop and 375px layouts, including the mobile area dialog. No horizontal overflow was observed. Shared service writes, ticket routing, and a live company directory were not tested because they are not connected.
+- Typecheck, import-boundary check, 20 frontend tests, and production build pass. The existing large-chunk build warning remains.
+
+final result: passed

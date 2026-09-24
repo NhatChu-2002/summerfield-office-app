@@ -21,9 +21,10 @@
 .vy-task-form { padding:24px; font-size:15px; }
 .vy-task-form h2 { margin:0 0 14px; font-size:25.6px; font-weight:400; }
 .vy-task-field { display:block; margin-bottom:10px; font-size:13.6px; font-weight:500; line-height:1.4; }
-.vy-task-field input, .vy-task-field select, .vy-task-field textarea { display:block; width:100%; margin-top:4px; padding:8px 10px; border:1px solid #cfd8cf; border-radius:8px; background:#fff; color:#231f20; font:inherit; font-weight:400; }
+.vy-task-field input, .vy-task-field textarea { display:block; width:100%; margin-top:4px; padding:8px 10px; border:1px solid #cfd8cf; border-radius:8px; background:#fff; color:#231f20; font:inherit; font-weight:400; }
+.vy-task-field .vy-control { margin-top:4px; }
 .vy-task-field textarea { min-height:70px; resize:vertical; }
-.vy-task-field input:focus-visible, .vy-task-field select:focus-visible, .vy-task-field textarea:focus-visible { outline:2px solid #3f5e37; outline-offset:1px; }
+.vy-task-field input:focus-visible, .vy-task-field textarea:focus-visible { outline:2px solid #3f5e37; outline-offset:1px; }
 .vy-task-pair { display:grid; grid-template-columns:1fr 1fr; gap:0 12px; }
 .vy-task-note { margin:0 0 10px; color:#5e605c; font-size:13.6px; line-height:1.45; }
 .vy-task-error { margin:0 0 12px; padding:9px 12px; border-radius:8px; background:#fbe9e5; color:#8a3326; font-size:13.6px; }
@@ -38,7 +39,7 @@
   .vy-shell:not(.vy-force-desktop) .vy-task-actions { grid-column:1 / -1; justify-content:flex-start; }
   .vy-task-pair { grid-template-columns:1fr; }
   /* 16px stops phones from zooming in when a field is tapped. */
-  .vy-task-field input, .vy-task-field select, .vy-task-field textarea { font-size:16px; }
+  .vy-task-field input, .vy-task-field textarea { font-size:16px; }
 }
 .vy-force-phone .vy-task { grid-template-columns:24px minmax(0,1fr); }
 .vy-force-phone .vy-task-actions { grid-column:1 / -1; justify-content:flex-start; }

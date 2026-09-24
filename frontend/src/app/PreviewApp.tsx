@@ -7,8 +7,11 @@ import { CalendarPage, type CalendarDraft } from '@/features/calendar'
 import { DashboardPage } from '@/features/dashboard'
 import { DepartmentLayout } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
+import { HelpPage } from '@/features/help'
+import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
+import { WatchPage, type WatchItem } from '@/features/watch'
 import { PREVIEW_USER, previewNames, previewPeople, previewTask, previewTasks } from './preview-data'
 
 // Design preview: every screen with no company data and nothing saved.
@@ -29,6 +32,10 @@ const loadPreviewPeople = async () => previewPeople
 export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void }) {
   const [calendarEvents, setCalendarEvents] = useState<CalendarDraft[]>([])
   const [tasks, setTasks] = useState<HqTask[]>(previewTasks)
+  const [watchItems, setWatchItems] = useState<WatchItem[]>([])
+  const [areas, setAreas] = useState<OwnershipArea[]>(previewAreas)
+  const [profiles, setProfiles] = useState<ContactProfile[]>(previewProfiles)
+  const [decisions, setDecisions] = useState<DecisionRule[]>(previewDecisions)
   const [newTask, setNewTask] = useState(false)
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const openTask = openTaskId ? tasks.find((task) => task.id === openTaskId) : undefined
@@ -46,6 +53,14 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
       canCreate onNewTask={() => setNewTask(true)} onToggle={toggle} onOpen={(task) => setOpenTaskId(task.id)} />
   } else if (route.page === 'folders') {
     content = <DepartmentFoldersPage departments={referenceDepartments} dashboardCodes={['company', ...referenceDepartments.map((item) => item.code)]} />
+  } else if (route.page === 'help') {
+    content = <Suspense fallback={<p role="status">Loading guides...</p>}><HelpPage departments={previewAccess.departments} /></Suspense>
+  } else if (route.page === 'watch') {
+    content = <Suspense fallback={<p role="status">Loading Market watch...</p>}><WatchPage departments={[companyDepartment, ...referenceDepartments]} preview items={watchItems} onItemsChange={setWatchItems} /></Suspense>
+  } else if (route.page === 'ask') {
+    content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} areas={areas} profiles={profiles} preview onAreasChange={setAreas} onProfilesChange={setProfiles} /></Suspense>
+  } else if (route.page === 'decisions') {
+    content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} rules={decisions} preview onRulesChange={setDecisions} /></Suspense>
   } else if (route.page === 'department' && department) {
     content = <DepartmentLayout department={department} role="Preview" taskContent={null} updateContent={null} onNewTask={() => {}} writable={false} dataReady={false} />
   } else if (route.page === 'department') {

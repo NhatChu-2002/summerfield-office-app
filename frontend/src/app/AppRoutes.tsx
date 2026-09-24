@@ -1,5 +1,5 @@
 import { Suspense, useState, type ReactNode } from 'react'
-import { referenceForDepartment } from '@/shared/config/reference-departments'
+import { companyDepartment, referenceForDepartment } from '@/shared/config/reference-departments'
 import type { Route } from '@/shared/lib/routing'
 import { Notice } from '@/shared/ui/Notice'
 import { useToast } from '@/shared/ui/toast'
@@ -8,8 +8,11 @@ import { CalendarPage } from '@/features/calendar'
 import { DashboardPage } from '@/features/dashboard'
 import { DepartmentPage, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
+import { HelpPage } from '@/features/help'
+import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { UpdateList, UpdatesPage } from '@/features/updates'
+import { WatchPage } from '@/features/watch'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
 import { useHqData } from './providers/HqDataProvider'
 
@@ -45,6 +48,14 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <DepartmentsPage access={access} tasks={tasks} />
   } else if (route.page === 'folders') {
     content = <DepartmentFoldersPage departments={access.departments.map(referenceForDepartment)} dashboardCodes={access.departments.map((item) => item.code)} />
+  } else if (route.page === 'help') {
+    content = <Suspense fallback={<p role="status">Loading guides...</p>}><HelpPage departments={access.departments} /></Suspense>
+  } else if (route.page === 'watch') {
+    content = <Suspense fallback={<p role="status">Loading Market watch...</p>}><WatchPage departments={[companyDepartment, ...access.departments.map(referenceForDepartment)]} preview={false} /></Suspense>
+  } else if (route.page === 'ask') {
+    content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} areas={[]} profiles={[]} preview={false} /></Suspense>
+  } else if (route.page === 'decisions') {
+    content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} rules={[]} preview={false} /></Suspense>
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}
