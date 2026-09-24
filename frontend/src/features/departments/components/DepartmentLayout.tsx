@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
-import { ArrowRight, Folder, Plus } from 'lucide-react'
+import { ArrowRight, Plus } from 'lucide-react'
 import { departmentStyle, type ReferenceDepartment } from '@/shared/config/reference-departments'
 import { useMyDepartment } from '@/shared/lib/my-department'
 import { ComingSoonButton } from '@/shared/ui/ComingSoonButton'
 import { DepartmentIcon } from '@/shared/ui/icons'
 import { Panel } from '@/shared/ui/Panel'
+import { DepartmentFolderCard } from '@/features/folders'
 
 // Vy's department screen. The signed-in page and design preview both fill it in.
 export function DepartmentLayout({ department, role, taskContent, updateContent, onNewTask, writable, dataReady }: {
@@ -22,7 +23,7 @@ export function DepartmentLayout({ department, role, taskContent, updateContent,
       <Panel title="Locations we look after"><p className="vy-empty">Location records will be connected in a later migration phase.</p></Panel>
       <Panel title="Files & links" action={<ComingSoonButton><Plus size={14} /> Add a link</ComingSoonButton>}><p className="vy-empty">No links pinned for this department yet.</p></Panel>
       <Panel title="Team notes">{dataReady ? updateContent : <p className="vy-empty">{preview ? 'Team notes are not connected in this preview.' : 'Team notes are temporarily unavailable.'}</p>}</Panel>
-    </div><div className="vy-stack"><section className="vy-folder-panel" style={departmentStyle(department.color)}><div className="vy-folder-panel-head"><h2><DepartmentIcon code={department.code} size={23} /> {department.name}</h2><ComingSoonButton><Plus size={14} /> Add</ComingSoonButton></div><h3>Google Drive</h3>{department.folders.length ? <div className="vy-folder-list">{department.folders.map((folder) => <div key={folder}><Folder size={15} fill="#c79a73" strokeWidth={1.5} />{folder}</div>)}</div> : <p className="vy-empty">No folders set up yet.</p>}<h3>Shared here by the team</h3><p className="vy-empty">No shared files yet.</p></section>
+    </div><div className="vy-stack"><DepartmentFolderCard department={department} showSharedEmpty />
       <Panel title="Shared records"><p className="vy-empty">Build-Out and I&M records will be available after migration.</p></Panel>
       <Panel title="Decisions this team makes" action={<a className="vy-panel-link" href="#/decisions">Full chart <ArrowRight size={15} /></a>}><p className="vy-empty">No decisions written down for this team yet.</p></Panel>
       <Panel title="What this team owns" action={<a className="vy-panel-link" href="#/ask">Who to ask <ArrowRight size={15} /></a>}><p className="vy-empty">Team ownership records will be added later.</p></Panel>

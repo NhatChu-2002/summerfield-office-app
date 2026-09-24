@@ -7,6 +7,7 @@ import { canWriteDepartment, type Access } from '@/features/auth'
 import { CalendarPage } from '@/features/calendar'
 import { DashboardPage } from '@/features/dashboard'
 import { DepartmentPage, DepartmentsPage } from '@/features/departments'
+import { DepartmentFoldersPage } from '@/features/folders'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { UpdateList, UpdatesPage } from '@/features/updates'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
@@ -42,6 +43,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <Suspense fallback={<p role="status">Loading calendar...</p>}><CalendarPage departments={access.departments.map(referenceForDepartment)} preview={false} /></Suspense>
   } else if (route.page === 'departments') {
     content = <DepartmentsPage access={access} tasks={tasks} />
+  } else if (route.page === 'folders') {
+    content = <DepartmentFoldersPage departments={access.departments.map(referenceForDepartment)} dashboardCodes={access.departments.map((item) => item.code)} />
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}
@@ -53,7 +56,7 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
   }
 
   return <WorkspaceShell access={access} route={route} preview={false} onRefresh={() => void refresh()} refreshing={loading} onOrganization={onOrganization} onSignOut={onSignOut} onExitPreview={() => {}} onEnterPreview={onEnterPreview}>
-    {error && !['dashboard', 'department', 'tasks'].includes(route.page) && <Notice>HQ data could not be loaded: {error}</Notice>}
+    {error && route.page === 'updates' && <Notice>HQ data could not be loaded: {error}</Notice>}
     {content}
     {newTask && <TaskDialog access={access} departments={writableDepartments} initialDepartment={newTask.department} assignToMe={newTask.assignToMe}
       onClose={() => setNewTask(null)} onCreated={(task) => { if (addTask(task)) toast('Task created.') }} />}

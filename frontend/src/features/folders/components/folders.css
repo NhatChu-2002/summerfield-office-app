@@ -1,0 +1,22 @@
+.vy-folders-hero h1 { display:flex; align-items:center; gap:12px; }
+.vy-folders-hero .vy-hero-actions { align-self:flex-end; }
+.vy-folders-hero .vy-button:disabled { border-color:#231f20; background:#231f20; color:#fff; opacity:.55; }
+.vy-folders-status { margin:-5px 0 18px; color:#66746b; font-size:12px; }
+.vy-folders-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr)); gap:16px; align-items:stretch; }
+.vy-folder-panel-head { flex-wrap:wrap; }
+.vy-folder-panel-head h2 { display:flex; align-items:center; gap:8px; min-width:0; font-size:22px; }
+.vy-folder-panel-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.vy-folders-grid .vy-folder-panel-head { padding:14px; margin-left:-19px; margin-right:-19px; }
+.vy-folders-grid .vy-folder-panel-head h2 { font-size:20px; }
+.vy-folders-grid .vy-folder-panel-actions { gap:4px; }
+.vy-folders-grid .vy-folder-panel-actions .vy-button { padding:5px 9px; font-size:10px; }
+.vy-folder-list { margin:0; padding:0; list-style:none; }
+.vy-folder-list li { display:flex; align-items:flex-start; gap:8px; min-width:0; font-size:12px; line-height:1.45; }
+.vy-folder-list li svg { margin-top:1px; }
+.vy-folder-list li span { min-width:0; overflow-wrap:anywhere; }
+@media(max-width:600px){
+  .vy-shell:not(.vy-force-desktop) .vy-folders-hero h1 { font-size:32px; }
+  .vy-shell:not(.vy-force-desktop) .vy-folders-hero h1 svg { width:26px; height:26px; flex:none; }
+}
+.vy-force-phone .vy-folders-hero h1 { font-size:32px; }
+.vy-force-phone .vy-folders-hero h1 svg { width:26px; height:26px; flex:none; }
