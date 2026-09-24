@@ -142,3 +142,17 @@ final result: passed
 - Type-check, boundary check, 13 tests and build pass.
 
 final result: passed (drop landing to recheck with the pane visible)
+
+## Sunny Head and Wing Seam - September 24, 2026
+
+- Issue: a patchy look where the wings meet the head and body. There were two causes:
+  - The wing's soft inner edge was painted over the tan shirt in Vy's art, so its edge pixels were grey-tan blends. Once the wing moved, they showed as a dirty rim.
+  - The resting pose tilted each wing 10° down from the art. That exposed the cut between the wing and head layers, and the head's fuzzy outline, which the art never shows.
+- Fix, in `scripts/split_sunny_layers.py`:
+  - The wing's edge over the shirt is un-mixed. Each blended pixel is split into its wing share and its shirt share, using the nearby pure wing colour and the shirt colour. The wing keeps pure blue with soft alpha, and the body keeps the shirt share within 2.5px of the shirt's measured edge.
+  - Only warm (tan-containing) pixels are treated as blends, so the head's darker blue isn't lightened.
+  - The fill's source search now has a guard at the image edge.
+- Fix, in `sunny-character.css`: the wings rest at 0°, exactly as drawn. Rest-anchored keyframes and their settle frames move with it. Peak angles (flap 38°, stretch 56°, hug 42°, wave 44°) are unchanged. Sleep and dizzy keep the same droop relative to the new rest (-8° and -12°).
+- Verified: offline, the resting pose matches the art in the head, wing and shirt area (92 of 6,560 pixels differ by more than 12, all along soft edges). There are no tan pixels left in the wing layer, and no stray tan beside the shirt. In the browser, close up and at normal size, rest, wave, stretch, and sleep show no seam or rim. The Python preview showed a dotted edge that Chrome doesn't, because Pillow rotates without premultiplied alpha.
+
+final result: passed
