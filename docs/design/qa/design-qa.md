@@ -246,3 +246,12 @@ final result: passed for the UI-first scope
 - Typecheck, boundary check, 33 frontend tests, and build pass. Shared storage, actual report permissions, and a live account were not tested because they are not connected.
 
 final result: passed for the UI-first scope
+
+## Meetings Page - September 24, 2026
+
+- Converted the prototype's Meetings page into `frontend/src/features/meetings/`, with typed meeting records, search and department filtering, agenda/notes/decisions, action-item summary, and a meeting editor using the shared date, time, and select controls.
+- Preview has labeled sample records and memory-only edits. Signed-in views show an explicit unconnected state; Drive import, email recap, and AI answers are disabled. Action lines do not create HQ tasks or claim to be tracked.
+- Browser checked the phone-pane layout, editor geometry, creating a meeting, action summary update, and search results. The narrow pane shows a small pre-existing top-bar overflow; Meetings content stays within the page. Desktop visual verification and connected service flows remain untested.
+- Typecheck, import boundaries, 37 frontend tests, and production build pass. Focused tests cover line parsing, search/sort, action source, and web-link safety.
+
+final result: passed for the UI-first scope

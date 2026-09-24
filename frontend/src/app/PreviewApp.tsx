@@ -9,6 +9,7 @@ import { DepartmentLayout } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage, previewLessons, type LearningProgress, type Lesson } from '@/features/learning'
+import { MeetingsPage, previewMeetings, type MeetingRecord } from '@/features/meetings'
 import { todayLocal } from '@/shared/lib/format'
 import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
 import { ProjectPage, ProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
@@ -50,6 +51,7 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>(previewTimeEntries)
   const [timeCorrections, setTimeCorrections] = useState<TimeCorrection[]>(previewTimeCorrections)
   const [reports, setReports] = useState<ReportRecord[]>(previewReports)
+  const [meetings, setMeetings] = useState<MeetingRecord[]>(previewMeetings)
   const [newTask, setNewTask] = useState(false)
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const openTask = openTaskId ? tasks.find((task) => task.id === openTaskId) : undefined
@@ -93,6 +95,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <Suspense fallback={<p role="status">Loading reports...</p>}><ReportsPage departments={referenceDepartments} reports={reports} preview selectedMonth={route.month} /></Suspense>
   } else if (route.page === 'report') {
     content = <Suspense fallback={<p role="status">Loading report...</p>}><ReportPage key={`${route.code}-${route.month}`} departmentCode={route.code || ''} month={route.month || ''} departments={referenceDepartments} reports={reports} preview onReportsChange={setReports} /></Suspense>
+  } else if (route.page === 'meetings') {
+    content = <Suspense fallback={<p role="status">Loading meetings...</p>}><MeetingsPage departments={referenceDepartments} projects={projects.map((item) => ({ id: item.id, name: item.name }))} meetings={meetings} preview onMeetingsChange={setMeetings} /></Suspense>
   } else if (route.page === 'department' && department) {
     content = <DepartmentLayout department={department} role="Preview" taskContent={null} updateContent={null} onNewTask={() => {}} writable={false} dataReady={false} />
   } else if (route.page === 'department') {

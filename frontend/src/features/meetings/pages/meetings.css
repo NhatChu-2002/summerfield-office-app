@@ -1,0 +1,46 @@
+.vy-meetings-hero { background:#ced9d2; }
+.vy-meetings-hero > div:first-child { min-width:0; }
+.vy-meetings-status { margin:-9px 0 18px; color:#637168; font-size:12px; line-height:1.5; }
+.vy-meetings-layout { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(260px,.8fr); gap:24px; align-items:start; }
+.vy-meetings-main,.vy-meetings-side { min-width:0; }
+.vy-meetings-toolbar { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:14px; }
+.vy-meetings-toolbar > .vy-control { flex:0 0 172px; min-width:0; }
+.vy-meetings-search { display:flex; align-items:center; gap:7px; min-width:185px; flex:1; min-height:38px; padding:0 10px; border:1px solid #d2ddd4; border-radius:7px; background:#fff; color:#66746b; }
+.vy-meetings-search input { width:100%; min-width:0; border:0; outline:0; background:transparent; color:#231f20; font-size:13px; }
+.vy-meetings-list { display:grid; gap:12px; }
+.vy-meeting { min-width:0; padding:18px 20px; border:1px solid #dce5de; border-radius:8px; background:#fff; }
+.vy-meeting-top { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 12px; }
+.vy-meeting-top h2 { margin:0; font-size:19px; line-height:1.25; overflow-wrap:anywhere; }
+.vy-meeting-top time { color:#6c786f; font-size:11px; white-space:nowrap; }
+.vy-meeting-meta { display:flex; align-items:center; flex-wrap:wrap; gap:6px 9px; margin:9px 0 14px; color:#68756d; font-size:11px; }
+.vy-meeting-meta > span:not(:last-child)::after { content:'·'; margin-left:9px; color:#acb7ae; }
+.vy-meeting-team { padding:3px 6px; border-radius:4px; background:var(--vy-color,#dce8df); color:var(--vy-foreground,#231f20); font-weight:600; }
+.vy-meeting-notes { margin:12px 0; }
+.vy-meeting-notes h4 { margin:0 0 5px; font-size:11px; }
+.vy-meeting-notes p { margin:0; white-space:pre-wrap; font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.vy-meeting-notes ul { margin:0; padding-left:19px; font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.vy-meeting-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:16px; padding-top:12px; border-top:1px solid #e5ebe6; }
+.vy-meetings-side { display:grid; gap:18px; }
+.vy-meetings-side section { padding:0 0 17px; border-bottom:1px solid #dce5de; }
+.vy-meetings-side h2 { margin:0 0 5px; font-size:18px; }
+.vy-meetings-side p { margin:0 0 12px; color:#66746b; font-size:12px; line-height:1.5; }
+.vy-meetings-ask label { display:grid; gap:5px; margin-bottom:8px; font-size:11px; font-weight:600; }
+.vy-meetings-ask input { width:100%; min-height:38px; padding:7px 10px; border:1px solid #d2ddd4; border-radius:7px; background:#f5f7f5; font-size:12px; }
+.vy-meetings-action-summary ul { margin:0; padding:0; list-style:none; }
+.vy-meetings-action-summary li { display:grid; gap:3px; padding:9px 0; border-bottom:1px solid #e5ebe6; }
+.vy-meetings-action-summary li strong { font-size:12px; font-weight:600; overflow-wrap:anywhere; }
+.vy-meetings-action-summary li span { color:#718077; font-size:11px; }
+.vy-meetings-empty { margin:0; padding:18px; background:#f4f7f4; color:#637168; font-size:13px; }
+.vy-meeting-dialog { width:min(700px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); padding:22px 24px; border:0; border-radius:8px; background:#fff; color:#231f20; box-shadow:0 20px 60px #231f2040; }
+.vy-meeting-dialog::backdrop { background:#231f2066; }
+.vy-meeting-form h2 { margin:0 0 17px; font-size:25px; }
+.vy-meeting-form > label,.vy-meeting-form-grid > label { display:grid; gap:5px; min-width:0; margin-bottom:12px; font-size:12px; font-weight:600; }
+.vy-meeting-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 14px; }
+.vy-meeting-form input,.vy-meeting-form textarea { width:100%; min-width:0; min-height:40px; padding:8px 10px; border:1px solid #d2ddd4; border-radius:7px; background:#fff; color:#231f20; font-size:13px; font-weight:400; }
+.vy-meeting-form textarea { resize:vertical; }
+.vy-meeting-form-hint { margin:0; color:#6b786e; font-size:11px; }
+.vy-meeting-error { color:#a04338; font-size:12px; }
+.vy-meeting-dialog-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:7px; margin-top:17px; }
+.vy-meeting-dialog-actions .vy-meeting-delete { margin-right:auto; color:#9d483b; }
+@media(max-width:950px) { .vy-meetings-layout { grid-template-columns:minmax(0,1fr); } .vy-meetings-side { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:620px) { .vy-meetings-side { grid-template-columns:minmax(0,1fr); } .vy-meeting-form-grid { grid-template-columns:minmax(0,1fr); } .vy-meeting { padding:16px; } .vy-meetings-toolbar > .vy-control { flex:1 1 150px; } .vy-meeting-dialog { padding:18px; } }
