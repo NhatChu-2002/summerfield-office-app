@@ -82,13 +82,20 @@ export const SunnyCharacter = memo(function SunnyCharacter({
     </>
     return <g className={className}>{clip ? <g clipPath={`url(#${id}-${clip})`}>{layer}</g> : layer}</g>
   }
+  // Keep the blue feathers, not the small tan shirt fringe captured at the wing root.
   // The right wing is the left wing mirrored.
   const wings = <>
-    {part(null, 'sunny-wing sunny-wing-left', WING, undefined, 'alpha-wing')}
+    {part('wing-fur', 'sunny-wing sunny-wing-left', WING, undefined, 'alpha-wing')}
     <g transform="translate(208 0) scale(-1 1)">
-      {part(null, 'sunny-wing sunny-wing-right', WING, undefined, 'alpha-wing')}
+      {part('wing-fur', 'sunny-wing sunny-wing-right', WING, undefined, 'alpha-wing')}
     </g>
   </>
+  const shoulder = <path d="M55 153C49 156 47 162 48 169C49 175 53 177 56 177C60 173 63 167 62 160C61 156 59 154 55 153Z"
+    fill={`url(#${id}-shoulder)`} />
+  const shoulders = <g className="sunny-shoulders">
+    {shoulder}
+    <g transform="translate(208 0) scale(-1 1)">{shoulder}</g>
+  </g>
 
   return <svg className="sunny-character" data-motion={motion} data-direction={direction} data-face={face}
     data-mouth={mouth} data-act={act ?? undefined} data-blush={blush} data-blink={blinking}
@@ -98,6 +105,7 @@ export const SunnyCharacter = memo(function SunnyCharacter({
       <clipPath id={`${id}-body`}><path d="M0 0H208V140H180Q173 155 157 166Q164 175 167 190L171 214Q166 238 146 248H62Q42 238 37 216L40 195Q42 177 52 166Q37 155 28 140H0Z" /></clipPath>
       <clipPath id={`${id}-foot-left`}><path d="M62 246H103V260H62Z" /></clipPath>
       <clipPath id={`${id}-foot-right`}><path d="M105 246H148V260H105Z" /></clipPath>
+      <clipPath id={`${id}-wing-fur`}><path d="M0 138H55V152Q54 161 52 168Q50 179 44 192H0Z" /></clipPath>
       <clipPath id={`${id}-face`}><rect x="24" y="48" width="160" height="94" /></clipPath>
       <clipPath id={`${id}-jaw`}><path d="M84 119.5H123L104 134.5Z" /></clipPath>
       {EYES.map(eye => <clipPath key={eye.side} id={`${id}-sclera-${eye.side}`}><ellipse cx={eye.cx} cy={EYE_Y} rx="21.4" ry="24.4" /></clipPath>)}
@@ -120,6 +128,11 @@ export const SunnyCharacter = memo(function SunnyCharacter({
         <stop offset=".5" stopColor="#b0cfe5" />
         <stop offset="1" stopColor="#aac8de" />
       </linearGradient>
+      <radialGradient id={`${id}-shoulder`} cx="52" cy="158" r="18" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="#c7e1ee" />
+        <stop offset=".6" stopColor="#afcee1" />
+        <stop offset="1" stopColor="#94b8cd" />
+      </radialGradient>
       <filter id={`${id}-feather`} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.4" /></filter>
       <filter id={`${id}-soft`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" /></filter>
     </defs>
@@ -141,6 +154,7 @@ export const SunnyCharacter = memo(function SunnyCharacter({
         </g>
       </>)}
       {!away && wings}
+      {!away && shoulders}
       {!away && <g className="sunny-fly"><image href={FLY} width="208" height="260" /></g>}
     </g></g>
   </svg>
