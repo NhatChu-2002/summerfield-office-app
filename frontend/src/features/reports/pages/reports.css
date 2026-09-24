@@ -1,0 +1,61 @@
+.vy-reports-hero { background:#e8ece4; }
+.vy-reports-hero > div:first-child,.vy-report-detail-hero > div:first-child { min-width:0; }
+.vy-reports-hero .vy-hero-actions,.vy-report-detail-hero .vy-hero-actions { flex-wrap:wrap; }
+.vy-reports-hero .vy-control { min-width:190px; }
+.vy-report-status { margin:-8px 0 17px; color:#627168; font-size:12px; }
+.vy-report-totals { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); max-width:650px; padding:13px 0; border-block:1px solid #d8e2da; }
+.vy-report-totals > div { display:flex; flex-direction:column; gap:3px; padding:0 18px; border-right:1px solid #d8e2da; }
+.vy-report-totals > div:first-child { padding-left:0; }
+.vy-report-totals > div:last-child { border:0; }
+.vy-report-totals strong { font-size:26px; line-height:1; }
+.vy-report-totals span { color:#627168; font-size:11px; }
+.vy-report-overview { margin-top:23px; }
+.vy-report-overview h2,.vy-report-library h2 { margin:0 0 12px; font-size:22px; }
+.vy-report-overview > div { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:12px; }
+.vy-report-overview-item { padding:14px 16px; border:1px solid #d8e2da; border-left:5px solid var(--vy-color,#b6cfae); border-radius:8px; background:#fff; }
+.vy-report-overview-item h3 { margin:0 0 8px; font-size:15px; }
+.vy-report-overview-item p { margin:7px 0 0; color:#435649; font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.vy-report-library { margin-top:28px; }
+.vy-report-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:11px; }
+.vy-report-card { display:flex; flex-direction:column; min-width:0; min-height:156px; padding:14px 15px; border:1px solid #d8e2da; border-top:4px solid var(--vy-color,#b6cfae); border-radius:7px; background:#fff; }
+.vy-report-card-top { display:flex; align-items:center; justify-content:space-between; gap:10px; color:#66756b; font-size:11px; }
+.vy-report-card-top svg { color:#52735a; }
+.vy-report-card h3 { margin:11px 0 4px; font-size:17px; overflow-wrap:anywhere; }
+.vy-report-card p { margin:0 0 14px; color:#627168; font-size:12px; }
+.vy-report-card .vy-button { align-self:flex-start; margin-top:auto; }
+.vy-report-back { display:inline-flex; align-items:center; gap:5px; margin:0 0 12px; color:#446b50; font-size:12px; }
+.vy-report-back:hover { text-decoration:underline; }
+.vy-report-detail-hero { min-height:170px; background:var(--vy-color,#dfe8df); }
+.vy-report-detail-hero h1 { overflow-wrap:anywhere; }
+.vy-report-error { margin:0 0 15px; padding:9px 12px; border-left:4px solid #a04338; background:#f9ebe7; color:#863c34; font-size:12px; }
+.vy-report-editor-intro { max-width:800px; margin:19px 0 13px; }
+.vy-report-editor-intro h2 { margin:0 0 4px; font-size:22px; }
+.vy-report-editor-intro p { margin:0; color:#627168; font-size:12px; line-height:1.5; }
+.vy-report-editor { max-width:1000px; }
+.vy-report-editor section { padding:18px 0 21px; border-top:1px solid #d8e2da; }
+.vy-report-editor section h2 { margin:0 0 13px; font-size:20px; }
+.vy-report-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 18px; }
+.vy-report-fields label { display:flex; flex-direction:column; gap:5px; min-width:0; color:#303e33; font-size:12px; font-weight:600; }
+.vy-report-fields label.is-wide { grid-column:1 / -1; }
+.vy-report-fields label span { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.vy-report-fields label em { color:#9a5141; font-size:10px; font-style:normal; }
+.vy-report-fields input,.vy-report-fields textarea { width:100%; min-width:0; min-height:39px; padding:8px 10px; border:1px solid #cfdbd1; border-radius:6px; background:#fff; color:#231f20; font-size:13px; font-weight:400; }
+.vy-report-fields textarea { min-height:86px; resize:vertical; }
+.vy-report-fields input:disabled,.vy-report-fields textarea:disabled { background:#f1f4f0; color:#647169; }
+.vy-report-locked { max-width:700px; padding:11px 13px; background:#f0f4ee; color:#47634c; font-size:12px; }
+.vy-report-unavailable { padding:24px 0; }
+.vy-report-unavailable h1 { margin:0 0 8px; }
+.vy-report-unavailable p { color:#617067; }
+.vy-report-presentation { width:min(900px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); padding:24px; border:0; border-radius:8px; background:#fff; color:#231f20; box-shadow:0 20px 60px #231f2040; }
+.vy-report-presentation::backdrop { background:#231f2073; }
+.vy-report-presentation header { display:flex; align-items:center; justify-content:space-between; gap:10px; color:#617067; font-size:12px; }
+.vy-report-presentation h2 { margin:24px 0 12px; font-size:30px; overflow-wrap:anywhere; }
+.vy-report-presentation-lead { padding:12px; border-left:4px solid #cda077; background:#f8eee5; font-size:14px; }
+.vy-report-presentation section { padding:13px 0; border-top:1px solid #d8e2da; }
+.vy-report-presentation h3 { margin:0 0 9px; font-size:18px; }
+.vy-report-presentation dl { margin:0; }
+.vy-report-presentation dl > div { display:grid; grid-template-columns:minmax(130px,30%) minmax(0,1fr); gap:12px; padding:6px 0; }
+.vy-report-presentation dt { color:#627168; font-size:12px; }
+.vy-report-presentation dd { margin:0; font-size:13px; white-space:pre-wrap; overflow-wrap:anywhere; }
+@media(max-width:900px) { .vy-reports-hero,.vy-report-detail-hero { align-items:flex-start; flex-direction:column; } }
+@media(max-width:600px) { .vy-reports-hero .vy-hero-actions,.vy-report-detail-hero .vy-hero-actions { width:100%; justify-content:flex-start; } .vy-reports-hero .vy-control { flex:1 1 190px; } .vy-report-totals > div { padding:0 8px; } .vy-report-totals strong { font-size:22px; } .vy-report-fields { grid-template-columns:1fr; } .vy-report-presentation { padding:18px; } .vy-report-presentation h2 { font-size:23px; } .vy-report-presentation dl > div { grid-template-columns:1fr; gap:3px; } }
