@@ -693,7 +693,9 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
       aria-label={label}
       onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd}
       onPointerCancel={onPointerEnd} onLostPointerCapture={onPointerEnd} onClick={onClick}>
-      {bubble && <SpeechBubble key={bubble.id} text={bubble.text} instant={reducedMotion}
+      {/* These overlays are siblings, so each key needs its own prefix; a shared number would make React
+          confuse them and leave an old bubble stuck on screen. */}
+      {bubble && <SpeechBubble key={`bubble-${bubble.id}`} text={bubble.text} instant={reducedMotion}
         align={bubbleAlign} vertical={bubbleVertical}
         onTyped={() => setMouth(value => value === 'talk' ? 'closed' : value)} />}
       {craving && !bubble && <span className={`vy-pet-thought side-${thoughtSide}`} aria-hidden="true"><BobaCup /><span>Boba?</span></span>}
@@ -706,8 +708,8 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
         {boba && <span className={`vy-pet-boba is-${boba}`}><BobaCup /></span>}
       </span>
       {stars && <span className="vy-pet-stars" aria-hidden="true"><Star /><Star /><Star /></span>}
-      {dust > 0 && <span className="vy-pet-dust" key={dust} aria-hidden="true"><span /><span /><span /></span>}
-      {hearts > 0 && <span className="vy-pet-hearts" key={hearts} aria-hidden="true"><Heart /><Heart /><Heart /></span>}
+      {dust > 0 && <span className="vy-pet-dust" key={`dust-${dust}`} aria-hidden="true"><span /><span /><span /></span>}
+      {hearts > 0 && <span className="vy-pet-hearts" key={`hearts-${hearts}`} aria-hidden="true"><Heart /><Heart /><Heart /></span>}
       {motion === 'sleep' && <>
         <span className="vy-pet-snore" aria-hidden="true" />
         <span className="vy-pet-sleep-marks" aria-hidden="true"><span>z</span><span>z</span><span>Z</span></span>
