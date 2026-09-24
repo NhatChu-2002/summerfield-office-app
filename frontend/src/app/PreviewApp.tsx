@@ -6,7 +6,7 @@ import type { Access } from '@/features/auth'
 import { CalendarPage, type CalendarDraft } from '@/features/calendar'
 import { CatalogPage, previewCatalogRows, previewCatalogStandards, previewCatalogVendors, type CatalogChange, type CatalogRow } from '@/features/catalog'
 import { DashboardPage } from '@/features/dashboard'
-import { DepartmentLayout } from '@/features/departments'
+import { DepartmentLayout, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage, previewLessons, type LearningProgress, type Lesson } from '@/features/learning'
@@ -81,6 +81,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
       canCreate onNewTask={() => setNewTask(true)} onToggle={toggle} onOpen={(task) => setOpenTaskId(task.id)} />
   } else if (route.page === 'folders') {
     content = <DepartmentFoldersPage departments={referenceDepartments} dashboardCodes={['company', ...referenceDepartments.map((item) => item.code)]} />
+  } else if (route.page === 'departments') {
+    content = <DepartmentsPage access={previewAccess} tasks={[]} preview />
   } else if (route.page === 'help') {
     content = <Suspense fallback={<p role="status">Loading guides...</p>}><HelpPage departments={previewAccess.departments} /></Suspense>
   } else if (route.page === 'watch') {

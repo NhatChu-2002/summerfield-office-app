@@ -291,3 +291,10 @@ final result: passed for the UI-first scope
 - Typecheck, import-boundary check, frontend tests, and production build pass.
 
 final result: passed for the UI-first scope
+
+## Departments Index - September 24, 2026
+
+- Converted the prototype's Departments index to a shared React card grid and connected its previously missing Design preview route. Preview lists reference teams, while signed-in mode keeps the account's assigned departments and live open-task counts.
+- Browser checked the phone-pane index, reference department links, and horizontal width. Typecheck, import-boundary check, frontend tests, and production build pass. A signed-in account was not available for browser testing.
+
+final result: passed for the UI-first scope
