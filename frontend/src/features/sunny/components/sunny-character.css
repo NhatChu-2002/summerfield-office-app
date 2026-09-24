@@ -1,7 +1,7 @@
 .sunny-character { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .sunny-light { mix-blend-mode: soft-light; }
 .sunny-tilt, .sunny-rig, .sunny-wing, .sunny-foot, .sunny-fly, .sunny-eye-open, .sunny-pupil, .sunny-glance,
-.sunny-gaze, .sunny-lid, .sunny-spiral, .sunny-jaw { transform-box: view-box; }
+.sunny-gaze, .sunny-lid, .sunny-spiral, .sunny-jaw, .sunny-fly-buzz { transform-box: view-box; }
 .sunny-tilt, .sunny-rig { transform-origin: 50% 80%; }
 /* --sunny-look-x/y (-1..1) come from the pet, which follows the pointer. */
 .sunny-tilt { transition: transform .6s ease-out; }
@@ -10,7 +10,8 @@
 .sunny-character[data-direction="right"] { --sunny-look-x: 1; --sunny-look-y: .1; }
 .sunny-character[data-direction="left"] .sunny-rig { transform: skewY(2deg) rotate(-2deg); }
 .sunny-character[data-direction="right"] .sunny-rig { transform: skewY(-2deg) rotate(2deg); }
-.sunny-wing { transform-origin: 25% 62.7%; transform: rotate(-10deg); }
+/* Wings rest exactly where Vy drew them (0deg), so the resting pose matches the art pixel for pixel. */
+.sunny-wing { transform-origin: 25% 62.7%; transform: rotate(0deg); }
 .sunny-foot-left { transform-origin: 39% 95%; }
 .sunny-foot-right { transform-origin: 61% 95%; }
 
@@ -56,6 +57,10 @@
 .sunny-character[data-motion="sleep"] .sunny-fly { animation: sunny-fly-doze 3.6s ease-in-out infinite; }
 .sunny-character[data-motion="dizzy"] .sunny-fly { animation: sunny-fly-dizzy .9s ease-in-out 2; }
 .sunny-character[data-motion="idle"][data-act="fly"] .sunny-fly { animation: sunny-fly-loop 2.2s ease-in-out; }
+/* Played on request: a longer lap around Sunny's head, wings buzzing, then a soft landing. */
+.sunny-fly-buzz { transform-origin: 72px 28px; }
+.sunny-character[data-motion="idle"][data-act="flight"] .sunny-fly { animation: sunny-fly-flight 3.4s cubic-bezier(.45, 0, .4, 1); }
+.sunny-character[data-motion="idle"][data-act="flight"] .sunny-fly-buzz { animation: sunny-fly-buzz .09s linear 34 alternate; }
 
 /* Motion */
 .sunny-character[data-motion="walk"] .sunny-wing { animation: sunny-walk-wings .52s ease-in-out infinite alternate; }
@@ -72,15 +77,25 @@
 .sunny-character[data-motion="greet"] .sunny-wing-left { animation: sunny-greeting 4.8s ease-in-out infinite; }
 .sunny-character[data-motion="greet"] .sunny-lid { animation: sunny-blink-slow 4.8s ease-in-out infinite; }
 .sunny-character[data-motion="wave"] .sunny-wing-left { animation: sunny-wave 1.5s ease-in-out; }
-.sunny-character[data-motion="sleep"] .sunny-wing { transform: rotate(-18deg); }
+.sunny-character[data-motion="sleep"] .sunny-wing { transform: rotate(-8deg); }
 .sunny-character[data-motion="fall"] .sunny-wing { animation: sunny-flap .36s ease-in-out infinite; }
 .sunny-character[data-motion="fall"] .sunny-wing-right { animation-name: sunny-flap-lag; }
 .sunny-character[data-motion="fall"] .sunny-foot { transform: translateY(-4px); }
 .sunny-character[data-motion="land"] .sunny-wing { animation: sunny-flap .46s ease-out; }
 .sunny-character[data-motion="land"] .sunny-wing-right { animation-name: sunny-flap-lag; }
 .sunny-character[data-motion="pet"] .sunny-wing { animation: sunny-flutter .26s ease-in-out infinite alternate; }
-.sunny-character[data-motion="dizzy"] .sunny-wing { transform: rotate(-22deg); }
+.sunny-character[data-motion="dizzy"] .sunny-wing { transform: rotate(-12deg); }
 .sunny-character[data-motion="sip"] .sunny-wing-right { transform: rotate(34deg); transition: transform .3s; }
+
+/* Play */
+.sunny-character[data-motion="dance"] .sunny-wing { animation: sunny-flutter .45s ease-in-out infinite alternate; }
+.sunny-character[data-motion="dance"] .sunny-wing-right { animation-delay: -.45s; }
+.sunny-character[data-motion="dance"] .sunny-foot { animation: sunny-footstep .9s ease-in-out infinite; }
+.sunny-character[data-motion="dance"] .sunny-foot-right { animation-delay: -.45s; }
+.sunny-character[data-motion="hug"] .sunny-wing { animation: sunny-hug 1.4s ease-in-out; }
+.sunny-character[data-motion="hug"] .sunny-wing-right { animation-delay: .06s; }
+.sunny-character[data-motion="idle"][data-act="flight"] .sunny-glance { animation: sunny-watch-flight 3.4s cubic-bezier(.45, 0, .4, 1); }
+.sunny-character[data-motion="idle"][data-act="flight"] .sunny-tilt { animation: sunny-tilt-flight 3.4s ease-in-out; }
 
 /* Idle life */
 .sunny-character[data-motion="idle"][data-act="look"] .sunny-glance { animation: sunny-look 2.6s ease-in-out; }
@@ -105,14 +120,14 @@
   75% { transform: translate(2px, 1px) rotate(4deg); }
 }
 @keyframes sunny-flap {
-  0%, 100% { transform: rotate(-10deg) scaleX(1); }
-  18% { transform: rotate(-3deg) scaleX(1.01); }
+  0%, 100% { transform: rotate(0deg) scaleX(1); }
+  18% { transform: rotate(5deg) scaleX(1.01); }
   42% { transform: rotate(38deg) scaleX(1.04); }
   65% { transform: rotate(23deg) scaleX(1.02); }
 }
 @keyframes sunny-flap-lag {
-  0%, 100% { transform: rotate(-10deg) scaleX(1); }
-  27% { transform: rotate(-3deg) scaleX(1.01); }
+  0%, 100% { transform: rotate(0deg) scaleX(1); }
+  27% { transform: rotate(5deg) scaleX(1.01); }
   55% { transform: rotate(35deg) scaleX(1.035); }
   75% { transform: rotate(19deg) scaleX(1.015); }
 }
@@ -120,18 +135,39 @@
 @keyframes sunny-kick { from { transform: translateY(1px) rotate(-10deg); } to { transform: translateY(-2px) rotate(12deg); } }
 @keyframes sunny-tuck { 0%, 100% { transform: translateY(0); } 44%, 52% { transform: translateY(-5px); } }
 @keyframes sunny-greeting {
-  0%, 55%, 100% { transform: rotate(-10deg); }
+  0%, 55%, 100% { transform: rotate(0deg); }
   65%, 85% { transform: rotate(32deg); }
   75%, 95% { transform: rotate(6deg); }
 }
 @keyframes sunny-wave {
-  0%, 100% { transform: rotate(-10deg); }
+  0%, 100% { transform: rotate(0deg); }
   18%, 50%, 82% { transform: rotate(44deg); }
   34%, 66% { transform: rotate(16deg); }
 }
-@keyframes sunny-stretch { 0%, 100% { transform: rotate(-10deg); } 30%, 68% { transform: rotate(56deg); } 80% { transform: rotate(-16deg); } }
-@keyframes sunny-stretch-lag { 0%, 100% { transform: rotate(-10deg); } 37%, 72% { transform: rotate(51deg); } 86% { transform: rotate(-14deg); } }
-@keyframes sunny-watch-wings { 0%, 100% { transform: rotate(-10deg); } 35% { transform: rotate(-4deg); } 60% { transform: rotate(5deg); } 82% { transform: rotate(-13deg); } }
+@keyframes sunny-stretch { 0%, 100% { transform: rotate(0deg); } 30%, 68% { transform: rotate(56deg); } 80% { transform: rotate(-6deg); } }
+@keyframes sunny-stretch-lag { 0%, 100% { transform: rotate(0deg); } 37%, 72% { transform: rotate(51deg); } 86% { transform: rotate(-4deg); } }
+@keyframes sunny-watch-wings { 0%, 100% { transform: rotate(0deg); } 35% { transform: rotate(6deg); } 60% { transform: rotate(15deg); } 82% { transform: rotate(-3deg); } }
+@keyframes sunny-hug { 0%, 100% { transform: rotate(0deg); } 25%, 70% { transform: rotate(42deg) scaleX(1.03); } 85% { transform: rotate(-4deg); } }
+@keyframes sunny-fly-flight {
+  0%, 100% { transform: none; }
+  8% { transform: translate(-2px, -6px) rotate(-8deg); }
+  22% { transform: translate(-42px, -36px) rotate(-18deg); }
+  40% { transform: translate(8px, -66px) rotate(6deg); }
+  58% { transform: translate(72px, -40px) rotate(18deg); }
+  74% { transform: translate(62px, -6px) rotate(10deg); }
+  88% { transform: translate(14px, -9px) rotate(3deg); }
+  95% { transform: translate(1px, 2px); }
+}
+@keyframes sunny-fly-buzz { from { transform: rotate(-2.5deg) scaleY(1); } to { transform: rotate(2.5deg) scaleY(.94); } }
+@keyframes sunny-watch-flight {
+  0%, 100% { transform: none; }
+  22% { transform: translate(-5px, -6px); }
+  40% { transform: translate(0, -7px); }
+  58% { transform: translate(6px, -5px); }
+  74% { transform: translate(6px, -1px); }
+  90% { transform: translate(1px, -3px); }
+}
+@keyframes sunny-tilt-flight { 0%, 100% { transform: none; } 22% { transform: rotate(-4deg); } 58% { transform: rotate(4deg); } 80% { transform: rotate(2deg); } }
 @keyframes sunny-look { 0%, 100% { transform: none; } 14%, 40% { transform: translate(-7px, 1px); } 56%, 84% { transform: translate(7px, 1px); } }
 @keyframes sunny-watch-fly {
   0%, 100% { transform: none; }

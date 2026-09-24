@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
-import { Bird, Heart, Star } from 'lucide-react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react'
+import { Bird, Heart, Sparkles, Star } from 'lucide-react'
 import { SunnyCharacter, type SunnyAct, type SunnyDirection, type SunnyFace, type SunnyMotion, type SunnyMouth } from './SunnyCharacter'
+import { PlayIcons, SunnyPlayMenu, type PlayItem } from './SunnyPlayMenu'
 import './sunny-pet.css'
 
 type Point = { x: number; y: number }
@@ -22,6 +23,12 @@ const CRAVE_AFTER_MS = 35_000
 const CRAVE_FOR_MS = 20_000
 const CRAVE_EVERY_MS = 4 * 60_000
 const JUMP_DURATION_MS = 820
+// Play: how long each performance runs before she speaks, and how long a boba keeps her full.
+const FLIGHT_MS = 3400
+const DANCE_MS = 3600
+const HUG_MS = 1400
+const FULL_FOR_MS = 60_000
+const PLAY_MENU_ID = 'sunny-play-menu'
 const REACTION_MS: Record<Reaction, number> = { react: JUMP_DURATION_MS, wake: 600, settle: 300, land: 460, wave: 1500, dizzy: 1800 }
 const IDLE_ACT_MS = { look: 2600, tilt: 1900, stretch: 1600, hop: 900, fly: 2200 } satisfies Partial<Record<SunnyAct, number>>
 type IdleAct = keyof typeof IDLE_ACT_MS
@@ -53,6 +60,10 @@ const dragResponses = ['New spot, who dis?', 'A little stroll, a little boba.', 
 const wakeResponses = ['Just resting my eyes. Hi!', 'Did someone say boba?', 'That was a very productive nap.']
 const dizzyResponses = ['Whoa... the room is spinning.', 'Wheee! Okay, maybe a little less shaking.', 'Which way is the tea bar?']
 const petResponses = ['Hehe, that tickles!', 'Right behind the wing. Yes, that spot.', 'Best. Coworker. Ever.']
+const flightResponses = ['Welcome back, little buddy!', 'Three laps! A new record.', 'My dragonfly says hi.']
+const danceResponses = ['Ta-da!', 'I call that one the Brown Sugar Shuffle.', "Thank you, thank you. I'm here all shift."]
+const hugResponses = ['Group hug!', 'Aww, I needed that.', 'Hugs are free refills.']
+const fullResponses = ["I'm still full from the last one. Maybe later!", "One boba at a time. That's the rule."]
 
 function greetingLine() {
   const now = new Date()
@@ -163,7 +174,10 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
   const [hearts, setHearts] = useState(0)
   const [dust, setDust] = useState(0)
   const [stars, setStars] = useState(false)
-  const petRef = useRef<HTMLButtonElement>(null)
+  const [menu, setMenu] = useState<{ side: 'left' | 'right'; vertical: 'up' | 'down' } | null>(null)
+  // petRef is the wrapper that carries Sunny's position; her body button and the play menu sit inside it.
+  const petRef = useRef<HTMLDivElement>(null)
+  const playRef = useRef<HTMLButtonElement>(null)
   const position = useRef<Point | null>(null)
   const initialPosition = useRef(savedPosition())
   const reactionTimer = useRef<number | undefined>(undefined)
@@ -175,13 +189,14 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
   const starTimer = useRef<number | undefined>(undefined)
   const petTimer = useRef<number | undefined>(undefined)
   const sequence = useRef<number[]>([])
-  const counters = useRef({ heart: 0, bubble: 0, dust: 0, response: 0, drag: 0, wake: 0, dizzy: 0, pet: 0 })
+  const counters = useRef({ heart: 0, bubble: 0, dust: 0, response: 0, drag: 0, wake: 0, dizzy: 0, pet: 0, flight: 0, dance: 0, hug: 0, full: 0 })
   const falling = useRef<Animation | null>(null)
   const waking = useRef(false)
   const petting = useRef(false)
   const rub = useRef({ x: 0, direction: 0, travel: 0, flips: [] as number[], lastHeart: 0 })
   const lastPetLine = useRef(0)
   const lastCrave = useRef(0)
+  const lastFed = useRef(0)
   const lastPointer = useRef(0)
   const drag = useRef<Drag | null>(null)
   const suppressClick = useRef(false)
@@ -207,6 +222,21 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     window.clearTimeout(heartTimer.current)
     setHearts(++counters.current.heart)
     heartTimer.current = window.setTimeout(() => setHearts(0), 1200)
+  }
+
+  // Steps of a performance. They share one list, so starting anything new cancels what was running.
+  const later = (ms: number, step: () => void) => { sequence.current.push(window.setTimeout(step, ms)) }
+
+  const fallAsleep = () => {
+    clearSequence()
+    setCraving(false)
+    setAct(null)
+    setBubble(null)
+    setMouth('closed')
+    setBlush(false)
+    setFace('sleepy')
+    setDirection('front')
+    setMotion('sleep')
   }
 
   const rememberPosition = (at: Point, bounds: Bounds) => {
@@ -372,15 +402,7 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     }, DROWSY_AFTER_MS))
     timers.push(window.setTimeout(() => {
       if (drag.current || falling.current || petting.current) return
-      clearSequence()
-      setCraving(false)
-      setAct(null)
-      setBubble(null)
-      setMouth('closed')
-      setBlush(false)
-      setFace('sleepy')
-      setDirection('front')
-      setMotion('sleep')
+      fallAsleep()
     }, SLEEP_AFTER_MS))
     return () => timers.forEach(timer => window.clearTimeout(timer))
   }, [enabled, activity, reducedMotion])
@@ -426,6 +448,9 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
 
   const say = (text: string, expression: SunnyFace, reaction: Reaction = 'react') => {
     clearReaction()
+    // A new line ends any performance still running (and puts away the boba cup), so its closing line
+    // can't talk over this one. Performances call say() only before scheduling steps, or from the last step.
+    clearSequence()
     if (!speak(text)) return
     setActivity(value => value + 1)
     setAct(null)
@@ -448,17 +473,37 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     return () => window.clearTimeout(timer)
   }, [enabled, ready])
 
-  const feedBoba = () => {
-    lastCrave.current = Date.now()
+  // Clears whatever she was doing so a new performance starts from rest.
+  const startPerformance = () => {
+    stopFall()
+    stopPetting()
+    clearReaction()
+    clearSequence()
+    setMenu(null)
     setCraving(false)
     setAct(null)
-    clearSequence()
+    setBubble(null)
+    setMouth('closed')
+    setBlush(false)
+    setDirection('front')
+    setActivity(value => value + 1)
+  }
+
+  const feedBoba = () => {
+    lastCrave.current = Date.now()
+    if (Date.now() - lastFed.current < FULL_FOR_MS) {
+      startPerformance()
+      setBlush(true)
+      say(fullResponses[counters.current.full++ % fullResponses.length], 'happy', 'settle')
+      return
+    }
+    lastFed.current = Date.now()
+    startPerformance()
     if (reducedMotion) {
       burstHearts()
       say('Mmm, brown sugar boba is the best!', 'heart')
       return
     }
-    const later = (ms: number, step: () => void) => { sequence.current.push(window.setTimeout(step, ms)) }
     say('Ooh, boba! Thank you!', 'happy', 'settle')
     setBlush(true)
     setBoba('in')
@@ -471,6 +516,79 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
       say('Mmm, brown sugar boba is the best!', 'heart')
     })
   }
+
+  // The dragonfly takes a lap around her head while she watches, then she speaks once it's back.
+  const flyDragonfly = () => {
+    startPerformance()
+    const line = flightResponses[counters.current.flight++ % flightResponses.length]
+    if (reducedMotion) { say(line, 'happy', 'settle'); return }
+    setFace('front')
+    setMotion('idle')
+    setAct('flight')
+    later(FLIGHT_MS, () => {
+      sequence.current = []
+      setAct(null)
+      say(line, 'happy', 'react')
+    })
+  }
+
+  const dance = () => {
+    startPerformance()
+    const line = danceResponses[counters.current.dance++ % danceResponses.length]
+    if (reducedMotion) { say(line, 'wink', 'settle'); return }
+    setFace('happy')
+    setMotion('dance')
+    later(DANCE_MS, () => {
+      sequence.current = []
+      say(line, 'wink', 'react')
+    })
+  }
+
+  const hug = () => {
+    startPerformance()
+    setFace('happy')
+    setBlush(true)
+    burstHearts()
+    const line = hugResponses[counters.current.hug++ % hugResponses.length]
+    if (reducedMotion) { say(line, 'heart', 'settle'); return }
+    setMotion('hug')
+    later(700, burstHearts)
+    later(HUG_MS, () => {
+      sequence.current = []
+      setBlush(true)
+      say(line, 'heart', 'settle')
+    })
+  }
+
+  const napNow = () => {
+    startPerformance()
+    setFace('drowsy')
+    if (reducedMotion) { fallAsleep(); return }
+    setMouth('yawn')
+    later(1500, fallAsleep)
+  }
+
+  const wakeUp = () => {
+    startPerformance()
+    burstHearts()
+    say(wakeResponses[counters.current.wake++ % wakeResponses.length], 'surprised', 'wake')
+  }
+
+  const openMenu = () => {
+    const element = petRef.current
+    const at = position.current
+    if (!element || !at) return
+    const bounds = boundsFor(element)
+    // Open toward whichever side has more room; the menu nudges itself on screen if neither fits.
+    const roomLeft = at.x
+    const roomRight = window.innerWidth - (at.x + element.offsetWidth)
+    setMenu({ side: roomLeft > roomRight ? 'left' : 'right', vertical: at.y < bounds.top + 150 ? 'down' : 'up' })
+  }
+
+  const closeMenu = useCallback((returnFocus: boolean) => {
+    setMenu(null)
+    if (returnFocus) playRef.current?.focus()
+  }, [])
 
   const pet = (time: number) => {
     window.clearTimeout(petTimer.current)
@@ -554,9 +672,10 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     setFace('front')
     setDirection('front')
     setMotion('held')
+    setMenu(null)
     drag.current = { id: event.pointerId, pointer: { x: event.clientX, y: event.clientY },
       origin: position.current, headingAnchor: { x: event.clientX, y: event.clientY },
-      bounds: boundsFor(event.currentTarget), moved: false,
+      bounds: boundsFor(petRef.current ?? event.currentTarget), moved: false,
       lastX: event.clientX, lastTime: event.timeStamp, vx: 0, shakeDirection: 0, flips: [], dizzy: false }
     event.currentTarget.setPointerCapture(event.pointerId)
   }
@@ -625,7 +744,7 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     if (!current || current.id !== event.pointerId) return
     drag.current = null
     window.clearTimeout(strideTimer.current)
-    event.currentTarget.style.setProperty('--sunny-swing', '0deg')
+    petRef.current?.style.setProperty('--sunny-swing', '0deg')
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId)
     setActivity(value => value + 1)
     setMotion('idle')
@@ -638,9 +757,18 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     drop(current.dizzy)
   }
 
-  const onClick = () => {
+  const onClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
     if (suppressClick.current) return
     stopFall()
+    // A click on the dragonfly (top left of her head) sends it flying. Keyboard clicks have no position.
+    const box = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - box.left) / box.width
+    const y = (event.clientY - box.top) / box.height
+    if (event.detail > 0 && direction !== 'away' && x > .12 && x < .54 && y >= 0 && y < .19) {
+      waking.current = false
+      flyDragonfly()
+      return
+    }
     if (waking.current || motion === 'sleep') {
       waking.current = false
       burstHearts()
@@ -670,6 +798,7 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
     waking.current = false
     setActivity(value => value + 1)
     setEnabled(checked)
+    setMenu(null)
     setBubble(null)
     setCraving(false)
     setAct(null)
@@ -683,36 +812,53 @@ export function SunnyPet({ layout }: { layout: 'auto' | 'phone' | 'desktop' }) {
   const label = motion === 'sleep' ? 'Sunny is sleeping. Click to wake her or drag to move.'
     : craving ? 'Sunny is craving boba. Click to share one, or drag to move.'
       : 'Sunny the Summerfield bird. Click for a thought, drag to move, or rub with the mouse to pet.'
+  const playItems: PlayItem[] = [
+    { key: 'boba', label: 'Give Sunny a boba', icon: PlayIcons.boba, onSelect: feedBoba },
+    { key: 'fly', label: 'Let the dragonfly fly', icon: PlayIcons.fly, onSelect: flyDragonfly },
+    { key: 'dance', label: 'Wiggle dance', icon: PlayIcons.dance, onSelect: dance },
+    { key: 'hug', label: 'Give a hug', icon: PlayIcons.hug, onSelect: hug },
+    motion === 'sleep' ? { key: 'wake', label: 'Wake Sunny up', icon: PlayIcons.nap, onSelect: wakeUp }
+      : { key: 'nap', label: 'Nap time', icon: PlayIcons.nap, onSelect: napNow },
+  ]
 
   return <>
-    {enabled && <button ref={petRef} className={`vy-pet vy-pet-${motion} ${ready ? 'is-ready' : ''}`}
-      data-facing={direction} data-act={act ?? undefined} type="button"
-      style={{ '--sunny-jump-duration': `${JUMP_DURATION_MS}ms` } as CSSProperties}
-      title={motion === 'sleep' ? 'Sunny is sleeping. Click to wake her.'
-        : craving ? 'Sunny wants boba. Click to share one.' : 'Sunny: click for a thought, drag to move, rub to pet'}
-      aria-label={label}
-      onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd}
-      onPointerCancel={onPointerEnd} onLostPointerCapture={onPointerEnd} onClick={onClick}>
-      {bubble && <SpeechBubble key={bubble.id} text={bubble.text} instant={reducedMotion}
-        align={bubbleAlign} vertical={bubbleVertical}
-        onTyped={() => setMouth(value => value === 'talk' ? 'closed' : value)} />}
-      {craving && !bubble && <span className={`vy-pet-thought side-${thoughtSide}`} aria-hidden="true"><BobaCup /><span>Boba?</span></span>}
-      <span className="vy-pet-ground" aria-hidden="true" />
-      <span className="vy-pet-swing" aria-hidden="true">
-        <span className="vy-pet-puppet">
-          <SunnyCharacter face={face} direction={direction} motion={motion} mouth={mouth}
-            act={act} blush={blush} blinking={blinking} />
+    {enabled && <div ref={petRef} className={`vy-pet vy-pet-${motion} ${ready ? 'is-ready' : ''} ${menu ? 'is-playing' : ''}`}
+      data-facing={direction} data-act={act ?? undefined}
+      style={{ '--sunny-jump-duration': `${JUMP_DURATION_MS}ms` } as CSSProperties}>
+      <button className="vy-pet-body" type="button"
+        title={motion === 'sleep' ? 'Sunny is sleeping. Click to wake her.'
+          : craving ? 'Sunny wants boba. Click to share one.' : 'Sunny: click for a thought, click the dragonfly, drag to move, rub to pet'}
+        aria-label={label}
+        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd}
+        onPointerCancel={onPointerEnd} onLostPointerCapture={onPointerEnd} onClick={onClick}>
+        {/* These overlays are siblings, so each key needs its own prefix; a shared number would make React
+            confuse them and leave an old bubble stuck on screen. */}
+        {bubble && <SpeechBubble key={`bubble-${bubble.id}`} text={bubble.text} instant={reducedMotion}
+          align={bubbleAlign} vertical={bubbleVertical}
+          onTyped={() => setMouth(value => value === 'talk' ? 'closed' : value)} />}
+        {craving && !bubble && <span className={`vy-pet-thought side-${thoughtSide}`} aria-hidden="true"><BobaCup /><span>Boba?</span></span>}
+        <span className="vy-pet-ground" aria-hidden="true" />
+        <span className="vy-pet-swing" aria-hidden="true">
+          <span className="vy-pet-puppet">
+            <SunnyCharacter face={face} direction={direction} motion={motion} mouth={mouth}
+              act={act} blush={blush} blinking={blinking} />
+          </span>
+          {boba && <span className={`vy-pet-boba is-${boba}`}><BobaCup /></span>}
         </span>
-        {boba && <span className={`vy-pet-boba is-${boba}`}><BobaCup /></span>}
-      </span>
-      {stars && <span className="vy-pet-stars" aria-hidden="true"><Star /><Star /><Star /></span>}
-      {dust > 0 && <span className="vy-pet-dust" key={dust} aria-hidden="true"><span /><span /><span /></span>}
-      {hearts > 0 && <span className="vy-pet-hearts" key={hearts} aria-hidden="true"><Heart /><Heart /><Heart /></span>}
-      {motion === 'sleep' && <>
-        <span className="vy-pet-snore" aria-hidden="true" />
-        <span className="vy-pet-sleep-marks" aria-hidden="true"><span>z</span><span>z</span><span>Z</span></span>
-      </>}
-    </button>}
+        {stars && <span className="vy-pet-stars" aria-hidden="true"><Star /><Star /><Star /></span>}
+        {dust > 0 && <span className="vy-pet-dust" key={`dust-${dust}`} aria-hidden="true"><span /><span /><span /></span>}
+        {hearts > 0 && <span className="vy-pet-hearts" key={`hearts-${hearts}`} aria-hidden="true"><Heart /><Heart /><Heart /></span>}
+        {motion === 'dance' && <span className="vy-pet-notes" aria-hidden="true"><span>♪</span><span>♫</span><span>♪</span></span>}
+        {motion === 'sleep' && <>
+          <span className="vy-pet-snore" aria-hidden="true" />
+          <span className="vy-pet-sleep-marks" aria-hidden="true"><span>z</span><span>z</span><span>Z</span></span>
+        </>}
+      </button>
+      <button ref={playRef} className="vy-pet-play" type="button" title="Play with Sunny" aria-label="Play with Sunny"
+        aria-haspopup="menu" aria-expanded={Boolean(menu)} aria-controls={menu ? PLAY_MENU_ID : undefined}
+        onClick={() => (menu ? closeMenu(false) : openMenu())}><Sparkles size={15} aria-hidden="true" /></button>
+      {menu && <SunnyPlayMenu id={PLAY_MENU_ID} items={playItems} side={menu.side} vertical={menu.vertical} onClose={closeMenu} />}
+    </div>}
     <label className="vy-pet-toggle" title={enabled ? 'Hide Sunny' : 'Show Sunny'}>
       <Bird size={16} aria-hidden="true" /><span>Sunny</span>
       <input type="checkbox" checked={enabled} onChange={(event) => onToggle(event.target.checked)} aria-label="Show Sunny the bird" />

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import type { Department } from '@/shared/config/departments'
 import { errorText } from '@/shared/lib/format'
+import { DateField } from '@/shared/ui/DateField'
+import { SelectField } from '@/shared/ui/SelectField'
 import type { Access } from '@/features/auth'
 import { createTask, listDepartmentPeople, type HqTask, type Person } from '../api'
 import './tasks.css'
@@ -71,16 +73,11 @@ export function TaskDialog({ access, departments, initialDepartment, assignToMe 
       {error && <p className="vy-task-error" role="alert">{error}</p>}
       <label className="vy-task-field">Title<input autoFocus required maxLength={140} value={title} onChange={(event) => setTitle(event.target.value)} placeholder="What needs doing?" /></label>
       <div className="vy-task-pair">
-        <label className="vy-task-field">Department<select value={departmentCode} onChange={(event) => setDepartmentCode(event.target.value)} required>
-          {departments.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}
-        </select></label>
-        <label className="vy-task-field">Assign to<select value={assignedTo} onChange={(event) => { assigneeTouched.current = true; setAssignedTo(event.target.value) }}>
-          <option value="">Unassigned</option>
-          {people.map((person) => <option key={person.user_id} value={person.user_id}>{person.display_name}{person.user_id === access.userId ? ' (you)' : ''}</option>)}
-        </select></label>
+        <label className="vy-task-field">Department<SelectField value={departmentCode} onChange={setDepartmentCode} options={departments.map((item) => ({ value: item.code, label: item.name }))} /></label>
+        <label className="vy-task-field">Assign to<SelectField value={assignedTo} onChange={(next) => { assigneeTouched.current = true; setAssignedTo(next) }} options={[{ value: '', label: 'Unassigned' }, ...people.map((person) => ({ value: person.user_id, label: `${person.display_name}${person.user_id === access.userId ? ' (you)' : ''}` }))]} /></label>
       </div>
       <div className="vy-task-pair">
-        <label className="vy-task-field">Due date<input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} /></label>
+        <label className="vy-task-field">Due date<DateField value={dueDate} onChange={setDueDate} /></label>
       </div>
       <label className="vy-task-field">Details<textarea maxLength={4000} value={details} onChange={(event) => setDetails(event.target.value)} placeholder="Context, links, what done looks like" /></label>
       <p className="vy-task-note">Projects, priority, start dates, locations, status and Drive copies will be added when HQ tasks can store them.</p>

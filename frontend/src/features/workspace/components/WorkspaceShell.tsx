@@ -4,6 +4,7 @@ import { companyDepartment, referenceDepartments, referenceForDepartment, refere
 import { useMyDepartment } from '@/shared/lib/my-department'
 import type { Route } from '@/shared/lib/routing'
 import { DepartmentIcon, SectionIcon } from '@/shared/ui/icons'
+import { SelectField } from '@/shared/ui/SelectField'
 import { departmentRole, type Access } from '@/features/auth'
 import { SunnyPet } from '@/features/sunny'
 // Styles for everything drawn inside the shell (Vy's HQ design), including the dashboard and department pages.
@@ -29,9 +30,11 @@ export function WorkspaceShell({ access, route, preview, children, onRefresh, re
   const [notificationOpen, setNotificationOpen] = useState(false)
   useEffect(() => { setMoreOpen(false); setSearchOpen(false); window.scrollTo(0, 0) }, [route.page, route.code])
   const visibleDepartments = preview ? [companyDepartment, ...referenceDepartments] : sortLikeReference(access.departments.map(referenceForDepartment))
-  const selected = route.page === 'department' ? route.code : route.page
+  const selected = route.page === 'department' ? route.code : route.page === 'project' ? 'projects' : route.page
   const mobile = layout === 'phone'
   const departmentOptions = visibleDepartments.filter((item) => item.code !== 'company')
+  const myDepartmentOptions = [{ value: '', label: 'Choose…' }, ...departmentOptions.map((item) => ({ value: item.code, label: item.name }))]
+  const selectedDepartment = departmentOptions.some((item) => item.code === myDepartment) ? myDepartment : ''
 
   return <div className={`vy-shell ${mobile ? 'vy-force-phone' : ''} ${layout === 'desktop' ? 'vy-force-desktop' : ''}`}>
     <aside className="vy-rail" aria-label="Summerfield HQ">
@@ -42,7 +45,7 @@ export function WorkspaceShell({ access, route, preview, children, onRefresh, re
         {visibleDepartments.map((item) => <a key={item.code} className={selected === item.code ? 'is-active' : ''} aria-current={selected === item.code ? 'page' : undefined} title={preview ? undefined : `${item.name}: ${access.organization.role === 'admin' ? 'admin' : departmentRole(access, item.code)} access`} href={referenceHref(item.code)}><span className="vy-nav-icon"><DepartmentIcon code={item.code} /></span>{item.name}</a>)}
       </nav>
       <div className="vy-rail-foot">
-        <label>My department<select value={departmentOptions.some((item) => item.code === myDepartment) ? myDepartment : ''} onChange={(event) => selectMine(event.target.value)}><option value="">Choose…</option>{departmentOptions.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label>
+        <label>My department<SelectField value={selectedDepartment} onChange={selectMine} options={myDepartmentOptions} size="compact" /></label>
         <div className="vy-rail-view-label">View</div><LayoutPicker layout={layout} onChange={setLayout} />
         <div className="vy-rail-account"><span>{access.displayName}<small>{preview ? 'Design preview' : `${access.organization.organization_name} · ${access.organization.role}`}</small></span>{preview ? <button type="button" onClick={onExitPreview}>Exit preview</button> : <button type="button" onClick={onSignOut}><LogOut size={14} /> Sign out</button>}</div>
       </div>
@@ -50,9 +53,9 @@ export function WorkspaceShell({ access, route, preview, children, onRefresh, re
     <div className="vy-body">
       <header className="vy-topbar">
         <a href="#/" className="vy-topbar-brand">Summerfield HQ</a>
-        <div className="vy-topbar-right"><LayoutPicker layout={layout} onChange={setLayout} /><label className="vy-topbar-dept"><span className="sr-only">My department</span><select value={departmentOptions.some((item) => item.code === myDepartment) ? myDepartment : ''} onChange={(event) => selectMine(event.target.value)}><option value="">Choose…</option>{departmentOptions.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label></div>
+        <div className="vy-topbar-right"><LayoutPicker layout={layout} onChange={setLayout} /><label className="vy-topbar-dept"><span className="sr-only">My department</span><SelectField ariaLabel="My department" value={selectedDepartment} onChange={selectMine} options={myDepartmentOptions} size="compact" /></label></div>
       </header>
-      <div className="vy-utility"><span>{preview ? 'Design preview · changes are not saved' : `${access.organization.organization_name} · ${access.displayName}`}</span><div>{onEnterPreview && <button className="vy-preview-switch" type="button" onClick={onEnterPreview}>Design preview</button>}<button type="button" className="vy-icon-button" aria-label="Refresh HQ data" title="Refresh HQ data" onClick={onRefresh} disabled={preview || refreshing}><RefreshCw size={17} className={refreshing ? 'spinning' : ''} /></button><button type="button" className="vy-icon-button" aria-label="Notifications" title="Notifications" onClick={() => setNotificationOpen(!notificationOpen)}><Bell size={17} /></button>{!preview && access.organizations.length > 1 && <label className="vy-org"><span className="sr-only">Organization</span><select value={access.organization.organization_id} onChange={(event) => onOrganization(event.target.value)}>{access.organizations.map((item) => <option key={item.organization_id} value={item.organization_id}>{item.organization_name}</option>)}</select></label>}</div></div>
+      <div className="vy-utility"><span>{preview ? 'Design preview · changes are not saved' : `${access.organization.organization_name} · ${access.displayName}`}</span><div>{onEnterPreview && <button className="vy-preview-switch" type="button" onClick={onEnterPreview}>Design preview</button>}<button type="button" className="vy-icon-button" aria-label="Refresh HQ data" title="Refresh HQ data" onClick={onRefresh} disabled={preview || refreshing}><RefreshCw size={17} className={refreshing ? 'spinning' : ''} /></button><button type="button" className="vy-icon-button" aria-label="Notifications" title="Notifications" onClick={() => setNotificationOpen(!notificationOpen)}><Bell size={17} /></button>{!preview && access.organizations.length > 1 && <label className="vy-org"><span className="sr-only">Organization</span><SelectField ariaLabel="Organization" value={access.organization.organization_id} onChange={onOrganization} options={access.organizations.map((item) => ({ value: item.organization_id, label: item.organization_name }))} size="compact" /></label>}</div></div>
       {notificationOpen && <div className="vy-notification" role="status">Notifications will appear here after that workflow is connected.<button type="button" aria-label="Close notifications" onClick={() => setNotificationOpen(false)}><X size={15} /></button></div>}
       <main className="vy-main" id="main-content">{children}</main>
     </div>
