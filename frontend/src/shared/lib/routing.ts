@@ -7,6 +7,7 @@ function currentRoute(): Route {
   const path = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean)
   if (path[0] === 'department' && path[1]) return { page: 'department', code: path[1] }
   if (path[0] === 'project' && path[1]) return { page: 'project', code: decodeURIComponent(path[1]) }
+  if (path[0] === 'location' && path[1]) return { page: 'location', code: decodeURIComponent(path[1]) }
   if (path[0] === 'lesson' && path[1]) return { page: 'lesson', code: decodeURIComponent(path[1]) }
   if (path[0] === 'report' && path[1] && path[2]) return { page: 'report', code: decodeURIComponent(path[1]), month: path[2] }
   if (path[0] === 'reports' && path[1]) return { page: 'reports', month: path[1] }
