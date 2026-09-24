@@ -211,3 +211,11 @@ final result: passed
 - Typecheck, import-boundary check, 20 frontend tests, and production build pass. The existing large-chunk build warning remains.
 
 final result: passed
+
+## Projects Pages - September 24, 2026
+
+- Converted the prototype's Projects dashboard and project detail into `frontend/src/features/projects/`, including filters, progress, ticket assignment, task priorities, chat, files, settings, and shared select/date controls. The preview uses labeled sample records and memory-only edits; signed-in screens do not invent shared project data or enable disconnected actions.
+- Browser checked desktop Projects and detail layouts, project creation, ticket assignment form, and the 375px dashboard, detail, and form geometry. The phone page has no horizontal overflow; the form scrolls to its actions.
+- Typecheck, import-boundary check, 23 frontend tests, and build pass. Shared project persistence, files, Asana synchronization, and a signed-in account were not tested because those services are not connected.
+
+final result: passed for the UI-first scope
