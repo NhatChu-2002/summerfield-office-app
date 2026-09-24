@@ -12,6 +12,7 @@ import { LearningPage, LessonPage, previewLessons, type LearningProgress, type L
 import { MeetingsPage, previewMeetings, type MeetingRecord } from '@/features/meetings'
 import { todayLocal } from '@/shared/lib/format'
 import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
+import { PeoplePage, previewAccessPeople, previewAccessRequests, type PreviewPerson, type PreviewRequest } from '@/features/people'
 import { ProjectPage, ProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
 import { ReportPage, ReportsPage, previewReports, type ReportRecord } from '@/features/reports'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
@@ -42,6 +43,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   const [areas, setAreas] = useState<OwnershipArea[]>(previewAreas)
   const [profiles, setProfiles] = useState<ContactProfile[]>(previewProfiles)
   const [decisions, setDecisions] = useState<DecisionRule[]>(previewDecisions)
+  const [accessPeople, setAccessPeople] = useState<PreviewPerson[]>(previewAccessPeople)
+  const [accessRequests, setAccessRequests] = useState<PreviewRequest[]>(previewAccessRequests)
   const [projects, setProjects] = useState<ProjectRecord[]>(previewProjects)
   const [projectTasks, setProjectTasks] = useState<ProjectTask[]>(previewProjectTasks)
   const [projectMessages, setProjectMessages] = useState<ProjectMessage[]>(previewProjectMessages)
@@ -78,6 +81,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} areas={areas} profiles={profiles} preview onAreasChange={setAreas} onProfilesChange={setProfiles} /></Suspense>
   } else if (route.page === 'decisions') {
     content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} rules={decisions} preview onRulesChange={setDecisions} /></Suspense>
+  } else if (route.page === 'people') {
+    content = <Suspense fallback={<p role="status">Loading People & access...</p>}><PeoplePage departments={referenceDepartments} people={accessPeople} requests={accessRequests} preview admin onPeopleChange={setAccessPeople} onRequestsChange={setAccessRequests} /></Suspense>
   } else if (route.page === 'projects') {
     content = <ProjectsPage departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} preview ticketManager={ticketManager} onTicketManagerChange={setTicketManager} onProjectsChange={setProjects} onTasksChange={setProjectTasks} />
   } else if (route.page === 'project') {
