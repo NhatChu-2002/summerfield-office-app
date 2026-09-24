@@ -203,3 +203,11 @@ final result: passed
 - Existing date, time, and form behavior outside the shared date control is unchanged. Typecheck, boundary check, tests, and build pass. No live account save was tested.
 
 final result: passed
+
+## Ownership Pages - September 24, 2026
+
+- Converted `Who to ask` and `Decision chart` from the HTML reference into a shared React ownership feature. Both have the prototype's hero, tabs, search/filter views, owner and decision details, and edit dialogs. The design preview uses labeled sample records and memory-only edits; signed-in views show explicit unconnected states, without invented live assignments or active ticket controls.
+- Browser checked ownership search for "ice machine broken," adding an area and navigating to the directory, plus an $800 repair question escalating above a $500 sample limit. Inspected desktop and 375px layouts, including the mobile area dialog. No horizontal overflow was observed. Shared service writes, ticket routing, and a live company directory were not tested because they are not connected.
+- Typecheck, import-boundary check, 20 frontend tests, and production build pass. The existing large-chunk build warning remains.
+
+final result: passed
