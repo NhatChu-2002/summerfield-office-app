@@ -6,6 +6,7 @@ export type Route = { page: string; code?: string }
 function currentRoute(): Route {
   const path = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean)
   if (path[0] === 'department' && path[1]) return { page: 'department', code: path[1] }
+  if (path[0] === 'project' && path[1]) return { page: 'project', code: decodeURIComponent(path[1]) }
   return { page: path[0] || 'dashboard' }
 }
 
@@ -20,3 +21,4 @@ export function useRoute() {
 }
 
 export const deptHref = (code: string) => `#/department/${code}`
+export const projectHref = (id: string) => `#/project/${encodeURIComponent(id)}`

@@ -24,4 +24,4 @@ To see every screen without an account, use **Preview the HQ design** on the sig
 
 ## Deployment
 
-HQ isn't connected to a Git remote or to Render yet. `infra/render.yaml` describes the services, and `infra/README.md` has the first-deploy steps. The inventory app's existing deployment is not affected.
+HQ is connected to a Git remote. Render environment setup is still documented as pending in `infra/README.md`; `infra/render.yaml` describes the services. The inventory app's existing deployment is not affected. Feature work and branch promotions follow `AGENTS.md`.

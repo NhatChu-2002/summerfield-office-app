@@ -10,6 +10,8 @@ import { DepartmentPage, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
+import { ProjectPage, ProjectsPage } from '@/features/projects'
+import { todayLocal } from '@/shared/lib/format'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { UpdateList, UpdatesPage } from '@/features/updates'
 import { WatchPage } from '@/features/watch'
@@ -56,6 +58,11 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} areas={[]} profiles={[]} preview={false} /></Suspense>
   } else if (route.page === 'decisions') {
     content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} rules={[]} preview={false} /></Suspense>
+  } else if (route.page === 'projects') {
+    content = <ProjectsPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} preview={false}
+      liveTaskStats={dataReady ? { overdue: tasks.filter((task) => task.status === 'open' && !!task.due_date && task.due_date < todayLocal()).length, mine: myOpenTasks.length } : undefined} />
+  } else if (route.page === 'project') {
+    content = <ProjectPage id={route.code || ''} departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} messages={[]} preview={false} />
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}
