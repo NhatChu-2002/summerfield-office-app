@@ -14,8 +14,6 @@ Summerfield Tea Bar's internal workspace: department dashboards, tasks, team upd
 
 Each part builds, tests, and deploys on its own.
 
-AI contributors should start with [AGENTS.md](AGENTS.md), then read the scoped `AGENTS.md` in the part they change. `CLAUDE.md` is a compatibility pointer; the human setup guides remain in each part's README.
-
 ## Quick start (frontend)
 
 1. Apply `backend/supabase/migrations/*.sql` to a **test** Supabase project that already has the inventory app's schema.
@@ -26,4 +24,4 @@ To see every screen without an account, use **Preview the HQ design** on the sig
 
 ## Deployment
 
-HQ is connected to a Git remote. Render environment setup is still documented as pending in `infra/README.md`; `infra/render.yaml` describes the services. The inventory app's existing deployment is not affected. Feature work and branch promotions follow `AGENTS.md`.
+HQ is connected to a Git remote. Render environment setup is still documented as pending in `infra/README.md`; `infra/render.yaml` describes the services. The inventory app's existing deployment is not affected.
