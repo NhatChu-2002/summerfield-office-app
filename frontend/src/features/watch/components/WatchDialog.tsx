@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { todayLocal } from '@/shared/lib/format'
+import { DateField } from '@/shared/ui/DateField'
+import { SelectField } from '@/shared/ui/SelectField'
 import type { ReferenceDepartment } from '@/shared/config/reference-departments'
 import { safeWatchUrl, type WatchDraft, type WatchKind } from '../model'
 
@@ -20,6 +22,9 @@ export function WatchDialog({ departments, initial, editing, canSave, onSave, on
   const dialog = useRef<HTMLDialogElement>(null)
   const titleInput = useRef<HTMLInputElement>(null)
   const [error, setError] = useState('')
+  const [kind, setKind] = useState<WatchKind>(initial?.kind || 'note')
+  const [department, setDepartment] = useState(initial?.department || 'company')
+  const [date, setDate] = useState(initial?.date || todayLocal())
 
   useEffect(() => {
     if (dialog.current && !dialog.current.open) dialog.current.showModal()
@@ -49,9 +54,9 @@ export function WatchDialog({ departments, initial, editing, canSave, onSave, on
       {!canSave && <p className="vy-watch-form-status">Shared Market watch saving is not connected yet.</p>}
       <div className="vy-watch-form-grid">
         <label>What is it<input ref={titleInput} name="title" required maxLength={180} defaultValue={initial?.title || ''} /></label>
-        <label>Type<select name="kind" defaultValue={initial?.kind || 'note'}><option value="alert">Industry or competitor news</option><option value="review">A review of one of our stores</option><option value="note">Something we spotted ourselves</option></select></label>
-        <label>Who should see it<select name="department" defaultValue={initial?.department || 'company'}><option value="company">🏢 Company-wide</option>{departments.filter((item) => item.code !== 'company').map((item) => <option key={item.code} value={item.code}>{departmentIcons[item.code] ? `${departmentIcons[item.code]} ` : ''}{item.name}</option>)}</select></label>
-        <label>Date<input name="date" type="date" required defaultValue={initial?.date || todayLocal()} /></label>
+        <label>Type<SelectField name="kind" value={kind} onChange={next => setKind(next as WatchKind)} options={[{ value: 'alert', label: 'Industry or competitor news' }, { value: 'review', label: 'A review of one of our stores' }, { value: 'note', label: 'Something we spotted ourselves' }]} /></label>
+        <label>Who should see it<SelectField name="department" value={department} onChange={setDepartment} options={[{ value: 'company', label: '🏢 Company-wide' }, ...departments.filter((item) => item.code !== 'company').map((item) => ({ value: item.code, label: `${departmentIcons[item.code] ? `${departmentIcons[item.code]} ` : ''}${item.name}` }))]} /></label>
+        <label>Date<DateField name="date" required value={date} onChange={setDate} /></label>
         <label>Where it came from<input name="source" maxLength={180} defaultValue={initial?.source || ''} /></label>
         <label>Link<input name="url" type="url" defaultValue={initial?.url || ''} /></label>
         <label>In a sentence or two<textarea name="summary" maxLength={1200} rows={2} defaultValue={initial?.summary || ''} /></label>

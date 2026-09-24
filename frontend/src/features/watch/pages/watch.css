@@ -20,7 +20,7 @@
 .vy-watch-toolbar { display:flex; flex-wrap:wrap; align-items:end; gap:8px; margin-bottom:12px; }
 .vy-watch-toolbar > span { align-self:center; color:#66746b; font-size:12px; }
 .vy-watch-select-label { display:flex; flex-direction:column; gap:4px; min-width:0; color:#66746b; font-size:11px; }
-.vy-watch-select-label select { min-height:33px; max-width:100%; padding:5px 28px 5px 9px; border:1px solid #d8e1d9; border-radius:6px; background:#fff; color:#231f20; font-size:12px; }
+.vy-watch-select-label .vy-control-trigger { border-color:#d8e1d9; }
 .vy-watch-list { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
 .vy-watch-item { min-width:0; padding:12px 14px; border:1px solid #dce4de; border-left:5px solid var(--vy-color,#bfd3d6); border-radius:8px; background:#fff; }
 .vy-watch-item-alert { --vy-color:#bfd3d6; }
@@ -51,7 +51,7 @@
 .vy-watch-form > .vy-watch-form-status { margin:0 0 13px; color:#66746b; font-size:12px; }
 .vy-watch-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:12px; }
 .vy-watch-form-grid label { display:flex; flex-direction:column; min-width:0; gap:4px; margin-bottom:10px; font-size:13.6px; font-weight:600; line-height:1.55; }
-.vy-watch-form-grid input,.vy-watch-form-grid select,.vy-watch-form-grid textarea { width:100%; min-width:0; min-height:39px; padding:8px 10px; border:1px solid #d4ded6; border-radius:8px; background:#fff; color:#231f20; font-size:13.6px; font-weight:400; }
+.vy-watch-form-grid input,.vy-watch-form-grid textarea { width:100%; min-width:0; min-height:39px; padding:8px 10px; border:1px solid #d4ded6; border-radius:8px; background:#fff; color:#231f20; font-size:13.6px; font-weight:400; }
 .vy-watch-form-grid textarea { min-height:70px; margin-bottom:6px; resize:vertical; }
 .vy-watch-form-error { margin:10px 0 0; color:#a04338; font-size:12px; }
 .vy-watch-dialog-actions { display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:8px; }

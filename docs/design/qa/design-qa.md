@@ -186,3 +186,12 @@ final result: passed for the UI-first scope
 - Typecheck, import-boundary check, all 15 frontend tests, and build pass. Signed-in behavior was checked in code; a live account was not available for browser verification.
 
 final result: passed for the UI-first scope
+
+## Shared Dropdown and Date/Time Controls - September 24, 2026
+
+- Replaced browser-native selects and date/time inputs in the workspace shell, Market watch, My tasks, and Team calendar with reusable controls in `frontend/src/shared/ui/`. The source values and callbacks remain unchanged: ISO local dates, 24-hour `HH:mm` times, department codes, and existing form submissions.
+- Dropdowns use Radix keyboard navigation and a styled option list. Dates use a lazily loaded DayPicker calendar with minimum-date and clear-date handling. Time uses hour, exact-minute, and AM/PM selections.
+- Checked in Design preview at desktop and 375px: Market watch option selection and a saved preview item date, task due-date calendar, Calendar event time, the phone header department menu, popup bounds, focus, and keyboard selection. No horizontal page overflow or browser console errors were observed. Temporary QA item was removed.
+- Typecheck, boundary check, all 17 frontend tests, and build pass. The existing main-chunk size warning remains. Signed-in forms and a live Supabase save were not tested.
+
+final result: passed

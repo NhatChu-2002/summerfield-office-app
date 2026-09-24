@@ -49,8 +49,8 @@
 .vy-event-dialog h2 { margin: 0; font: 400 26px/1.2 'Caudex', Georgia, serif; }
 .vy-event-fields { padding: 4px 24px; overflow-y: auto; min-height: 0; display: grid; gap: 12px; }
 .vy-event-fields label { display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 500; min-width: 0; }
-.vy-event-fields input:not([type="checkbox"]), .vy-event-fields select, .vy-event-fields textarea { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #cfdad2; border-radius: 8px; background: white; padding: 9px 10px; font: 400 14px/1.4 'Work Sans', system-ui, sans-serif; color: #231f20; }
-.vy-event-fields :is(input, select, textarea):focus-visible { outline: 2px solid #231f20; outline-offset: 3px; }
+.vy-event-fields input:not([type="checkbox"]), .vy-event-fields textarea { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #cfdad2; border-radius: 8px; background: white; padding: 9px 10px; font: 400 14px/1.4 'Work Sans', system-ui, sans-serif; color: #231f20; }
+.vy-event-fields :is(input, textarea):focus-visible { outline: 2px solid #231f20; outline-offset: 3px; }
 .vy-event-fields textarea { resize: vertical; }
 .vy-event-fields .vy-event-checkbox { flex-direction: row; align-items: center; gap: 8px; }
 .vy-event-checkbox input { width: 17px; height: 17px; accent-color: #231f20; }
@@ -97,7 +97,7 @@
   .vy-event-dialog footer { flex-wrap: wrap; justify-content: flex-end; }
   .vy-event-dialog footer > span { flex-basis: 100%; }
   .vy-event-dialog h2 { font-size: 26px; }
-  .vy-event-fields input:not([type="checkbox"]), .vy-event-fields select, .vy-event-fields textarea { font-size: 16px; }
+  .vy-event-fields input:not([type="checkbox"]), .vy-event-fields textarea { font-size: 16px; }
   .vy-event-grid { gap: 10px; }
 }
 @media (max-width: 480px) {

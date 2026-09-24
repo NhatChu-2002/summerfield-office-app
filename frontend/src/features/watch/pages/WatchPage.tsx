@@ -2,6 +2,7 @@ import { useState, type KeyboardEvent } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { companyDepartment, departmentStyle, type ReferenceDepartment } from '@/shared/config/reference-departments'
 import { displayDate } from '@/shared/lib/format'
+import { SelectField } from '@/shared/ui/SelectField'
 import { WatchDialog } from '../components/WatchDialog'
 import { safeWatchUrl, visibleWatchItems, type WatchAlert, type WatchBriefing, type WatchDraft, type WatchItem } from '../model'
 import { previewAlerts } from '../preview-data'
@@ -24,6 +25,7 @@ export default function WatchPage({ departments, preview, items = [], briefings 
   const [editor, setEditor] = useState<{ initial: Partial<WatchDraft>; id?: string } | null>(null)
   const canEdit = preview && !!onItemsChange
   const availableDepartments = [companyDepartment, ...departments.filter((item) => item.code !== 'company')]
+  const filterDepartments = [{ value: '', label: 'Everyone' }, ...availableDepartments.map((item) => ({ value: item.code, label: item.name }))]
   const departmentByCode = (code: string) => availableDepartments.find((item) => item.code === code) || companyDepartment
   const savedSourceIds = new Set(items.map((item) => item.sourceId).filter(Boolean))
   const alerts = preview ? previewAlerts.filter((alert) => !savedSourceIds.has(alert.id) && (inboxFilter === 'all' || alert.kind === inboxFilter)) : []
@@ -79,11 +81,11 @@ export default function WatchPage({ departments, preview, items = [], briefings 
         </ol></section>
       </>}
       {tab === 'inbox' && <>
-        <div className="vy-watch-toolbar"><label className="vy-watch-select-label">What to look for<select value={inboxFilter} onChange={(event) => setInboxFilter(event.target.value)}><option value="all">Everything (alerts and reviews)</option><option value="alert">Google Alerts only</option><option value="review">Reviews only</option></select></label><button type="button" className="vy-button vy-button-dark vy-button-small" disabled title="Email alerts are not connected yet">Check my email</button><span>{preview ? 'Sample messages only. No inbox is read.' : 'Email alerts are not connected yet.'}</span></div>
+        <div className="vy-watch-toolbar"><label className="vy-watch-select-label">What to look for<SelectField size="compact" value={inboxFilter} onChange={setInboxFilter} options={[{ value: 'all', label: 'Everything (alerts and reviews)' }, { value: 'alert', label: 'Google Alerts only' }, { value: 'review', label: 'Reviews only' }]} /></label><button type="button" className="vy-button vy-button-dark vy-button-small" disabled title="Email alerts are not connected yet">Check my email</button><span>{preview ? 'Sample messages only. No inbox is read.' : 'Email alerts are not connected yet.'}</span></div>
         {alerts.length ? <ul className="vy-watch-list">{alerts.map((alert) => <li className={`vy-watch-item vy-watch-item-${alert.kind}`} key={alert.id}><h2>{alert.subject}</h2><div className="vy-watch-meta"><span className={`vy-watch-kind vy-watch-kind-${alert.kind}`}>{kindLabel[alert.kind]}</span><span>{alert.sender}</span><span>{displayDate(alert.date, true)}</span></div><p>{alert.snippet}</p>{canEdit && <button type="button" className="vy-button vy-button-small" onClick={() => openAlert(alert)}>Save this</button>}</li>)}</ul> : <div className="vy-watch-empty">{preview ? 'No sample messages match this filter.' : 'Alerts and review notifications will appear here when email is connected.'}</div>}
       </>}
       {tab === 'saved' && <>
-        <div className="vy-watch-toolbar"><label className="vy-watch-select-label">Department<select value={department} onChange={(event) => setDepartment(event.target.value)}><option value="">Everyone</option>{availableDepartments.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label><button type="button" className="vy-button vy-button-small" onClick={() => setEditor({ initial: {} })}>Add something</button></div>
+        <div className="vy-watch-toolbar"><label className="vy-watch-select-label">Department<SelectField size="compact" value={department} onChange={setDepartment} options={filterDepartments} /></label><button type="button" className="vy-button vy-button-small" onClick={() => setEditor({ initial: {} })}>Add something</button></div>
         {saved.length ? <ul className="vy-watch-list">{saved.map((item) => {
           const href = safeWatchUrl(item.url)
           const itemDepartment = departmentByCode(item.department)
@@ -96,7 +98,7 @@ export default function WatchPage({ departments, preview, items = [], briefings 
         })}</ul> : <div className="vy-watch-empty">{department ? 'Nothing saved for this department yet.' : preview ? 'Nothing saved yet. Save a sample alert from the inbox, or add something you spotted.' : 'Shared saved items will appear here when Market watch is connected.'}</div>}
       </>}
       {tab === 'learn' && <>
-        <section className="vy-watch-learn" aria-labelledby="vy-watch-learn-title"><h2 id="vy-watch-learn-title">What we can learn</h2><p>Patterns, risks, and ideas from the items the team saves will appear here when analysis is connected.</p><div className="vy-watch-toolbar"><button type="button" className="vy-button vy-button-dark vy-button-small" disabled title="Market analysis is not connected yet">Read the last 90 days</button><label className="vy-watch-select-label">Department<select value={department} onChange={(event) => setDepartment(event.target.value)}><option value="">Everyone</option>{availableDepartments.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label></div></section>
+        <section className="vy-watch-learn" aria-labelledby="vy-watch-learn-title"><h2 id="vy-watch-learn-title">What we can learn</h2><p>Patterns, risks, and ideas from the items the team saves will appear here when analysis is connected.</p><div className="vy-watch-toolbar"><button type="button" className="vy-button vy-button-dark vy-button-small" disabled title="Market analysis is not connected yet">Read the last 90 days</button><label className="vy-watch-select-label">Department<SelectField size="compact" value={department} onChange={setDepartment} options={filterDepartments} /></label></div></section>
         <section className="vy-watch-discussion" aria-labelledby="vy-watch-discussion-title"><h2 id="vy-watch-discussion-title">Team discussion starters</h2><p>Use one at the weekly meeting.</p><ul><li>What did a competitor do this month that our customers would notice?</li><li>What is the last review that stung, and what did we change because of it?</li><li>What are we doing only because we have always done it?</li><li>If a new boba shop opened across the street tomorrow, what would we fix first?</li></ul></section>
       </>}
     </div>
