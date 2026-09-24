@@ -195,3 +195,11 @@ final result: passed for the UI-first scope
 - Typecheck, boundary check, all 17 frontend tests, and build pass. The existing main-chunk size warning remains. Signed-in forms and a live Supabase save were not tested.
 
 final result: passed
+
+## Compact Date Picker Navigation - September 24, 2026
+
+- Compared the current React DayPicker navigation options and retained its accessible calendar grid. The shared `DateField` now has a compact month/year header using the app's Radix select controls, plus previous/next month buttons. Day cells and spacing are reduced without changing stored ISO dates.
+- In Design preview, selecting February 2030 and a day saved the expected Market watch date. Calendar end-date navigation starts at the event start month; earlier days and months remain unavailable. At 375px the picker measures about 272 x 256 CSS pixels, stays inside the viewport, and causes no horizontal overflow. Browser console errors: none.
+- Existing date, time, and form behavior outside the shared date control is unchanged. Typecheck, boundary check, tests, and build pass. No live account save was tested.
+
+final result: passed
