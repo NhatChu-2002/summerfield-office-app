@@ -12,6 +12,7 @@ import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage } from '@/features/learning'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { ProjectPage, ProjectsPage } from '@/features/projects'
+import { ReportPage, ReportsPage } from '@/features/reports'
 import { todayLocal } from '@/shared/lib/format'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { TimePage } from '@/features/time'
@@ -71,6 +72,10 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <Suspense fallback={<p role="status">Loading lesson...</p>}><LessonPage key={route.code} id={route.code || ''} departments={access.departments.map(referenceForDepartment)} lessons={[]} progress={{ done: {}, scores: {} }} preview={false} /></Suspense>
   } else if (route.page === 'time') {
     content = <Suspense fallback={<p role="status">Loading Time clock...</p>}><TimePage entries={[]} corrections={[]} preview={false} canReview={access.organization.role === 'admin'} /></Suspense>
+  } else if (route.page === 'reports') {
+    content = <Suspense fallback={<p role="status">Loading reports...</p>}><ReportsPage departments={access.departments.map(referenceForDepartment)} reports={[]} preview={false} selectedMonth={route.month} /></Suspense>
+  } else if (route.page === 'report') {
+    content = <Suspense fallback={<p role="status">Loading report...</p>}><ReportPage key={`${route.code}-${route.month}`} departmentCode={route.code || ''} month={route.month || ''} departments={access.departments.map(referenceForDepartment)} reports={[]} preview={false} /></Suspense>
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}
