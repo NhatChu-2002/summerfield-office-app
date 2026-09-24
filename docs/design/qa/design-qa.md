@@ -237,3 +237,12 @@ final result: passed for the UI-first scope
 - Typecheck, boundary check, 29 frontend tests, and build pass. Focused tests cover leap-year half-month periods, punch states, and open-meal worked-time calculation.
 
 final result: passed for the UI-first scope
+
+## Monthly Reports Pages - September 24, 2026
+
+- Converted the prototype's report overview and department editor into `frontend/src/features/reports/`. A typed schema owns each team's question groups; shared executive fields and completion rules live in the feature model. The React UI includes month selection, preview status, executive highlights, report editing, submission/reopen, presentation, and preview CSV content generation.
+- Design preview uses labeled sample records and memory-only edits. Signed-in views do not show sample performance or enable shared report actions. Prototype goals, target-health scoring, AI-written summaries, automatic task creation, and live HQ activity totals were not represented as working features without their source contracts.
+- Browser checked overview and editor at phone-pane width, required-field validation, field edits, submitted locking, presentation, and selected-month routing across navigation. No horizontal page overflow was observed. The in-app browser did not expose a download event for the preview CSV; its rows, quoting, and spreadsheet-formula protection were unit-tested. Desktop screenshot verification remains unavailable in the narrow pane.
+- Typecheck, boundary check, 33 frontend tests, and build pass. Shared storage, actual report permissions, and a live account were not tested because they are not connected.
+
+final result: passed for the UI-first scope
