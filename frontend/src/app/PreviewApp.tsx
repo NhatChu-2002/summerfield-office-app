@@ -13,6 +13,7 @@ import { todayLocal } from '@/shared/lib/format'
 import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
 import { ProjectPage, ProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
+import { TimePage, previewTimeCorrections, previewTimeEntries, type TimeCorrection, type TimeEntry } from '@/features/time'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
 import { WatchPage, type WatchItem } from '@/features/watch'
 import { PREVIEW_USER, previewNames, previewPeople, previewTask, previewTasks } from './preview-data'
@@ -45,6 +46,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   const [ticketManager, setTicketManager] = useState('')
   const [lessons, setLessons] = useState<Lesson[]>(previewLessons)
   const [learningProgress, setLearningProgress] = useState<LearningProgress>({ done: {}, scores: {} })
+  const [timeEntries, setTimeEntries] = useState<TimeEntry[]>(previewTimeEntries)
+  const [timeCorrections, setTimeCorrections] = useState<TimeCorrection[]>(previewTimeCorrections)
   const [newTask, setNewTask] = useState(false)
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const openTask = openTaskId ? tasks.find((task) => task.id === openTaskId) : undefined
@@ -82,6 +85,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
       onMarkDone={(id) => setLearningProgress((current) => ({ ...current, done: { ...current.done, [id]: todayLocal() } }))}
       onSaveScore={(id, score) => setLearningProgress((current) => ({ done: { ...current.done, [id]: todayLocal() }, scores: { ...current.scores, [id]: score } }))}
       onDelete={(id) => { setLessons((current) => current.filter((item) => item.id !== id)); setLearningProgress((current) => { const done = { ...current.done }; const scores = { ...current.scores }; delete done[id]; delete scores[id]; return { done, scores } }) }} /></Suspense>
+  } else if (route.page === 'time') {
+    content = <Suspense fallback={<p role="status">Loading Time clock...</p>}><TimePage entries={timeEntries} corrections={timeCorrections} preview canReview onEntriesChange={setTimeEntries} onCorrectionsChange={setTimeCorrections} /></Suspense>
   } else if (route.page === 'department' && department) {
     content = <DepartmentLayout department={department} role="Preview" taskContent={null} updateContent={null} onNewTask={() => {}} writable={false} dataReady={false} />
   } else if (route.page === 'department') {

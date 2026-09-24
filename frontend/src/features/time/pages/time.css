@@ -1,0 +1,57 @@
+.vy-time-hero { background:#bfd3d6; }
+.vy-time-hero > div:first-child { min-width:0; }
+.vy-time-hero .vy-hero-actions { align-items:center; flex-wrap:wrap; }
+.vy-time-hero .vy-control { min-width:190px; }
+.vy-time-status { margin:-8px 0 18px; color:#5f6e67; font-size:12px; }
+.vy-time-tabs { display:flex; gap:2px; margin-bottom:17px; border-bottom:1px solid #d6e0d8; }
+.vy-time-tabs button { min-height:40px; padding:8px 15px; border:0; border-bottom:3px solid transparent; background:none; color:#52655a; font-size:13px; cursor:pointer; }
+.vy-time-tabs button[aria-selected=true] { border-bottom-color:#356648; color:#231f20; font-weight:700; }
+.vy-time-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,340px); align-items:start; gap:20px; }
+.vy-time-sheet { min-width:0; }
+.vy-time-section-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px 14px; margin-bottom:9px; }
+.vy-time-section-head h2,.vy-time-requests h2 { margin:0; font-size:23px; }
+.vy-time-section-head span { color:#617067; font-size:12px; }
+.vy-time-table-wrap { max-width:100%; overflow-x:auto; border-top:1px solid #d8e2da; }
+.vy-time-table { width:100%; min-width:620px; border-collapse:collapse; font-size:12px; }
+.vy-time-table th,.vy-time-table td { padding:10px 8px; border-bottom:1px solid #d8e2da; text-align:left; vertical-align:top; white-space:nowrap; }
+.vy-time-table th { color:#5d6d63; font-size:10px; font-weight:700; text-transform:uppercase; }
+.vy-time-table td { color:#27392e; }
+.vy-time-table .vy-time-number { font-variant-numeric:tabular-nums; font-weight:700; }
+.vy-time-meal { display:block; }
+.vy-time-row-action { display:grid; place-items:center; width:27px; height:27px; border:1px solid #d8e2da; border-radius:5px; background:#fff; color:#416b4f; cursor:pointer; }
+.vy-time-row-action:hover { background:#eff6ef; }
+.vy-time-empty { margin:0; padding:18px 0; color:#617067; font-size:13px; }
+.vy-time-clock { display:flex; align-items:center; flex-direction:column; min-width:0; padding:21px 19px; border:1px solid #d9e2db; border-radius:8px; background:#fff; text-align:center; }
+.vy-time-clock > svg { color:#608b6b; }
+.vy-time-now { margin-top:6px; font-family:Caudex,serif; font-size:42px; line-height:1.15; }
+.vy-time-state { margin:3px 0 12px; color:#627269; font-size:13px; }
+.vy-time-elapsed { font-size:22px; font-variant-numeric:tabular-nums; }
+.vy-time-worked-label { color:#627269; font-size:11px; }
+.vy-time-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin-top:18px; }
+.vy-time-actions .vy-button { min-height:36px; }
+.vy-time-timeline { display:flex; justify-content:center; flex-wrap:wrap; gap:5px; margin-top:18px; padding-top:14px; border-top:1px solid #e0e7e0; }
+.vy-time-timeline span { padding:4px 7px; border-radius:4px; background:#eef3ee; color:#405c47; font-size:11px; }
+.vy-time-correct { margin-top:17px; padding:4px; border:0; background:none; color:#3f6f50; font-size:12px; text-decoration:underline; cursor:pointer; }
+.vy-time-correct:disabled { color:#8a9990; cursor:not-allowed; }
+.vy-time-requests { max-width:850px; }
+.vy-time-request { padding:14px 0; border-bottom:1px solid #d8e2da; }
+.vy-time-request > div:first-child { display:flex; align-items:center; flex-wrap:wrap; gap:9px; }
+.vy-time-request h3 { margin:0; font-size:15px; }
+.vy-time-request p { margin:7px 0 0; color:#435648; font-size:13px; overflow-wrap:anywhere; }
+.vy-time-request-status { padding:3px 7px; border-radius:4px; background:#f2e7c8; color:#684f15; font-size:10px; text-transform:capitalize; }
+.vy-time-request-status.is-reviewed { background:#e0efdf; color:#336441; }
+.vy-time-request-status.is-declined { background:#f4e1db; color:#8a4037; }
+.vy-time-request-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.vy-time-disclaimer { max-width:800px; margin:24px 0 0; padding-top:12px; border-top:1px solid #d8e2da; color:#68756c; font-size:11px; }
+.vy-time-error { color:#a04338; font-size:12px; }
+.vy-time-dialog { width:min(520px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); padding:22px 24px; border:0; border-radius:8px; background:#fff; color:#231f20; box-shadow:0 20px 60px #231f2040; }
+.vy-time-dialog::backdrop { background:#231f2066; }
+.vy-time-dialog h2 { margin:0 0 6px; font-size:25px; }
+.vy-time-dialog p { margin:0 0 16px; color:#617067; font-size:12px; }
+.vy-time-dialog label { display:flex; flex-direction:column; gap:5px; min-width:0; margin-bottom:13px; font-size:12px; font-weight:600; }
+.vy-time-form-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.vy-time-dialog textarea { width:100%; min-width:0; padding:9px; border:1px solid #d2ddd4; border-radius:7px; background:#fff; color:#231f20; resize:vertical; }
+.vy-time-dialog .vy-time-error { color:#a04338; }
+.vy-time-dialog-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:7px; margin-top:16px; }
+@media(max-width:900px) { .vy-time-hero { align-items:flex-start; flex-direction:column; } .vy-time-layout { grid-template-columns:1fr; } .vy-time-clock { max-width:440px; } }
+@media(max-width:600px) { .vy-time-hero .vy-hero-actions { width:100%; justify-content:flex-start; } .vy-time-hero .vy-control { flex:1 1 190px; } .vy-time-tabs button { flex:1; padding-inline:5px; font-size:12px; } .vy-time-clock { max-width:none; } .vy-time-form-row { grid-template-columns:1fr; gap:0; } .vy-time-dialog { padding:18px; } .vy-time-dialog h2 { font-size:21px; } }
