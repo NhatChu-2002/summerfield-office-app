@@ -12,18 +12,20 @@ test('half-month periods cross a leap-year boundary', () => {
 })
 
 test('punch transitions require a valid shift and meal state', () => {
-  const inAt = '2026-09-24T09:00:00-07:00'
+  const at = (hour, minute = 0) => new Date(2026, 8, 24, hour, minute).toISOString()
+  const inAt = at(9)
   const started = punchShift(undefined, 'in', inAt, 'me')
-  const meal = punchShift(started, 'mealStart', '2026-09-24T12:00:00-07:00', 'me')
-  assert.throws(() => punchShift(meal, 'out', '2026-09-24T12:05:00-07:00', 'me'), /End the meal/)
-  const resumed = punchShift(meal, 'mealEnd', '2026-09-24T12:30:00-07:00', 'me')
-  const ended = punchShift(resumed, 'out', '2026-09-24T17:00:00-07:00', 'me')
+  const meal = punchShift(started, 'mealStart', at(12), 'me')
+  assert.throws(() => punchShift(meal, 'out', at(12, 5), 'me'), /End the meal/)
+  const resumed = punchShift(meal, 'mealEnd', at(12, 30), 'me')
+  const ended = punchShift(resumed, 'out', at(17), 'me')
   assert.equal(workedMinutes(ended), 450)
   assert.throws(() => punchShift(ended, 'in', inAt, 'me'), /already recorded/)
 })
 
 test('open meals are excluded from elapsed work without negative minutes', () => {
-  const entry = punchShift(undefined, 'in', '2026-09-24T09:00:00Z', 'me')
-  const meal = punchShift(entry, 'mealStart', '2026-09-24T12:00:00Z', 'me')
-  assert.equal(workedMinutes(meal, '2026-09-24T12:40:00Z'), 180)
+  const at = (hour, minute = 0) => new Date(2026, 8, 24, hour, minute).toISOString()
+  const entry = punchShift(undefined, 'in', at(9), 'me')
+  const meal = punchShift(entry, 'mealStart', at(12), 'me')
+  assert.equal(workedMinutes(meal, at(12, 40)), 180)
 })
