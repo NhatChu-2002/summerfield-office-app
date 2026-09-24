@@ -1,0 +1,71 @@
+.vy-learning-hero { background:#f3e6be; }
+.vy-learning-hero > div:first-child,.vy-lesson-hero > div:first-child { min-width:0; }
+.vy-learning-hero .vy-hero-actions,.vy-lesson-hero .vy-hero-actions { flex:none; }
+.vy-learning-status { margin:-9px 0 17px; color:#637168; font-size:12px; }
+.vy-learning-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin-bottom:20px; padding:15px 0; border-block:1px solid #d9e3dc; }
+.vy-learning-stats > div { display:flex; flex-direction:column; gap:4px; min-width:0; padding:0 18px; border-right:1px solid #d9e3dc; }
+.vy-learning-stats > div:first-child { padding-left:0; }
+.vy-learning-stats > div:last-child { border-right:0; }
+.vy-learning-stats strong { font-size:27px; line-height:1; }
+.vy-learning-stats span { color:#617067; font-size:12px; }
+.vy-learning-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin-bottom:16px; }
+.vy-learning-toolbar > .vy-control { flex:0 0 180px; width:180px; }
+.vy-learning-search { display:flex; align-items:center; gap:7px; flex:0 1 320px; min-width:180px; min-height:37px; padding:0 10px; border:1px solid #d2ddd4; border-radius:7px; background:#fff; color:#617067; }
+.vy-learning-search:focus-within { outline:2px solid #8fad97; outline-offset:1px; }
+.vy-learning-search input { width:100%; min-width:0; border:0; outline:0; background:transparent; color:#231f20; font-size:13px; }
+.vy-learning-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,285px),1fr)); gap:12px; }
+.vy-learning-card { display:flex; flex-direction:column; min-width:0; min-height:210px; padding:16px 17px; border:1px solid #dce5de; border-left:5px solid var(--vy-color,#b6cfae); border-radius:8px; background:#fff; }
+.vy-learning-card-meta { display:flex; align-items:center; flex-wrap:wrap; gap:5px 9px; color:#66746b; font-size:11px; }
+.vy-learning-team { padding:3px 6px; border-radius:3px; background:var(--vy-color,#b6cfae); color:var(--vy-foreground,#231f20); font-weight:600; }
+.vy-learning-card h2 { margin:11px 0 6px; font-family:'Work Sans',sans-serif; font-size:16px; font-weight:600; line-height:1.3; overflow-wrap:anywhere; }
+.vy-learning-card p { margin:0; color:#4e5e53; font-size:13px; line-height:1.45; overflow-wrap:anywhere; }
+.vy-learning-card-bottom { display:flex; align-items:center; flex-wrap:wrap; gap:6px 9px; margin-top:auto; padding-top:16px; color:#66746b; font-size:11px; }
+.vy-learning-card-bottom strong { padding:3px 7px; border-radius:4px; background:#e4eedd; color:#365d39; font-size:11px; }
+.vy-learning-empty { margin:0; padding:17px 15px; background:#f4f7f4; color:#637168; font-size:13px; }
+.vy-learning-suggestions { margin-top:27px; padding:16px 0; border-top:1px solid #d9e3dc; }
+.vy-learning-suggestions h2 { margin:0 0 11px; font-size:21px; }
+.vy-learning-suggestions > div { display:flex; flex-wrap:wrap; gap:7px; }
+.vy-learning-topic { min-height:33px; padding:6px 10px; border:1px solid #d3ddd5; border-radius:5px; background:#fff; color:#334d3a; font-size:12px; text-align:left; }
+.vy-learning-topic:hover { border-color:#8bab93; background:#f2f7f2; }
+.vy-learning-back { display:inline-flex; align-items:center; gap:5px; margin:0 0 12px; color:#446b50; font-size:12px; }
+.vy-learning-back:hover { text-decoration:underline; }
+.vy-lesson-hero { min-height:175px; margin-bottom:0; background:var(--vy-color,#bfd3d6); }
+.vy-lesson-hero h1 { overflow-wrap:anywhere; }
+.vy-lesson-content { max-width:790px; padding-top:20px; }
+.vy-lesson-content h2 { margin:18px 0 6px; font-size:23px; }
+.vy-lesson-content p,.vy-lesson-content li { font-size:14px; line-height:1.6; overflow-wrap:anywhere; }
+.vy-lesson-content section > p { margin:0 0 13px; }
+.vy-lesson-content ul { margin:6px 0 0; padding-left:20px; }
+.vy-lesson-why { margin:0 0 17px; font-size:16px!important; font-weight:600; }
+.vy-lesson-takeaways { margin:22px 0; padding:12px 17px 15px; border-left:5px solid var(--vy-color,#b6cfae); background:#f4f7f1; }
+.vy-lesson-takeaways h2 { margin-top:0; font-size:20px; }
+.vy-lesson-quiz { margin-top:24px; padding:18px; border:1px solid #d9e3dc; border-radius:8px; background:#fff; }
+.vy-lesson-quiz h2 { margin:0 0 14px; }
+.vy-lesson-quiz fieldset { margin:0 0 17px; padding:0; border:0; }
+.vy-lesson-quiz legend { margin-bottom:8px; font-size:13px; font-weight:700; }
+.vy-lesson-quiz label { display:flex; align-items:center; gap:9px; min-height:38px; margin:4px 0; padding:6px 9px; border-radius:5px; font-size:13px; line-height:1.4; cursor:pointer; }
+.vy-lesson-quiz label:hover { background:#f3f6f2; }
+.vy-lesson-quiz label.is-right { background:#e4eedd; }
+.vy-lesson-quiz label.is-wrong { background:#fbe3de; }
+.vy-lesson-quiz label input { flex:none; accent-color:#386b4a; }
+.vy-lesson-explanation { margin:6px 0 0; color:#657368; font-size:12px!important; }
+.vy-lesson-result { display:inline-block; margin:0 0 0 12px; color:#355c3d; font-weight:700; }
+.vy-lesson-disclaimer { margin-top:25px; padding-top:12px; border-top:1px solid #d9e3dc; color:#68766d; font-size:12px!important; }
+.vy-learning-unavailable { padding:24px 0; }
+.vy-learning-unavailable h1 { margin:0 0 7px; }
+.vy-learning-unavailable p { color:#637168; }
+.vy-learning-delete { display:flex; align-items:center; flex-wrap:wrap; gap:7px; padding:10px 0; border-bottom:1px solid #d9e3dc; }
+.vy-learning-delete p { margin:0 auto 0 0; font-size:13px; }
+.vy-learning-dialog { width:min(640px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); padding:22px 24px; border:0; border-radius:8px; background:#fff; color:#231f20; box-shadow:0 20px 60px #231f2040; }
+.vy-learning-dialog::backdrop { background:#231f2066; }
+.vy-learning-form h2 { margin:0 0 6px; font-size:25px; }
+.vy-learning-form > p { margin:0 0 15px; color:#66746b; font-size:12px; }
+.vy-learning-form > label,.vy-learning-form-grid > label { display:flex; flex-direction:column; gap:5px; min-width:0; margin-bottom:12px; font-size:12px; font-weight:600; }
+.vy-learning-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 14px; }
+.vy-learning-form label small { color:#66746b; font-weight:400; }
+.vy-learning-form input:not([type=checkbox]),.vy-learning-form textarea { width:100%; min-width:0; min-height:40px; padding:8px 10px; border:1px solid #d2ddd4; border-radius:7px; background:#fff; color:#231f20; font-size:13px; font-weight:400; }
+.vy-learning-form textarea { resize:vertical; }
+.vy-learning-error { color:#a04338!important; font-size:12px!important; }
+.vy-learning-dialog-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:7px; margin-top:17px; }
+@media(max-width:900px) { .vy-learning-hero,.vy-lesson-hero { align-items:flex-start; flex-direction:column; } .vy-learning-hero .vy-hero-actions,.vy-lesson-hero .vy-hero-actions { justify-content:flex-start; } }
+@media(max-width:600px) { .vy-learning-stats strong { font-size:23px; } .vy-learning-stats > div { padding:0 8px; } .vy-learning-stats > div:first-child { padding-left:0; } .vy-learning-stats span { font-size:10px; } .vy-learning-search { flex-basis:100%; max-width:none; } .vy-learning-toolbar > .vy-control { flex:1 1 170px; width:auto; } .vy-learning-form-grid { grid-template-columns:1fr; } .vy-learning-dialog { padding:18px; } .vy-learning-form h2 { font-size:21px; } .vy-lesson-quiz { padding:13px; } .vy-lesson-result { display:block; margin:10px 0 0; } }

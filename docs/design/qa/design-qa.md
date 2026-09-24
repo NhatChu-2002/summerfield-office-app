@@ -219,3 +219,12 @@ final result: passed
 - Typecheck, import-boundary check, 23 frontend tests, and build pass. Shared project persistence, files, Asana synchronization, and a signed-in account were not tested because those services are not connected.
 
 final result: passed for the UI-first scope
+
+## Learning Pages - September 24, 2026
+
+- Converted the prototype's Learning library and lesson reader into `frontend/src/features/learning/`, with team filtering, search, progress totals, takeaways, watchouts, and scored quick-check quizzes. Focused tests cover filtering, summary totals, and complete-answer scoring.
+- Design preview uses labeled sample lessons and memory-only progress, scores, and manually written drafts. The draft form does not claim to use Claude. Signed-in views show the unconnected state without sample company lessons or enabled publishing.
+- Browser checked the library and reader at phone-pane width, unanswered quiz validation, a correct quiz score, completed status, search, draft creation and removal, and the mobile draft dialog. There was no horizontal page overflow or browser console error. The browser pane did not honor a desktop viewport override, so desktop visual layout was reviewed in CSS but not screenshot-verified.
+- Typecheck, import-boundary check, 26 frontend tests, and production build pass. Shared lesson storage, progress persistence, AI writing, and live-account permissions remain untested because those services are not connected.
+
+final result: passed for the UI-first scope

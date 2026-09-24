@@ -8,6 +8,8 @@ import { DashboardPage } from '@/features/dashboard'
 import { DepartmentLayout } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
+import { LearningPage, LessonPage, previewLessons, type LearningProgress, type Lesson } from '@/features/learning'
+import { todayLocal } from '@/shared/lib/format'
 import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
 import { ProjectPage, ProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
@@ -41,6 +43,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   const [projectTasks, setProjectTasks] = useState<ProjectTask[]>(previewProjectTasks)
   const [projectMessages, setProjectMessages] = useState<ProjectMessage[]>(previewProjectMessages)
   const [ticketManager, setTicketManager] = useState('')
+  const [lessons, setLessons] = useState<Lesson[]>(previewLessons)
+  const [learningProgress, setLearningProgress] = useState<LearningProgress>({ done: {}, scores: {} })
   const [newTask, setNewTask] = useState(false)
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const openTask = openTaskId ? tasks.find((task) => task.id === openTaskId) : undefined
@@ -71,6 +75,13 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <ProjectsPage departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} preview ticketManager={ticketManager} onTicketManagerChange={setTicketManager} onProjectsChange={setProjects} onTasksChange={setProjectTasks} />
   } else if (route.page === 'project') {
     content = <ProjectPage id={route.code || ''} departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} messages={projectMessages} preview onProjectsChange={setProjects} onTasksChange={setProjectTasks} onMessagesChange={setProjectMessages} />
+  } else if (route.page === 'learn') {
+    content = <Suspense fallback={<p role="status">Loading Learning...</p>}><LearningPage departments={referenceDepartments} lessons={lessons} progress={learningProgress} preview onLessonsChange={setLessons} /></Suspense>
+  } else if (route.page === 'lesson') {
+    content = <Suspense fallback={<p role="status">Loading lesson...</p>}><LessonPage key={route.code} id={route.code || ''} departments={referenceDepartments} lessons={lessons} progress={learningProgress} preview
+      onMarkDone={(id) => setLearningProgress((current) => ({ ...current, done: { ...current.done, [id]: todayLocal() } }))}
+      onSaveScore={(id, score) => setLearningProgress((current) => ({ done: { ...current.done, [id]: todayLocal() }, scores: { ...current.scores, [id]: score } }))}
+      onDelete={(id) => { setLessons((current) => current.filter((item) => item.id !== id)); setLearningProgress((current) => { const done = { ...current.done }; const scores = { ...current.scores }; delete done[id]; delete scores[id]; return { done, scores } }) }} /></Suspense>
   } else if (route.page === 'department' && department) {
     content = <DepartmentLayout department={department} role="Preview" taskContent={null} updateContent={null} onNewTask={() => {}} writable={false} dataReady={false} />
   } else if (route.page === 'department') {
