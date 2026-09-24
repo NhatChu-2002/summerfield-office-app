@@ -5,6 +5,7 @@ import { Notice } from '@/shared/ui/Notice'
 import { useToast } from '@/shared/ui/toast'
 import { canWriteDepartment, type Access } from '@/features/auth'
 import { CalendarPage } from '@/features/calendar'
+import { CatalogPage } from '@/features/catalog'
 import { DashboardPage } from '@/features/dashboard'
 import { DepartmentPage, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
@@ -76,6 +77,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <LocationsPage locations={[]} equipment={[]} preview={false} />
   } else if (route.page === 'location') {
     content = <LocationPage id={route.code || ''} locations={[]} equipment={[]} preview={false} />
+  } else if (route.page === 'catalog') {
+    content = <CatalogPage rows={[]} vendors={[]} standards={[]} changes={[]} preview={false} />
   } else if (route.page === 'learn') {
     content = <Suspense fallback={<p role="status">Loading Learning...</p>}><LearningPage departments={access.departments.map(referenceForDepartment)} lessons={[]} progress={{ done: {}, scores: {} }} preview={false} /></Suspense>
   } else if (route.page === 'lesson') {

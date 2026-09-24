@@ -4,6 +4,7 @@ import { companyDepartment, referenceByCode, referenceDepartments } from '@/shar
 import type { Route } from '@/shared/lib/routing'
 import type { Access } from '@/features/auth'
 import { CalendarPage, type CalendarDraft } from '@/features/calendar'
+import { CatalogPage, previewCatalogRows, previewCatalogStandards, previewCatalogVendors, type CatalogChange, type CatalogRow } from '@/features/catalog'
 import { DashboardPage } from '@/features/dashboard'
 import { DepartmentLayout } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
@@ -40,6 +41,8 @@ const loadPreviewPeople = async () => previewPeople
 
 export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void }) {
   const [calendarEvents, setCalendarEvents] = useState<CalendarDraft[]>([])
+  const [catalogRows, setCatalogRows] = useState<CatalogRow[]>(previewCatalogRows)
+  const [catalogChanges, setCatalogChanges] = useState<CatalogChange[]>([])
   const [tasks, setTasks] = useState<HqTask[]>(previewTasks)
   const [watchItems, setWatchItems] = useState<WatchItem[]>([])
   const [areas, setAreas] = useState<OwnershipArea[]>(previewAreas)
@@ -96,6 +99,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <LocationsPage locations={locations} equipment={locationEquipment} preview onLocationsChange={setLocations} />
   } else if (route.page === 'location') {
     content = <LocationPage key={route.code} id={route.code || ''} locations={locations} equipment={locationEquipment} projects={projects} tasks={projectTasks} preview onLocationsChange={setLocations} onEquipmentChange={setLocationEquipment} />
+  } else if (route.page === 'catalog') {
+    content = <CatalogPage rows={catalogRows} vendors={previewCatalogVendors} standards={previewCatalogStandards} changes={catalogChanges} preview onRowsChange={setCatalogRows} onChangesChange={setCatalogChanges} />
   } else if (route.page === 'learn') {
     content = <Suspense fallback={<p role="status">Loading Learning...</p>}><LearningPage departments={referenceDepartments} lessons={lessons} progress={learningProgress} preview onLessonsChange={setLessons} /></Suspense>
   } else if (route.page === 'lesson') {
