@@ -122,3 +122,23 @@ final result: passed
 - Type-check, boundary check, tests and build pass.
 
 final result: passed
+
+## Play with Sunny - September 24, 2026
+
+- Reference: the "Play with Sunny" menu in `docs/design/reference/Summerfield HQ.html` (boba, wiggle dance, hug, nap), with its styles and icons. Added "Let the dragonfly fly" in the same style, and clicking the dragonfly on her head also triggers it.
+- Structure: Sunny's position now lives on a wrapper `div`. Her body is still the click and drag button, and the sparkle trigger and menu sit beside it, because HTML doesn't allow a button inside a button.
+- Performances: the dragonfly flight (3.4s lap with buzzing wings, while her eyes and head follow it), the dance (sway, stepping feet, floating notes), the hug (two heart beats, wings wrap), the boba sip, and nap (yawn, then sleep). Each starts from rest, runs one at a time, and speaks after the move. A click, a new action, or grabbing her ends the current one cleanly.
+- Verified in the browser (design preview):
+  - Every action ran with its expected motion, face, and line.
+  - A second boba within 60s gets "still full".
+  - While she's asleep the menu offers "Wake Sunny up".
+  - Escape closes the menu and returns focus. Arrow keys, Home and End move through it.
+  - Clicking the dragonfly flies it (even while she sleeps), and clicking her body still gives a thought.
+  - A click mid-flight or mid-sip cancels cleanly, with no leftover line or stuck cup.
+  - Grabbing her closes the menu.
+  - The menu fits at 375px (nudged on screen) and at desktop width.
+  - No console errors.
+- Not verified: the landing after a drop, after the wrapper change. The browser pane was hidden during that check, which pauses animations. The drop code only changed which element it moves (the wrapper instead of the button), and it was verified before the change.
+- Type-check, boundary check, 13 tests and build pass.
+
+final result: passed (drop landing to recheck with the pane visible)

@@ -7,8 +7,8 @@ export type SunnyFace = 'front' | 'heart' | 'glasses' | 'teary' | 'sleepy'
 export type SunnyDirection = 'front' | 'left' | 'right' | 'away'
 export type SunnyMouth = 'closed' | 'talk' | 'open' | 'yawn'
 export type SunnyMotion = 'idle' | 'react' | 'walk' | 'held' | 'sleep' | 'wake' | 'settle' | 'greet'
-  | 'wave' | 'fall' | 'land' | 'pet' | 'dizzy' | 'sip'
-export type SunnyAct = 'look' | 'tilt' | 'stretch' | 'hop' | 'fly' | 'wish'
+  | 'wave' | 'fall' | 'land' | 'pet' | 'dizzy' | 'sip' | 'dance' | 'hug'
+export type SunnyAct = 'look' | 'tilt' | 'stretch' | 'hop' | 'fly' | 'flight' | 'wish'
 
 const FRONT = '/sunny-pet/front.webp'
 // Layers split from front.webp by scripts/split_sunny_layers.py, so the dragonfly and wings can move
@@ -141,7 +141,7 @@ export const SunnyCharacter = memo(function SunnyCharacter({
         </g>
       </>)}
       {!away && wings}
-      {!away && <g className="sunny-fly"><image href={FLY} width="208" height="260" /></g>}
+      {!away && <g className="sunny-fly"><g className="sunny-fly-buzz"><image href={FLY} width="208" height="260" /></g></g>}
     </g></g>
   </svg>
 })
