@@ -1,0 +1,10 @@
+.vy-departments-hero { min-height:165px; margin-bottom:18px; background:#c7d9cc; }
+.vy-departments-note { margin:-9px 0 18px; color:#637168; font-size:12px; }
+.vy-departments-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:12px; }
+.vy-department-index-card { display:flex; flex-direction:column; min-width:0; min-height:170px; padding:16px 18px; border:1px solid #dce5de; border-top:4px solid var(--vy-color); border-radius:8px; background:#fff; transition:border-color .15s,box-shadow .15s; }
+.vy-department-index-card:hover { border-color:#a7bfad; box-shadow:0 3px 12px #1d442414; }
+.vy-department-index-icon { display:flex; justify-content:space-between; align-items:center; color:#496f55; }
+.vy-department-index-card h2 { margin:13px 0 4px; font-size:20px; }
+.vy-department-index-card p { margin:0 0 15px; color:#637168; font-size:12px; line-height:1.45; }
+.vy-department-index-card span { margin-top:auto; color:#637168; font-size:11px; }
+.vy-departments-empty { padding:18px; background:#f3f7f3; color:#637168; font-size:13px; }
