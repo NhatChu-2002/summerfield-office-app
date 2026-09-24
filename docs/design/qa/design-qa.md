@@ -255,3 +255,12 @@ final result: passed for the UI-first scope
 - Typecheck, import boundaries, 37 frontend tests, and production build pass. Focused tests cover line parsing, search/sort, action source, and web-link safety.
 
 final result: passed for the UI-first scope
+
+## SOP Studio Page - September 24, 2026
+
+- Converted the prototype's SOP Studio into `frontend/src/features/sop/`: a typed draft model, manual house-format editor, checklist, filing handoff, and preview draft library. The form supports repeatable roles, procedure steps, related documents, approvals, and version history.
+- Design preview holds drafts in memory. Raw notes are kept as reference material, not processed by Claude. File import, Word generation, shared approvals, and Drive upload are disabled; the preview-only filed status requires a valid web link and a complete checklist.
+- Browser checked the phone-pane start form, draft from pasted notes, procedure editing, save/reopen, checklist state, and mobile row geometry. The page content does not overflow horizontally; the existing narrow top bar still exceeds the pane by about 5px. Desktop visual verification and connected service flows remain untested.
+- Typecheck, import boundaries, 43 frontend tests, and production build pass. Focused tests cover SOP numbering, steps, placeholders, date validity, completeness, text export, and link safety.
+
+final result: passed for the UI-first scope
