@@ -10,6 +10,7 @@ import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
+import { WatchPage, type WatchItem } from '@/features/watch'
 import { PREVIEW_USER, previewNames, previewPeople, previewTask, previewTasks } from './preview-data'
 
 // Design preview: every screen with no company data and nothing saved.
@@ -30,6 +31,7 @@ const loadPreviewPeople = async () => previewPeople
 export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void }) {
   const [calendarEvents, setCalendarEvents] = useState<CalendarDraft[]>([])
   const [tasks, setTasks] = useState<HqTask[]>(previewTasks)
+  const [watchItems, setWatchItems] = useState<WatchItem[]>([])
   const [newTask, setNewTask] = useState(false)
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const openTask = openTaskId ? tasks.find((task) => task.id === openTaskId) : undefined
@@ -49,6 +51,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <DepartmentFoldersPage departments={referenceDepartments} dashboardCodes={['company', ...referenceDepartments.map((item) => item.code)]} />
   } else if (route.page === 'help') {
     content = <Suspense fallback={<p role="status">Loading guides...</p>}><HelpPage departments={previewAccess.departments} /></Suspense>
+  } else if (route.page === 'watch') {
+    content = <Suspense fallback={<p role="status">Loading Market watch...</p>}><WatchPage departments={[companyDepartment, ...referenceDepartments]} preview items={watchItems} onItemsChange={setWatchItems} /></Suspense>
   } else if (route.page === 'department' && department) {
     content = <DepartmentLayout department={department} role="Preview" taskContent={null} updateContent={null} onNewTask={() => {}} writable={false} dataReady={false} />
   } else if (route.page === 'department') {

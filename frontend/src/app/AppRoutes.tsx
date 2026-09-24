@@ -1,5 +1,5 @@
 import { Suspense, useState, type ReactNode } from 'react'
-import { referenceForDepartment } from '@/shared/config/reference-departments'
+import { companyDepartment, referenceForDepartment } from '@/shared/config/reference-departments'
 import type { Route } from '@/shared/lib/routing'
 import { Notice } from '@/shared/ui/Notice'
 import { useToast } from '@/shared/ui/toast'
@@ -11,6 +11,7 @@ import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { UpdateList, UpdatesPage } from '@/features/updates'
+import { WatchPage } from '@/features/watch'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
 import { useHqData } from './providers/HqDataProvider'
 
@@ -48,6 +49,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <DepartmentFoldersPage departments={access.departments.map(referenceForDepartment)} dashboardCodes={access.departments.map((item) => item.code)} />
   } else if (route.page === 'help') {
     content = <Suspense fallback={<p role="status">Loading guides...</p>}><HelpPage departments={access.departments} /></Suspense>
+  } else if (route.page === 'watch') {
+    content = <Suspense fallback={<p role="status">Loading Market watch...</p>}><WatchPage departments={[companyDepartment, ...access.departments.map(referenceForDepartment)]} preview={false} /></Suspense>
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}

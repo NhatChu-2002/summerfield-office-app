@@ -166,3 +166,13 @@ final result: passed
 - Build, type-check, boundary check, and all frontend tests pass. Live account permissions and backend guides remain for a later integration pass.
 
 final result: passed for the UI-first scope
+
+## Market Watch Rebuild - September 24, 2026
+
+- Source: `docs/design/reference/Summerfield HQ.html`, Market watch's four tabs, blue striped hero, empty states, setup instructions, saved-item cards, and add/edit dialog. The original prototype was opened through a local HTTP server for comparison.
+- Structure: `frontend/src/features/watch/` owns the page, dialog, preview examples, item types, filtering, link validation, and styles. App routes only provide departments and preview state. The page loads in its own chunk.
+- In Design preview, sample inbox messages are labeled as examples; no email is read. Adding, editing, removing, filtering, and saving a sample alert change temporary in-memory items. The signed-in workspace shows the screen but clearly marks shared data, email, analysis, and task conversion as unconnected; it does not pretend to save.
+- Checked in the browser at desktop and 375px: the hero, tabs, saved-item card, and dialog fit without horizontal page overflow. Keyboard arrows switch tabs. The dialog focuses the title, rejects whitespace-only titles, and saves a valid item. The browser reported no console errors.
+- Typecheck, import-boundary check, all 15 frontend tests, and build pass. Real account permissions and backend data were not tested because Market watch has no HQ database or email contract yet.
+
+final result: passed for the UI-first scope
