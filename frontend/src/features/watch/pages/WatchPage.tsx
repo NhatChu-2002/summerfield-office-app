@@ -1,5 +1,5 @@
 import { useState, type KeyboardEvent } from 'react'
-import { ArrowUpRight, Plus } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { companyDepartment, departmentStyle, type ReferenceDepartment } from '@/shared/config/reference-departments'
 import { displayDate } from '@/shared/lib/format'
 import { WatchDialog } from '../components/WatchDialog'
@@ -61,7 +61,7 @@ export default function WatchPage({ departments, preview, items = [], briefings 
       <div><h1>Market watch</h1><p>What is happening around us: the industry, our area, our competitors, and what people are saying about our stores. Read it, then take one thing from it.</p></div>
       <div className="vy-hero-actions">
         <button type="button" className="vy-button" disabled title="Email alerts are not connected yet">Check my email for alerts</button>
-        <button type="button" className="vy-button vy-button-dark" disabled={!canEdit} title={canEdit ? undefined : 'Shared Market watch items are not connected yet'} onClick={() => setEditor({ initial: {} })}><Plus size={15} /> Add something</button>
+        <button type="button" className="vy-button vy-button-dark" onClick={() => setEditor({ initial: {} })}>Add something</button>
       </div>
     </header>
     {!preview && <p className="vy-watch-status">Market watch is being rebuilt. Shared briefings, saved items, email alerts, and analysis are not connected yet.</p>}
@@ -83,7 +83,7 @@ export default function WatchPage({ departments, preview, items = [], briefings 
         {alerts.length ? <ul className="vy-watch-list">{alerts.map((alert) => <li className={`vy-watch-item vy-watch-item-${alert.kind}`} key={alert.id}><h2>{alert.subject}</h2><div className="vy-watch-meta"><span className={`vy-watch-kind vy-watch-kind-${alert.kind}`}>{kindLabel[alert.kind]}</span><span>{alert.sender}</span><span>{displayDate(alert.date, true)}</span></div><p>{alert.snippet}</p>{canEdit && <button type="button" className="vy-button vy-button-small" onClick={() => openAlert(alert)}>Save this</button>}</li>)}</ul> : <div className="vy-watch-empty">{preview ? 'No sample messages match this filter.' : 'Alerts and review notifications will appear here when email is connected.'}</div>}
       </>}
       {tab === 'saved' && <>
-        <div className="vy-watch-toolbar"><label className="vy-watch-select-label">Department<select value={department} onChange={(event) => setDepartment(event.target.value)}><option value="">Everyone</option>{availableDepartments.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label><button type="button" className="vy-button vy-button-small" disabled={!canEdit} title={canEdit ? undefined : 'Shared Market watch items are not connected yet'} onClick={() => setEditor({ initial: {} })}><Plus size={14} /> Add something</button></div>
+        <div className="vy-watch-toolbar"><label className="vy-watch-select-label">Department<select value={department} onChange={(event) => setDepartment(event.target.value)}><option value="">Everyone</option>{availableDepartments.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label><button type="button" className="vy-button vy-button-small" onClick={() => setEditor({ initial: {} })}>Add something</button></div>
         {saved.length ? <ul className="vy-watch-list">{saved.map((item) => {
           const href = safeWatchUrl(item.url)
           const itemDepartment = departmentByCode(item.department)
@@ -100,6 +100,6 @@ export default function WatchPage({ departments, preview, items = [], briefings 
         <section className="vy-watch-discussion" aria-labelledby="vy-watch-discussion-title"><h2 id="vy-watch-discussion-title">Team discussion starters</h2><p>Use one at the weekly meeting.</p><ul><li>What did a competitor do this month that our customers would notice?</li><li>What is the last review that stung, and what did we change because of it?</li><li>What are we doing only because we have always done it?</li><li>If a new boba shop opened across the street tomorrow, what would we fix first?</li></ul></section>
       </>}
     </div>
-    {editor && <WatchDialog key={editor.id || editor.initial.sourceId || 'new'} departments={availableDepartments} initial={editor.initial} editing={!!editor.id} onSave={saveItem} onClose={() => setEditor(null)} />}
+    {editor && <WatchDialog key={editor.id || editor.initial.sourceId || 'new'} departments={availableDepartments} initial={editor.initial} editing={!!editor.id} canSave={canEdit} onSave={saveItem} onClose={() => setEditor(null)} />}
   </>
 }

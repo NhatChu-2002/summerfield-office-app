@@ -176,3 +176,13 @@ final result: passed for the UI-first scope
 - Typecheck, import-boundary check, all 15 frontend tests, and build pass. Real account permissions and backend data were not tested because Market watch has no HQ database or email contract yet.
 
 final result: passed for the UI-first scope
+
+## Market Watch Add Dialog Refinement - September 24, 2026
+
+- Source: the supplied screenshot of the original `Add something` dialog and `docs/design/reference/Summerfield HQ.html` (`watchSave` and `askForm`). The source form measures 560 x 502 CSS pixels; the React form measures 560 x 504 in its open state.
+- The React dialog now follows the reference's two-column field order, Caudex heading, Work Sans labels, department icons, exact introductory copy, compact actions, white surface, and grey backdrop. It uses the existing Sunny and shell assets; no image assets were changed.
+- Both `Add something` buttons open the dialog. Design preview Save creates a temporary item and Cancel closes the form. In the signed-in workspace the form can be inspected, while Save is disabled with an explicit connection message until shared storage exists.
+- Checked desktop and 375px browser layouts. At 375px the fields stack, the dialog scrolls to its actions, and the page has no horizontal overflow. The title receives focus on open. No browser console errors were reported.
+- Typecheck, import-boundary check, all 15 frontend tests, and build pass. Signed-in behavior was checked in code; a live account was not available for browser verification.
+
+final result: passed for the UI-first scope
