@@ -228,3 +228,12 @@ final result: passed for the UI-first scope
 - Typecheck, import-boundary check, 26 frontend tests, and production build pass. Shared lesson storage, progress persistence, AI writing, and live-account permissions remain untested because those services are not connected.
 
 final result: passed for the UI-first scope
+
+## Time Clock Page - September 24, 2026
+
+- Converted the prototype's Time clock layout into `frontend/src/features/time/`: half-month picker, shift table, live punch panel, team view, and correction-request queue. Preview entries, punches, and requests are memory-only. Payroll export, real HR decisions, and signed-in punches stay disabled until a timekeeping contract exists.
+- The React page intentionally does not copy the prototype's legal-rule, waiver, overtime, or premium-pay claims. It displays raw worked time for preview only and says it is not a payroll or compliance determination.
+- Browser checked phone-pane layout, clock-in, meal start/end, rest, clock-out, correction validation and submission, request review, table scrolling, and the correction dialog. A visually hidden table header initially caused page overflow; replacing it with an accessible header label removed the overflow. No console errors were observed. Desktop screenshot verification remains unavailable in the narrow in-app browser pane.
+- Typecheck, boundary check, 29 frontend tests, and build pass. Focused tests cover leap-year half-month periods, punch states, and open-meal worked-time calculation.
+
+final result: passed for the UI-first scope
