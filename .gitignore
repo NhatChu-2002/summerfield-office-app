@@ -9,7 +9,7 @@ __pycache__/
 .DS_Store
 .pytest_cache/
 
-# Personal Claude Code settings stay on each developer's machine.
+# AI-agent settings and guides stay on each developer's machine.
 .claude/
 CLAUDE.md
-!/CLAUDE.md
+AGENTS.md
