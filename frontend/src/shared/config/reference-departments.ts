@@ -12,7 +12,7 @@ export type ReferenceDepartment = {
 
 export const companyDepartment: ReferenceDepartment = {
   code: 'company', name: 'Company-wide', full: 'Everyone at Summerfield',
-  color: '#231F20', folders: ['Department Folders', 'SOPs', 'Weekly Reports'],
+  color: '#231F20', folders: ['Department Folders (all)', 'SOPs', 'Weekly Reports', 'Logo Files', 'Admin'],
 }
 
 export const referenceDepartments: ReferenceDepartment[] = [
