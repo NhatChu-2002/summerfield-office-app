@@ -24,7 +24,7 @@ export function DepartmentLayout({ department, role, taskContent, updateContent,
       <Panel title="Files & links" action={<ComingSoonButton><Plus size={14} /> Add a link</ComingSoonButton>}><p className="vy-empty">No links pinned for this department yet.</p></Panel>
       <Panel title="Team notes">{dataReady ? updateContent : <p className="vy-empty">{preview ? 'Team notes are not connected in this preview.' : 'Team notes are temporarily unavailable.'}</p>}</Panel>
     </div><div className="vy-stack"><DepartmentFolderCard department={department} showSharedEmpty />
-      <Panel title="Shared records"><p className="vy-empty">Build-Out and I&M records will be available after migration.</p></Panel>
+      <Panel title="Shared records" action={department.code === 'equipment_and_maintenance' ? <a className="vy-panel-link" href="#/catalog">Equipment catalog <ArrowRight size={15} /></a> : undefined}><p className="vy-empty">{preview ? 'The sample catalog is available to inspect in the Design preview.' : 'The shared equipment catalog is not connected yet.'}</p></Panel>
       <Panel title="Decisions this team makes" action={<a className="vy-panel-link" href="#/decisions">Full chart <ArrowRight size={15} /></a>}><p className="vy-empty">No decisions written down for this team yet.</p></Panel>
       <Panel title="What this team owns" action={<a className="vy-panel-link" href="#/ask">Who to ask <ArrowRight size={15} /></a>}><p className="vy-empty">Team ownership records will be added later.</p></Panel>
       <div className="vy-access-note">{role} access · {department.name}</div>
