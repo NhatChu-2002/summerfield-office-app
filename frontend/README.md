@@ -30,7 +30,9 @@ The calendar module is lazy-loaded and uses FullCalendar 6 with its RRule integr
 
 **Monthly reports** at `#/reports/:month` and `#/report/:department/:month` has a team overview, department-specific questions, draft/submitted states, a presentation view, and preview CSV export. Design preview edits stay in memory and never create tasks or send a report. Signed-in views do not show sample results and cannot edit until shared report storage, permissions, AI summary, and task conversion are connected.
 
-**Meetings** at `#/meetings` has searchable records, agenda and decision notes, an action-item summary, and a meeting editor. Design preview records and edits stay in memory. Action items do not create HQ tasks, and Drive import, email recap, and AI answers remain disabled until their integrations exist. Signed-in views show no sample company records. The next sidebar conversion is **SOP Studio**.
+**Meetings** at `#/meetings` has searchable records, agenda and decision notes, an action-item summary, and a meeting editor. Design preview records and edits stay in memory. Action items do not create HQ tasks, and Drive import, email recap, and AI answers remain disabled until their integrations exist. Signed-in views show no sample company records.
+
+**SOP Studio** at `#/sop` has a manual house-format editor, completeness checks, a preview draft library, text copy, and preview-only ready/filed states. Pasted raw notes remain visible beside the draft but are not rewritten by AI. File import, Word generation, live draft storage, approval, and Drive upload are not connected. Signed-in views show no sample drafts or write controls. The next sidebar conversion is **People & access**.
 
 The sign-in and access-check screens use Vy's striped layout and the shared Sunny character rig, with a gentle wing wave behind the body. Unlike the HTML prototype's device PIN, HQ authenticates through Supabase Auth. It reads the existing `organization_memberships` and `team_report_memberships` roles from the inventory app; Team Access remains the place to change an account's department assignments. No role can be chosen on the login form.
 
