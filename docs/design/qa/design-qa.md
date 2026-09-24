@@ -264,3 +264,12 @@ final result: passed for the UI-first scope
 - Typecheck, import boundaries, 43 frontend tests, and production build pass. Focused tests cover SOP numbering, steps, placeholders, date validity, completeness, text export, and link safety.
 
 final result: passed for the UI-first scope
+
+## People & Access Page - September 24, 2026
+
+- Converted the final prototype sidebar page into `frontend/src/features/people/`. The feature owns a typed preview roster, role ordering/search, department toggles, person details, and sample access requests.
+- All preview role/department edits are memory-only and explicitly do not grant access. Signed-in admins see only their actual organization role and visible departments in a read-only summary; non-admins receive a restricted view. The desktop rail and mobile More/Search sheet now share the admin-only navigation filter.
+- Browser checked phone-pane roster, department disclosure/toggle, role change, add-by-name dialog, sample request handling, search, and narrow layout. The shared top bar now wraps below 380px so the previously observed 5px overflow is removed. A live signed-in account and actual access-management service were not available for browser testing.
+- Typecheck, boundary check, 46 frontend tests, and production build pass. Focused tests cover role sorting, search, and department toggling.
+
+final result: passed for the UI-first scope

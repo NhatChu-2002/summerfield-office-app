@@ -148,7 +148,7 @@
 .vy-force-phone .vy-sunny { right:calc(50% - 190px); bottom:68px; width:50px; height:66px; }
 .vy-force-phone .vy-sheet-scrim { display:grid; align-items:end; justify-items:center; padding:0; }
 .vy-force-phone .vy-sheet { width:min(424px,100vw); }
-@media(max-width:360px){
+@media(max-width:380px){
   .vy-shell:not(.vy-force-desktop) .vy-topbar { flex-wrap:wrap; }
   .vy-shell:not(.vy-force-desktop) .vy-topbar-right { width:100%; justify-content:space-between; }
 }
