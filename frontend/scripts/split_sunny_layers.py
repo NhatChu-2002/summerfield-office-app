@@ -99,10 +99,16 @@ def split_wings(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     not_shirt = a[..., 0] <= a[..., 2] + 25
     overlap = torso & (polygon_mask(WING_OUTLINE) | (not_shirt & (yy >= 158) & (yy <= 194) & (xx < 56)))
     outside = ~torso & (yy >= 138) & (yy <= 194) & (xx < 70) & (a[..., 3] > 0)
+    # The art leaves a small gap between the head and the top of the wing. Once the wing moves it would
+    # show as a notch, so the neck is filled out to the torso outline there.
+    gap = torso & (a[..., 3] < 200) & (yy >= 141) & (yy <= 160) & (xx < 56)
     wing_mask = overlap | outside
 
     wing = np.zeros_like(a)
     wing[wing_mask] = a[wing_mask]
+    # Over the torso, fade out shirt-coloured pixels, so no tan fringe travels with the wing when it lifts.
+    tan = np.clip((a[..., 0] - a[..., 2] - 5) / 25, 0, 1)
+    wing[overlap, 3] *= 1 - tan[overlap]
 
     # The shirt's left edge, measured where it shows: it starts at its top corner (y 162) and runs down and out.
     def shirt_edge(y: int) -> float:
@@ -114,21 +120,24 @@ def split_wings(a: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     # The art's right wing is the mirror image of the left, so both sides are cleared the same way.
     for mirrored in (False, True):
         flip = (lambda m: m[:, ::-1]) if mirrored else (lambda m: m)
-        cover, stray, is_shirt = flip(overlap), flip(outside), flip(shirt)
+        cover, stray, is_shirt = flip(overlap | gap), flip(outside), flip(shirt)
+        opaque = flip(a[..., 3] > 200)
         body[stray] = 0
         inward = -1 if mirrored else 1
         for y, x in np.argwhere(cover):
             local_x = WIDTH - 1 - x if mirrored else x
-            if y >= 161 and local_x < shirt_edge(y):
+            # How much of this pixel lies on the shirt side of its edge, so the edge is smooth, not stepped.
+            coverage = float(np.clip(local_x + 1 - shirt_edge(y), 0, 1)) if y >= 161 else 1.0
+            if coverage <= 0:
                 body[y, x] = 0  # beside the shirt, outside the bird
                 continue
-            # Copy the nearest uncovered shirt (on shirt rows) or fur (above the shirt) toward the body's centre.
+            # Copy the nearest uncovered, opaque shirt (on shirt rows) or fur (above the shirt) toward the body's centre.
             want_shirt = y >= 161
             source = x
-            while 0 <= source < WIDTH and (cover[y, source] or is_shirt[y, source] != want_shirt):
+            while 0 <= source < WIDTH and (cover[y, source] or not opaque[y, source] or is_shirt[y, source] != want_shirt):
                 source += inward
             body[y, x, :3] = np.clip(a[y, source, :3] + noise.normal(0, 1.8), 0, 255)
-            body[y, x, 3] = 255
+            body[y, x, 3] = 255 * coverage
     return body, wing
 
 

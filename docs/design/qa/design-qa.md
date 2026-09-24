@@ -108,3 +108,17 @@ final result: passed
 - Not verified: a real Supabase project, and people lookups where a department has no listed members (names fall back to "Teammate").
 
 final result: passed
+
+## Sunny Wing Joint and Stuck Speech Bubble - September 24, 2026
+
+- Wing joint: the shoulder blob from `72e2113` (a fixed gradient shape drawn over each wing root) and its `wing-fur` clip were removed. They hid the joint problems but looked like a pale teardrop pasted on the shirt. The underlying causes are now fixed in `scripts/split_sunny_layers.py`:
+  - The shirt's edge under a raised wing is anti-aliased from its measured line instead of cleared pixel by pixel, which made a staircase.
+  - Shirt-coloured pixels are faded out of the wing layer, so no tan fringe rides along with the wing.
+  - The fill only copies colour from opaque pixels. Before, it could paint a stray dot where it sampled a transparent pixel.
+  - The small gap in the art between the head and the top of the wing is filled out to the torso outline, so no notch shows when the resting wing tilts down.
+  - The motion changes from `72e2113` are kept: the lagging right wing, the stretch on the flap, and the moved pivot.
+- Speech bubble: after a click, grabbing Sunny while her line was typing left the old bubble frozen on screen, and the next line drew over it. The cause was that the speech bubble, the hearts and the landing dust are sibling elements, and each used its own counter as its React key, so all three could be `1` together. React logged "two children with the same key" and lost track of the old bubble. The keys are now `bubble-`, `hearts-` and `dust-` prefixed.
+- Verified in the browser: at close range and at normal size in the rest, wave (32°), flap (38°) and stretch (56°) poses, there's no blob, no stepped edge, no tan fringe, and no notch. Two rounds of click, then drag while typing, then land: each press clears the old line, each landing shows exactly one line, and it times out. No console errors.
+- Type-check, boundary check, tests and build pass.
+
+final result: passed
