@@ -10,6 +10,7 @@ import { DepartmentPage, DepartmentsPage } from '@/features/departments'
 import { DepartmentFoldersPage } from '@/features/folders'
 import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage } from '@/features/learning'
+import { MeetingsPage } from '@/features/meetings'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { ProjectPage, ProjectsPage } from '@/features/projects'
 import { ReportPage, ReportsPage } from '@/features/reports'
@@ -76,6 +77,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <Suspense fallback={<p role="status">Loading reports...</p>}><ReportsPage departments={access.departments.map(referenceForDepartment)} reports={[]} preview={false} selectedMonth={route.month} /></Suspense>
   } else if (route.page === 'report') {
     content = <Suspense fallback={<p role="status">Loading report...</p>}><ReportPage key={`${route.code}-${route.month}`} departmentCode={route.code || ''} month={route.month || ''} departments={access.departments.map(referenceForDepartment)} reports={[]} preview={false} /></Suspense>
+  } else if (route.page === 'meetings') {
+    content = <Suspense fallback={<p role="status">Loading meetings...</p>}><MeetingsPage departments={access.departments.map(referenceForDepartment)} meetings={[]} preview={false} /></Suspense>
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}
