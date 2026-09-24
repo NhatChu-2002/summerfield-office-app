@@ -282,3 +282,12 @@ final result: passed for the UI-first scope
 - Typecheck, import-boundary check, frontend tests, and production build pass. CSV tests cover quoting and spreadsheet-formula protection.
 
 final result: passed for the UI-first scope
+
+## Master Equipment Catalog - September 24, 2026
+
+- Converted the prototype's equipment, smallwares, supplies, vendors, brand standards, and recent-change views into `frontend/src/features/catalog/`. The feature owns typed records, filtering, change tracking, web-link validation, and vendor-grouped order CSV with spreadsheet-formula protection.
+- Design preview uses labeled sample catalog data and memory-only edits. Signed-in mode shows no invented company inventory. Excel import, shared catalog storage, vendor integration, and synchronization into location equipment are not connected.
+- Browser checked the phone-pane page and editor, a price edit and audit entry, I&M dashboard navigation, and horizontal width. The page stayed within the 347px viewport. Desktop screenshot verification and connected service flows remain untested.
+- Typecheck, import-boundary check, frontend tests, and production build pass.
+
+final result: passed for the UI-first scope
