@@ -15,6 +15,7 @@ import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { PeoplePage } from '@/features/people'
 import { ProjectPage, ProjectsPage } from '@/features/projects'
 import { ReportPage, ReportsPage } from '@/features/reports'
+import { SopPage } from '@/features/sop'
 import { todayLocal } from '@/shared/lib/format'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
 import { TimePage } from '@/features/time'
@@ -82,6 +83,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <Suspense fallback={<p role="status">Loading report...</p>}><ReportPage key={`${route.code}-${route.month}`} departmentCode={route.code || ''} month={route.month || ''} departments={access.departments.map(referenceForDepartment)} reports={[]} preview={false} /></Suspense>
   } else if (route.page === 'meetings') {
     content = <Suspense fallback={<p role="status">Loading meetings...</p>}><MeetingsPage departments={access.departments.map(referenceForDepartment)} meetings={[]} preview={false} /></Suspense>
+  } else if (route.page === 'sop') {
+    content = <Suspense fallback={<p role="status">Loading SOP Studio...</p>}><SopPage departments={access.departments.map(referenceForDepartment)} drafts={[]} preview={false} /></Suspense>
   } else if (route.page === 'tasks') {
     content = <MyTasksPage access={access} tasks={tasks} dataReady={dataReady} names={names} busyId={busyTaskId}
       canCreate={dataReady && writableDepartments.length > 0} onNewTask={() => setNewTask({ assignToMe: true })}

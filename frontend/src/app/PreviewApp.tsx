@@ -15,6 +15,7 @@ import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, Who
 import { PeoplePage, previewAccessPeople, previewAccessRequests, type PreviewPerson, type PreviewRequest } from '@/features/people'
 import { ProjectPage, ProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
 import { ReportPage, ReportsPage, previewReports, type ReportRecord } from '@/features/reports'
+import { SopPage, previewSops, type SopDraft } from '@/features/sop'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
 import { TimePage, previewTimeCorrections, previewTimeEntries, type TimeCorrection, type TimeEntry } from '@/features/time'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
@@ -55,6 +56,7 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   const [timeCorrections, setTimeCorrections] = useState<TimeCorrection[]>(previewTimeCorrections)
   const [reports, setReports] = useState<ReportRecord[]>(previewReports)
   const [meetings, setMeetings] = useState<MeetingRecord[]>(previewMeetings)
+  const [sops, setSops] = useState<SopDraft[]>(previewSops)
   const [newTask, setNewTask] = useState(false)
   const [openTaskId, setOpenTaskId] = useState<string | null>(null)
   const openTask = openTaskId ? tasks.find((task) => task.id === openTaskId) : undefined
@@ -102,6 +104,8 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
     content = <Suspense fallback={<p role="status">Loading report...</p>}><ReportPage key={`${route.code}-${route.month}`} departmentCode={route.code || ''} month={route.month || ''} departments={referenceDepartments} reports={reports} preview onReportsChange={setReports} /></Suspense>
   } else if (route.page === 'meetings') {
     content = <Suspense fallback={<p role="status">Loading meetings...</p>}><MeetingsPage departments={referenceDepartments} projects={projects.map((item) => ({ id: item.id, name: item.name }))} meetings={meetings} preview onMeetingsChange={setMeetings} /></Suspense>
+  } else if (route.page === 'sop') {
+    content = <Suspense fallback={<p role="status">Loading SOP Studio...</p>}><SopPage departments={referenceDepartments} drafts={sops} preview onDraftsChange={setSops} /></Suspense>
   } else if (route.page === 'department' && department) {
     content = <DepartmentLayout department={department} role="Preview" taskContent={null} updateContent={null} onNewTask={() => {}} writable={false} dataReady={false} />
   } else if (route.page === 'department') {
