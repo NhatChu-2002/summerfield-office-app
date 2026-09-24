@@ -1,0 +1,53 @@
+.vy-people-hero { background:#d4ded2; }
+.vy-people-banner { margin:-9px 0 18px; padding:12px 14px; border-left:3px solid #739575; background:#edf3ec; color:#38583f; font-size:12px; line-height:1.5; }
+.vy-people-layout { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(260px,.8fr); gap:25px; align-items:start; }
+.vy-people-team,.vy-people-side { min-width:0; }
+.vy-people-side { display:grid; gap:22px; }
+.vy-people-side section { padding-bottom:20px; border-bottom:1px solid #dce5de; }
+.vy-people-side h2,.vy-people-team h2,.vy-people-self h2 { margin:0 0 10px; font-size:19px; line-height:1.25; }
+.vy-people-side p { margin:0 0 12px; color:#66746b; font-size:12px; line-height:1.5; }
+.vy-people-section-head { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.vy-people-section-head h2 { margin:0; }
+.vy-people-section-head > span { color:#6c796f; font-size:11px; }
+.vy-people-search { display:flex; align-items:center; gap:7px; width:min(100%,320px); min-height:39px; margin-bottom:10px; padding:0 10px; border:1px solid #d2ddd4; border-radius:7px; background:#fff; color:#6a786d; }
+.vy-people-search input { width:100%; min-width:0; border:0; outline:0; background:transparent; color:#231f20; font-size:13px; }
+.vy-people-list,.vy-people-requests,.vy-people-levels { margin:0; padding:0; list-style:none; }
+.vy-people-list > li { display:grid; grid-template-columns:40px minmax(0,1fr); gap:10px 12px; padding:17px 0; border-top:1px solid #dce5de; }
+.vy-people-avatar { display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:#c2d4c4; color:#315a3d; font-size:12px; font-weight:700; }
+.vy-people-info { min-width:0; }
+.vy-people-info > strong { display:block; font-size:14px; }
+.vy-people-info > span { display:block; margin-top:3px; color:#69766d; font-size:11px; overflow-wrap:anywhere; }
+.vy-people-departments { margin:9px 0 0; }
+.vy-people-departments summary { display:flex; align-items:center; gap:8px; color:#446c4e; font-size:11px; font-weight:600; cursor:pointer; }
+.vy-people-departments summary > span { color:#738077; font-weight:400; }
+.vy-people-departments fieldset { margin:9px 0 0; padding:0; border:0; }
+.vy-people-departments fieldset > div { display:flex; flex-wrap:wrap; gap:6px 13px; }
+.vy-visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.vy-people-departments label { display:inline-flex; align-items:center; gap:5px; color:#39473d; font-size:11px; white-space:nowrap; cursor:pointer; }
+.vy-people-departments input { width:14px; height:14px; margin:0; accent-color:#477c59; }
+.vy-people-row-actions { grid-column:2; display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.vy-people-row-actions > span { flex:1 1 130px; color:#78867b; font-size:10px; }
+.vy-people-row-actions > .vy-control { flex:0 0 135px; }
+.vy-people-icon-button { display:grid; place-items:center; width:32px; height:32px; padding:0; border:1px solid #d2ddd4; border-radius:6px; background:#fff; color:#8c5149; cursor:pointer; }
+.vy-people-requests li { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:10px 0; border-top:1px solid #e0e8e1; }
+.vy-people-requests li > div { display:grid; gap:3px; }
+.vy-people-requests strong { font-size:12px; }
+.vy-people-requests span { color:#6e7a70; font-size:11px; }
+.vy-people-levels li { display:grid; gap:3px; padding:9px 0; border-top:1px solid #e0e8e1; }
+.vy-people-levels strong { font-size:12px; }
+.vy-people-levels span { color:#68766d; font-size:11px; line-height:1.4; }
+.vy-people-empty,.vy-people-unavailable { margin:0; padding:16px; background:#f4f7f4; color:#637168; font-size:12px; line-height:1.5; }
+.vy-people-self { margin-bottom:22px; }
+.vy-people-self dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0; padding:14px 0; border-block:1px solid #dce5de; }
+.vy-people-self dt { color:#6a786d; font-size:11px; }
+.vy-people-self dd { margin:5px 0 0; font-size:13px; overflow-wrap:anywhere; }
+.vy-people-dialog { width:min(480px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); padding:22px 24px; border:0; border-radius:8px; background:#fff; color:#231f20; box-shadow:0 20px 60px #231f2040; }
+.vy-people-dialog::backdrop { background:#231f2066; }
+.vy-people-dialog h2 { margin:0 0 6px; font-size:24px; }
+.vy-people-dialog p { margin:0 0 16px; color:#66746b; font-size:12px; line-height:1.5; }
+.vy-people-dialog label { display:grid; gap:5px; margin-bottom:12px; font-size:12px; font-weight:600; }
+.vy-people-dialog input { width:100%; min-width:0; min-height:40px; padding:8px 10px; border:1px solid #d2ddd4; border-radius:7px; font-size:13px; }
+.vy-people-dialog .vy-people-error { color:#a04338; }
+.vy-people-dialog-actions { display:flex; justify-content:flex-end; gap:7px; flex-wrap:wrap; margin-top:17px; }
+@media(max-width:920px) { .vy-people-layout { grid-template-columns:minmax(0,1fr); } .vy-people-side { grid-template-columns:repeat(2,minmax(0,1fr)); } .vy-people-side section:last-child { grid-column:1/-1; } }
+@media(max-width:620px) { .vy-people-side,.vy-people-self dl { grid-template-columns:minmax(0,1fr); } .vy-people-side section:last-child { grid-column:auto; } .vy-people-list > li { grid-template-columns:32px minmax(0,1fr); gap:8px; } .vy-people-avatar { width:32px; height:32px; } .vy-people-row-actions { grid-column:1/-1; } .vy-people-dialog { padding:18px; } }

@@ -12,6 +12,7 @@ import { HelpPage } from '@/features/help'
 import { LearningPage, LessonPage } from '@/features/learning'
 import { MeetingsPage } from '@/features/meetings'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
+import { PeoplePage } from '@/features/people'
 import { ProjectPage, ProjectsPage } from '@/features/projects'
 import { ReportPage, ReportsPage } from '@/features/reports'
 import { SopPage } from '@/features/sop'
@@ -63,6 +64,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} areas={[]} profiles={[]} preview={false} /></Suspense>
   } else if (route.page === 'decisions') {
     content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} rules={[]} preview={false} /></Suspense>
+  } else if (route.page === 'people') {
+    content = <Suspense fallback={<p role="status">Loading People & access...</p>}><PeoplePage departments={access.departments.map(referenceForDepartment)} people={[]} requests={[]} preview={false} admin={access.organization.role === 'admin'} currentAccess={{ name: access.displayName, email: access.email, organizationRole: access.organization.role, departments: access.departments.map((item) => item.shortName) }} /></Suspense>
   } else if (route.page === 'projects') {
     content = <ProjectsPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} preview={false}
       liveTaskStats={dataReady ? { overdue: tasks.filter((task) => task.status === 'open' && !!task.due_date && task.due_date < todayLocal()).length, mine: myOpenTasks.length } : undefined} />
