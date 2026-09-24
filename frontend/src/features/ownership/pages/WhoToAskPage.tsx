@@ -9,13 +9,14 @@ import './ownership.css'
 
 type View = 'areas' | 'people'
 
-export function WhoToAskPage({ departments, people, currentUser, areas, profiles, preview, onAreasChange, onProfilesChange }: {
+export function WhoToAskPage({ departments, people, currentUser, areas, profiles, preview, canViewPeople, onAreasChange, onProfilesChange }: {
   departments: ReferenceDepartment[]
   people: Person[]
   currentUser: string
   areas: OwnershipArea[]
   profiles: ContactProfile[]
   preview: boolean
+  canViewPeople: boolean
   onAreasChange?: (areas: OwnershipArea[]) => void
   onProfilesChange?: (profiles: ContactProfile[]) => void
 }) {
@@ -63,7 +64,7 @@ export function WhoToAskPage({ departments, people, currentUser, areas, profiles
 
   return <>
     <header className="vy-hero vy-own-hero"><div><h1>Who to ask</h1><p>Type what you need. HQ tells you who owns it, who covers when they're away, and how to ask.</p></div>
-      <div className="vy-hero-actions"><button type="button" className="vy-button vy-button-dark" disabled={!preview} title={preview ? undefined : 'Shared ownership editing is not connected yet'} onClick={() => setEditor('new')}>Add an area</button><a className="vy-button" href="#/decisions">Decision chart</a><a className="vy-button" href="#/people">People &amp; access</a></div></header>
+      <div className="vy-hero-actions"><button type="button" className="vy-button vy-button-dark" disabled={!preview} title={preview ? undefined : 'Shared ownership editing is not connected yet'} onClick={() => setEditor('new')}>Add an area</button><a className="vy-button" href="#/decisions">Decision chart</a>{canViewPeople && <a className="vy-button" href="#/people">People &amp; access</a>}</div></header>
     {!preview && <p className="vy-own-status">Ownership records and the team directory are not connected yet. No live assignments appear here.</p>}
     {preview && <p className="vy-own-status">Sample design data. Edits stay in this preview until you reload.</p>}
     <div className="vy-own-tabs" role="tablist" aria-label="Who to ask views" onKeyDown={tabKeys}>

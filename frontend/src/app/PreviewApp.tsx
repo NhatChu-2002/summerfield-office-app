@@ -80,7 +80,7 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   } else if (route.page === 'watch') {
     content = <Suspense fallback={<p role="status">Loading Market watch...</p>}><WatchPage departments={[companyDepartment, ...referenceDepartments]} preview items={watchItems} onItemsChange={setWatchItems} /></Suspense>
   } else if (route.page === 'ask') {
-    content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} areas={areas} profiles={profiles} preview onAreasChange={setAreas} onProfilesChange={setProfiles} /></Suspense>
+    content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} areas={areas} profiles={profiles} preview canViewPeople onAreasChange={setAreas} onProfilesChange={setProfiles} /></Suspense>
   } else if (route.page === 'decisions') {
     content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={referenceDepartments} people={previewPeople.map((person) => ({ id: person.user_id, name: person.display_name }))} currentUser={PREVIEW_USER} rules={decisions} preview onRulesChange={setDecisions} /></Suspense>
   } else if (route.page === 'people') {

@@ -61,7 +61,7 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
   } else if (route.page === 'watch') {
     content = <Suspense fallback={<p role="status">Loading Market watch...</p>}><WatchPage departments={[companyDepartment, ...access.departments.map(referenceForDepartment)]} preview={false} /></Suspense>
   } else if (route.page === 'ask') {
-    content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} areas={[]} profiles={[]} preview={false} /></Suspense>
+    content = <Suspense fallback={<p role="status">Loading Who to ask...</p>}><WhoToAskPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} areas={[]} profiles={[]} preview={false} canViewPeople={access.organization.role === 'admin'} /></Suspense>
   } else if (route.page === 'decisions') {
     content = <Suspense fallback={<p role="status">Loading Decision chart...</p>}><DecisionChartPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} rules={[]} preview={false} /></Suspense>
   } else if (route.page === 'people') {
