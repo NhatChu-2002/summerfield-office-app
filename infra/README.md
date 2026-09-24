@@ -14,7 +14,7 @@ Each long-lived Git branch maps to one environment. Code reaches production only
 
 | Branch | Environment | Supabase project | Frontend and API hosting | Status |
 | --- | --- | --- | --- | --- |
-| `feature/*` | Local | Test project | `npm run dev` and `uvicorn` on your machine | Ready |
+| `feat/*` | Local | Test project | `npm run dev` and `uvicorn` on your machine | Ready |
 | `dev` | Development: everyone's merged work | Test project | Render services that auto-deploy from `dev` | To set up |
 | `test` | Test: QA checks a release candidate | Test project | Render services that auto-deploy from `test` | To set up |
 | `stage` | Staging: a production copy for final sign-off | Staging project, same schema as production | Render services that auto-deploy from `stage` | To set up |

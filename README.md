@@ -14,6 +14,8 @@ Summerfield Tea Bar's internal workspace: department dashboards, tasks, team upd
 
 Each part builds, tests, and deploys on its own.
 
+AI contributors should start with [AGENTS.md](AGENTS.md), then read the scoped `AGENTS.md` in the part they change. `CLAUDE.md` is a compatibility pointer; the human setup guides remain in each part's README.
+
 ## Quick start (frontend)
 
 1. Apply `backend/supabase/migrations/*.sql` to a **test** Supabase project that already has the inventory app's schema.
