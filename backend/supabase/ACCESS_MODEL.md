@@ -14,11 +14,11 @@ The source functions are `has_org_role`, `has_team_report_role`, `can_access_sto
 
 ## Audit findings
 
-- HQ's original `set_hq_task_status` allowed a creator or assignee to change status after a department *read* check. That included an assigned department viewer. Migration `202609250001_require_task_write_access_for_status.sql` adds a department *write* check, and the task UI now matches it. The migration is pending local database testing and deployment.
+- HQ's original `set_hq_task_status` allowed a creator or assignee to change status after a department *read* check. That included an assigned department viewer. Migration `202609250001_require_task_write_access_for_status.sql` adds a department *write* check, and the task UI now matches it. The migration passed isolated local tests but has not been deployed.
 - `validate_hq_task_assignee` still permits assigning a task to an active department viewer. That person can see the task but cannot complete it after the status fix. Decide whether assignment should require `member`/`lead` before enabling connected task creation.
 - An organization `manager` without a department assignment does not get HQ department access. A department `lead` who is not an organization `manager` can submit an organization-scoped report but not a store-scoped one.
 - IT and HR remain design-preview-only codes, outside shared membership and report constraints.
-- The hosted project still has migration-ledger drift and no HQ tables in the last read-only snapshot. Do not apply either HQ migration there until history is reconciled and the full sequence passes in an isolated local stack.
+- The hosted project still has migration-ledger drift and no HQ tables in the last read-only snapshot. Do not apply either HQ migration there until history is reconciled. The local schema/RLS sequence passes with the production-data seasonal seed excluded.
 
 ## Weekly and monthly Team Reports
 
@@ -39,4 +39,4 @@ The `reportCapabilities` helper mirrors these rules for future controls. The RPC
 
 ## Verification gate
 
-Use synthetic admins, leads, members, viewers, store managers, inactive accounts, and another organization in a local Supabase stack. Apply inventory then HQ migrations in recorded order. Test read/edit/submit/reopen, unassigned stores, cross-organization requests, membership removal, task-status changes, and revision conflicts. Run these database tests in CI before enabling report writes. The hosted project is not a fixture environment; this audit made no data changes there.
+The local pgTAP suite passes 42 checks with synthetic admins, leads, members, viewers, store managers, inactive accounts, and another organization. It covers helper permissions, store boundaries, cross-organization RLS, member/viewer task status, draft creation, viewer write denial, lead submission, admin reopen, store-report submission, stale revisions, and immediate department/store/organization membership revocation. The full versioned template payload still needs coverage before enabling the connected report page, and pgTAP must run in CI. The hosted project is not a fixture environment; this audit made no data changes there.

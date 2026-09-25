@@ -10,14 +10,26 @@ The local HQ frontend and inventory app currently point to the same Supabase pro
 
 The production project's read-only catalog showed 38 names in `app_schema_migrations` against 42 local inventory SQL files. Five local files were unrecorded (`202609180007`, `202609200001`, `202609200002`, `202609210001`, and `202609210002`); the ledger contained an older `202609090015_allow_covering_toast_import.sql` name absent from the checkout. `hq_tasks` and `hq_updates` were absent. This is a snapshot, not permission to apply missing migrations to production. Reconcile names and deployment history before touching that project.
 
-The product will use one hosted Supabase project. Use an isolated **local Supabase stack** with synthetic data for migration and RLS tests before deploying to that hosted project. The current workstation has no `docker` command, so local database tests are not yet runnable here. A separate hosted test project is optional, not assumed. If one is later available, the guarded read-only catalog audit requires `HQ_TEST_DATABASE_URL`, `HQ_TEST_PROJECT_REF`, and `HQ_PRODUCTION_PROJECT_REF` from local secure environment settings. It refuses an unidentifiable or production-matching database URL and never prints credentials:
+The product will use one hosted Supabase project. Use an isolated **local Supabase stack** with synthetic data for migration and RLS tests before deploying to that hosted project. A separate hosted test project is optional, not assumed. If one is later available, the guarded read-only catalog audit requires `HQ_TEST_DATABASE_URL`, `HQ_TEST_PROJECT_REF`, and `HQ_PRODUCTION_PROJECT_REF` from local secure environment settings. It refuses an unidentifiable or production-matching database URL and never prints credentials:
 
 ```powershell
 python -m pip install "psycopg[binary]>=3.2,<4"
 python backend/supabase/checks/audit_database.py --inventory-migrations ../inventory-app/supabase/migrations
 ```
 
-The audit reads migration names, table RLS flags, HQ policies, grants, and security-definer function settings inside a read-only transaction. The `supabase-contracts` CI workflow runs offline contract checks; it does **not** apply migrations or prove row-level behavior. Add local-stack migration and RLS tests to CI once the shared inventory/HQ migration sequence is reproducible.
+The audit reads migration names, table RLS flags, HQ policies, grants, and security-definer function settings inside a read-only transaction. The `supabase-contracts` CI workflow runs offline contract checks; it does **not** apply migrations or prove row-level behavior.
+
+## Isolated local database
+
+Docker Desktop and a local Supabase stack were verified on 2026-09-25. The disposable CLI project is at `../summerfield-hq-local-supabase`, outside both Git repositories and not linked to the hosted project. To rebuild it on another machine, initialize a separate directory with `npx --yes supabase@2.118.0 init`, then from this HQ repository run:
+
+```powershell
+python backend/supabase/checks/prepare_local.py --inventory-migrations ../inventory-app/supabase/migrations --project ../summerfield-hq-local-supabase
+```
+
+From the local project directory, run `npx --yes supabase@2.118.0 start`, then `npx --yes supabase@2.118.0 test db`. `npx --yes supabase@2.118.0 db reset --local` replays migrations after local changes; **never use `--linked` for this test workflow**. Re-run the preparer with `--refresh` when source SQL or tests change; without that explicit flag it refuses to overwrite changed copies. Neither source repository is modified.
+
+The preparer explicitly excludes `202609160003_add_seasonal_drinks.sql`: it seeds real Summerfield product data and aborts on a clean database without the existing organization and vendor. The 43 remaining schema files applied locally, including both HQ migrations, and all 42 synthetic access/report assertions passed after a clean local reset. This validates the schema/RLS slice, **not** the full production data migration or the hosted migration ledger. CI still runs only offline checks because the inventory repository is private and its migration checkout is not available to the HQ workflow token; add a read-only cross-repository credential or another reproducible source before requiring pgTAP in CI.
 
 ## Department codes
 

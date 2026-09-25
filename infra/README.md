@@ -21,7 +21,7 @@ Code moves through `dev` → `test` → `stage` → `main` by pull request, but 
 | `main` | Production code | Never a fixture or test database | Render Blueprint defined, not connected |
 
 - The single hosted project is labeled production. Both local app configurations currently point to it; do not use those configurations for write-based tests.
-- A local Supabase stack needs a Docker-compatible runtime and reproducible inventory-then-HQ migrations. This workstation does not currently have the `docker` command. Until that setup and CI database tests exist, database changes remain unverified and must not be promoted for deployment.
+- Docker Desktop and an unlinked local Supabase stack are now running on this workstation. The inventory/HQ schema sequence and 42 synthetic RLS/report checks pass locally, with one production-data inventory seed explicitly excluded. CI still lacks a cross-repository inventory migration checkout; do not promote database-dependent code for deployment until that gap and hosted migration history are addressed.
 - A second hosted project is optional in the future. If added, it must use synthetic data, not a copy of production personnel or customer data.
 
 ## Environment variables
