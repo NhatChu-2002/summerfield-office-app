@@ -24,8 +24,11 @@
 .vy-live-report-metric label{display:flex;flex-direction:column;gap:4px;color:#627168;font-size:11px}
 .vy-live-report-metric input{width:100%;min-width:0;padding:8px;border:1px solid #cfdbd1;border-radius:5px;background:#fff;color:#231f20;font-size:12px}
 .vy-live-report-metric input:disabled{background:#f1f4f0}
-.vy-live-report-legacy{max-width:900px}.vy-live-report-legacy section{padding:16px 0;border-top:1px solid #d8e2da}.vy-live-report-legacy h2{font-size:18px}
-.vy-live-report-legacy dl{margin:8px 0;padding:8px 12px;background:#fff;border:1px solid #d8e2da;border-radius:5px}
+.vy-live-report-legacy{max-width:1000px}.vy-live-report-legacy section{padding:21px 0;border-top:1px solid #d8e2da}.vy-live-report-legacy h2{font-size:17px}
+.vy-live-report-read-blocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px}
+.vy-live-report-read-block{min-width:0;border:1px solid #d8e2da;border-radius:6px;background:#fff;padding:12px 14px}
+.vy-live-report-read-block h3{margin:0 0 8px;font-size:13px;color:#314d38}
+.vy-live-report-legacy dl{margin:0}
 .vy-live-report-legacy dl>div{display:grid;grid-template-columns:minmax(130px,30%) minmax(0,1fr);gap:10px;padding:5px 0}
 .vy-live-report-legacy dt{color:#627168;font-size:12px}.vy-live-report-legacy dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
 .vy-live-report-footer{max-width:1000px;display:flex;justify-content:flex-end;padding:18px 0;border-top:1px solid #d8e2da}
