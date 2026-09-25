@@ -5,23 +5,11 @@ import { departmentStyle, referenceForDepartment } from '@/shared/config/referen
 import { reportCapabilities } from '../access'
 import { changeTeamReportStatus, getTeamReport, saveTeamReport, type ReportIdentity, type TeamReport } from '../api'
 import { LiveReportFields } from '../components/LiveReportFields'
+import { LegacyReport } from '../components/LegacyReport'
 import { periodFromDates, periodFromToken, type LiveReportType } from '../live-period'
 import { isNativeEditable, reportSections, reportSummary, type Payload } from '../live-schema'
 import './reports.css'
 import './live-reports.css'
-
-function readableKey(value: string): string { return value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase()) }
-
-function LegacyReport({ payload }: { payload: Payload }) {
-  const named = payload.named && typeof payload.named === 'object' ? payload.named as Record<string, { value?: unknown }> : {}
-  const entries = payload.entries && typeof payload.entries === 'object' ? payload.entries as Record<string, Record<string, unknown>[]> : {}
-  const groups = Array.isArray(payload.metricGroups) ? payload.metricGroups as { index?: string; rows?: Record<string, unknown>[] }[] : []
-  return <div className="vy-live-report-legacy"><p className="vy-report-locked">This report uses the inventory app's newer form layout. HQ can display it, but editing stays in inventory until that layout is converted here.</p>
-    {Object.keys(named).length > 0 && <section><h2>Summary and details</h2><dl>{Object.entries(named).filter(([, field]) => field && typeof field === 'object' && String(field.value || '').trim()).map(([key, field]) => <div key={key}><dt>{readableKey(key)}</dt><dd>{String(field.value)}</dd></div>)}</dl></section>}
-    {Object.entries(entries).map(([key, rows]) => <section key={key}><h2>{readableKey(key)}</h2>{Array.isArray(rows) && rows.map((row, index) => <dl key={index}>{Object.entries(row).filter(([, value]) => String(value || '').trim()).map(([field, value]) => <div key={field}><dt>{readableKey(field)}</dt><dd>{String(value)}</dd></div>)}</dl>)}</section>)}
-    {groups.map((group, index) => <section key={index}><h2>Metric group {Number(group.index || index) + 1}</h2>{group.rows?.map((row, rowIndex) => <dl key={rowIndex}>{Object.entries(row).filter(([, value]) => String(value || '').trim()).map(([field, value]) => <div key={field}><dt>{readableKey(field)}</dt><dd>{String(value)}</dd></div>)}</dl>)}</section>)}
-  </div>
-}
 
 export default function LiveReportPage({ access, departmentCode, reportType, periodToken, periodStart, periodEnd, storeId, returnView }: {
   access: Access; departmentCode: string; reportType: LiveReportType; periodToken: string; periodStart?: string; periodEnd?: string; storeId?: string; returnView: 'all' | 'draft' | 'submitted'
@@ -103,8 +91,8 @@ export default function LiveReportPage({ access, departmentCode, reportType, per
       {error && <p role="alert" className="vy-report-error">{error} <button type="button" onClick={() => setRetry((value) => value + 1)}>Reload from server</button></p>}
       {message && <p role="status" className="vy-live-report-message">{message}</p>}
       {dirty && <p className="vy-report-status">Unsaved changes. Save the draft before leaving this page.</p>}
-      {!report && !capability.edit ? <p className="vy-report-locked">No report has been started for this period.</p> : !isNativeEditable(draft) ? draft.version === 2 ? <LegacyReport payload={draft} /> : <p className="vy-report-locked">This report uses an unknown template version. It is read-only in HQ; no data has been changed.</p> : <><div className="vy-report-editor">{reportSections(reportType).map((section, index) => <section key={section.key} aria-label={section.title}><div className="vy-live-report-section-head"><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{section.title}</h2><p>{section.guidance}</p></div></div><LiveReportFields section={section} code={departmentCode} type={reportType} payload={draft} disabled={!editable || busy} onChange={(value) => { setDraft(value); setDirty(true); setMessage('') }} /></section>)}</div>{editable && <div className="vy-live-report-footer"><button type="button" className="vy-button vy-button-dark" disabled={busy || !dirty} onClick={() => void save()}><Save size={15} /> Save draft</button></div>}</>}
-      {report?.status === 'submitted' && <p className="vy-report-locked">Submitted reports are locked. An administrator can reopen this report for edits.</p>}
+      {!report && !capability.edit ? <p className="vy-report-locked">No report has been started for this period.</p> : !isNativeEditable(draft) ? draft.version === 2 ? <LegacyReport payload={draft} type={reportType} departmentCode={departmentCode} /> : <p className="vy-report-locked">This report uses an unknown template version. It is read-only in HQ; no data has been changed.</p> : <><div className="vy-report-editor">{reportSections(reportType).map((section, index) => <section key={section.key} aria-label={section.title}><div className="vy-live-report-section-head"><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{section.title}</h2><p>{section.guidance}</p></div></div><LiveReportFields section={section} code={departmentCode} type={reportType} payload={draft} disabled={!editable || busy} onChange={(value) => { setDraft(value); setDirty(true); setMessage('') }} /></section>)}</div>{editable && <div className="vy-live-report-footer"><button type="button" className="vy-button vy-button-dark" disabled={busy || !dirty} onClick={() => void save()}><Save size={15} /> Save draft</button></div>}</>}
+      {report?.status === 'submitted' && <p className="vy-report-locked">Submitted reports are locked. An administrator can reopen this report for {draft.version === 2 ? 'editing in the inventory app' : 'edits'}.</p>}
     </>}
   </>
 }
