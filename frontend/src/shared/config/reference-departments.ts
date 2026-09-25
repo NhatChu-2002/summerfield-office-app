@@ -15,6 +15,12 @@ export const companyDepartment: ReferenceDepartment = {
   color: '#231F20', folders: ['Department Folders (all)', 'SOPs', 'Weekly Reports', 'Logo Files', 'Admin'],
 }
 
+// These appear in the design preview only; shared membership and HQ tables do not support them yet.
+export const previewOnlyDepartments: Department[] = [
+  { code: 'it', name: 'IT', shortName: 'IT', description: 'Systems, POS, devices and access' },
+  { code: 'hr', name: 'HR', shortName: 'HR', description: 'People, hiring and policies' },
+]
+
 export const referenceDepartments: ReferenceDepartment[] = [
   { code: 'research_and_development', name: 'R&D', full: 'Research & Development', color: '#B6CFAE', folders: ['R&D', 'Research and Development Team'], tool: 'R&D Launch Desk' },
   { code: 'marketing', name: 'M&M', full: 'Marketing & Media', color: '#F2DBC7', folders: ['M&M', 'Fundraiser Contracts', 'Catering Records'], tool: 'M&M Hub' },

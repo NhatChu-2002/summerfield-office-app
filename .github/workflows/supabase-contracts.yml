@@ -1,0 +1,32 @@
+name: supabase-contracts
+
+on:
+  pull_request:
+    paths:
+      - 'backend/supabase/**'
+      - 'frontend/src/shared/config/departments.ts'
+      - 'frontend/src/shared/config/reference-departments.ts'
+      - 'frontend/src/app/PreviewApp.tsx'
+      - '.github/workflows/supabase-contracts.yml'
+  push:
+    branches: [dev, test, stage, main]
+    paths:
+      - 'backend/supabase/**'
+      - 'frontend/src/shared/config/departments.ts'
+      - 'frontend/src/shared/config/reference-departments.ts'
+      - 'frontend/src/app/PreviewApp.tsx'
+      - '.github/workflows/supabase-contracts.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node --test backend/supabase/checks/*.test.mjs
+      - run: python -m unittest discover -s backend/supabase/checks -p 'test_*.py'
