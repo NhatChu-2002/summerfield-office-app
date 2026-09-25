@@ -10,18 +10,19 @@
 
 ## Environments
 
-Each long-lived Git branch maps to one environment. Code reaches production only by moving up this chain through pull requests.
+Code moves through `dev` → `test` → `stage` → `main` by pull request, but these branches do **not** currently have separate hosted environments. The user has chosen one hosted Supabase project, shared with the inventory app until HQ replaces it. Do not treat a Git branch or `APP_ENV=development` as database isolation.
 
-| Branch | Environment | Supabase project | Frontend and API hosting | Status |
+| Branch | Purpose | Database for write tests | Hosting status |
 | --- | --- | --- | --- | --- |
-| `feat/*` | Local | Test project | `npm run dev` and `uvicorn` on your machine | Ready |
-| `dev` | Development: everyone's merged work | Test project | Render services that auto-deploy from `dev` | To set up |
-| `test` | Test: QA checks a release candidate | Test project | Render services that auto-deploy from `test` | To set up |
-| `stage` | Staging: a production copy for final sign-off | Staging project, same schema as production | Render services that auto-deploy from `stage` | To set up |
-| `main` | Production | Production project | Render services in `render.yaml` | Defined, not connected |
+| `feat/*` | Local implementation | Isolated local Supabase stack with synthetic data | Local Vite/API only |
+| `dev` | Integrated code | Local stack in CI | No separate Render service confirmed |
+| `test` | QA candidate | Local stack plus explicit QA plan | No separate Render service confirmed |
+| `stage` | Final code sign-off | Local migration rehearsal and backup plan | No separate Render service confirmed |
+| `main` | Production code | Never a fixture or test database | Render Blueprint defined, not connected |
 
-- **Setting up an environment:** add a copy of each service in Render with a suffix (for example `summerfield-hq-frontend-dev`), set its branch, and enter that environment's variables. Add these services when the team needs them. Each one costs a Render service.
-- **Test and staging data:** `dev` and `test` share the test Supabase project. `stage` needs its own project, so migrations can be rehearsed on a production-shaped database before they touch production. None of these projects may hold copies of production personal data.
+- The single hosted project is labeled production. Both local app configurations currently point to it; do not use those configurations for write-based tests.
+- A local Supabase stack needs a Docker-compatible runtime and reproducible inventory-then-HQ migrations. This workstation does not currently have the `docker` command. Until that setup and CI database tests exist, database changes remain unverified and must not be promoted for deployment.
+- A second hosted project is optional in the future. If added, it must use synthetic data, not a copy of production personnel or customer data.
 
 ## Environment variables
 
@@ -41,14 +42,14 @@ Secrets the API will need later, such as the Supabase service-role key and integ
 1. Push the repository to GitHub.
 2. In Render, create a **Blueprint** from the repository, with its file path set to `infra/render.yaml`.
 3. Enter `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` for the production project when prompted.
-4. Apply any pending migrations from `backend/supabase/migrations/` to production (after testing them on the test project).
+4. Reconcile the hosted migration ledger against inventory's migration history. Apply pending HQ migrations only after the combined sequence and role/RLS tests pass locally, with a backup and deployment plan.
 5. Open the site, sign in with a real account, and check that the dashboard, a department page, and task create/complete all work.
 6. Add the site's URL to Supabase Auth's allowed redirect URLs, if sign-in redirects are used later.
 
 ## Deploying changes
 
-- **Frontend or API:** merge the pull request into the branch for that environment, following the order `dev` → `test` → `stage` → `main`. Each environment's Render services rebuild only when files under their `rootDir` changed.
-- **Database:** apply the new migration to that environment's Supabase project first, then merge the code that depends on it. A migration moves up the same chain: the test project (for `dev` and `test`), then staging, then production.
+- **Frontend or API:** promote code through `dev` → `test` → `stage` → `main` only after the checks and QA required for each step. A branch is not a deployed environment until hosting is configured and verified.
+- **Database:** test the combined inventory/HQ migration sequence and RLS behavior in an isolated local stack first. Reconcile the hosted ledger, back up, and apply reviewed migrations to the single hosted project before deploying code that depends on them. Never point QA or seed scripts at that project.
 
 ## Rollback
 
