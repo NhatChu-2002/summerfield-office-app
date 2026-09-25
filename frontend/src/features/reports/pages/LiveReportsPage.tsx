@@ -47,6 +47,7 @@ export default function LiveReportsPage({ access, selectedType, selectedPeriod }
 
   return <>
     <header className="vy-hero vy-reports-hero"><div><h1>Team reports</h1><p>Weekly commitments and monthly reviews from your teams.</p></div><div className="vy-hero-actions">
+      <a className="vy-button" href="#/reports">Report library</a>
       <div className="vy-live-report-modes" role="group" aria-label="Report frequency"><a className={type === 'weekly' ? 'is-active' : ''} href={reportsHref(currentPeriod('weekly'))}>Weekly</a><a className={type === 'monthly' ? 'is-active' : ''} href={reportsHref(currentPeriod('monthly'))}>Monthly</a></div>
       <SelectField ariaLabel="Report period" value={period.start} onChange={(value) => { const next = periodFromToken(type, type === 'monthly' ? value.slice(0, 7) : value); if (next) window.location.hash = reportsHref(next) }} options={periods.map((item) => ({ value: item.start, label: item.label }))} size="compact" />
     </div></header>

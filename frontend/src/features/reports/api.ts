@@ -19,6 +19,31 @@ export type TeamReport = {
 
 export type ReportIdentity = { organizationId: string; departmentCode: string; period: ReportPeriod; storeId: string | null }
 
+export type TeamReportSummary = Pick<TeamReport, 'id' | 'department_code' | 'report_type' | 'period_start' | 'period_end' | 'store_id' | 'status' | 'summary' | 'updated_at'> & { submitted_at: string | null }
+export type HistoryFilters = {
+  organizationId: string
+  status: 'draft' | 'submitted' | null
+  type: 'weekly' | 'monthly' | null
+  departmentCode: string | null
+  storeId: string | null
+  search: string
+}
+
+export async function listTeamReportHistory(filters: HistoryFilters, offset: number, pageSize = 25): Promise<{ items: TeamReportSummary[]; hasMore: boolean }> {
+  let query = requireSupabase().from('team_reports')
+    .select('id,department_code,report_type,period_start,period_end,store_id,status,summary,updated_at,submitted_at')
+    .eq('organization_id', filters.organizationId)
+    .in('report_type', ['weekly', 'monthly'])
+  if (filters.status) query = query.eq('status', filters.status)
+  if (filters.type) query = query.eq('report_type', filters.type)
+  if (filters.departmentCode) query = query.eq('department_code', filters.departmentCode)
+  if (filters.storeId) query = query.eq('store_id', filters.storeId)
+  if (filters.search.trim()) query = query.ilike('summary', `%${filters.search.trim().slice(0, 120)}%`)
+  const { data, error } = await query.order('updated_at', { ascending: false }).order('id', { ascending: false }).range(offset, offset + pageSize)
+  const rows = dataOrThrow(data as TeamReportSummary[] | null, error)
+  return { items: rows.slice(0, pageSize), hasMore: rows.length > pageSize }
+}
+
 export async function getTeamReport(identity: ReportIdentity): Promise<TeamReport | null> {
   const { data, error } = await requireSupabase().rpc('get_team_report_for_period', {
     p_organization_id: identity.organizationId,

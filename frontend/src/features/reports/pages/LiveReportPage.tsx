@@ -5,7 +5,7 @@ import { departmentStyle, referenceForDepartment } from '@/shared/config/referen
 import { reportCapabilities } from '../access'
 import { changeTeamReportStatus, getTeamReport, saveTeamReport, type ReportIdentity, type TeamReport } from '../api'
 import { LiveReportFields } from '../components/LiveReportFields'
-import { periodFromToken, reportsHref, type LiveReportType } from '../live-period'
+import { periodFromDates, periodFromToken, type LiveReportType } from '../live-period'
 import { isNativeEditable, reportSections, reportSummary, type Payload } from '../live-schema'
 import './reports.css'
 import './live-reports.css'
@@ -23,11 +23,11 @@ function LegacyReport({ payload }: { payload: Payload }) {
   </div>
 }
 
-export default function LiveReportPage({ access, departmentCode, reportType, periodToken, storeId }: {
-  access: Access; departmentCode: string; reportType: LiveReportType; periodToken: string; storeId?: string
+export default function LiveReportPage({ access, departmentCode, reportType, periodToken, periodStart, periodEnd, storeId, returnView }: {
+  access: Access; departmentCode: string; reportType: LiveReportType; periodToken: string; periodStart?: string; periodEnd?: string; storeId?: string; returnView: 'all' | 'draft' | 'submitted'
 }) {
   const department = access.departments.find((item) => item.code === departmentCode)
-  const period = periodFromToken(reportType, periodToken)
+  const period = periodEnd ? periodFromDates(reportType, periodStart || (reportType === 'monthly' ? `${periodToken}-01` : periodToken), periodEnd) : periodFromToken(reportType, periodToken)
   const store = storeId ? access.organization.stores.find((item) => item.id === storeId) : undefined
   const scopedStoreId = departmentCode === 'store_manager' ? store?.id || null : null
   const capability = reportCapabilities(access, departmentCode, scopedStoreId)
@@ -93,7 +93,7 @@ export default function LiveReportPage({ access, departmentCode, reportType, per
   }
 
   return <>
-    <a className="vy-report-back" href={reportsHref(period)}><ArrowLeft size={15} /> All reports</a>
+    <a className="vy-report-back" href={returnView === 'all' ? '#/reports' : `#/reports?view=${returnView}`}><ArrowLeft size={15} /> Report library</a>
     <header className="vy-hero vy-report-detail-hero" style={departmentStyle(reference.color)}><div><h1>{reference.name}{store ? ` · ${store.name}` : ''}</h1><p>{reportType === 'weekly' ? 'Weekly' : 'Monthly'} report · {period.label} · {report?.status === 'submitted' ? 'Submitted' : report ? 'Draft' : 'Not started'}</p></div><div className="vy-hero-actions">
       {editable && <button type="button" className="vy-button vy-button-dark" disabled={busy || !dirty} onClick={() => void save()}><Save size={15} /> Save draft</button>}
       {report?.status === 'draft' && capability.submit && <button type="button" className="vy-button" disabled={busy || dirty || !summary} title={dirty ? 'Save your changes before submitting' : !summary ? 'Add a headline or biggest win first' : undefined} onClick={() => void changeStatus('submit')}><Send size={15} /> Submit</button>}
