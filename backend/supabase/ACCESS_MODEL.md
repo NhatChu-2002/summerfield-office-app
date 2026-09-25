@@ -22,7 +22,7 @@ The source functions are `has_org_role`, `has_team_report_role`, `can_access_sto
 
 ## Weekly and monthly Team Reports
 
-The first connected HQ report page targets `team_reports`, not `department_workspace_submissions`. The inventory backend already exposes `list_team_report_summaries`, `get_team_report_for_period`, `save_team_report_draft`, `submit_team_report`, and admin-only `reopen_team_report`. Preserve their revision checks and errors. Read summaries for the index; fetch the payload only when a report is opened.
+The first connected HQ report page targets `team_reports`, not `department_workspace_submissions`. The inventory backend already exposes `list_team_report_summaries`, `get_team_report_for_period`, `save_team_report_draft`, `submit_team_report`, and admin-only `reopen_team_report`. Preserve their revision checks and errors. The current index fetches each visible report identity via `get_team_report_for_period`: the summaries RPC has no period filter, and its 100-row limit can omit older periods or store reports. A period-filtered summaries RPC would let the index avoid fetching full payloads later.
 
 A report is identified by organization, department, report type (`weekly` or `monthly` in this first UI), period start/end, and optional store. `store_manager` reports require a store; other departments are organization-scoped. The current HQ preview's `department-month` ID and flat `values` object are **not** the persisted contract. The inventory report payload is versioned JSON, with weekly/monthly templates and separate submission snapshots. Port the template definition deliberately into the HQ report feature; do not import runtime code across repositories or silently reinterpret old payload versions.
 

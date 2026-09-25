@@ -1,0 +1,2287 @@
+{
+  "operations": {
+    "weekly": [
+      {
+        "key": "checklist_by_store",
+        "title": "Checklist completion by store - target 90%",
+        "metrics": [
+          {
+            "key": "rowland_heights_percent",
+            "label": "Rowland Heights %",
+            "target": "90%"
+          },
+          {
+            "key": "rosemead_percent",
+            "label": "Rosemead %",
+            "target": "90%"
+          },
+          {
+            "key": "garden_grove_percent",
+            "label": "Garden Grove %",
+            "target": "90%"
+          },
+          {
+            "key": "la_habra_percent",
+            "label": "La Habra %",
+            "target": "90%"
+          },
+          {
+            "key": "santa_ana_percent",
+            "label": "Santa Ana %",
+            "target": "90%"
+          }
+        ]
+      },
+      {
+        "key": "training_signoff",
+        "title": "Training & sign-off",
+        "metrics": [
+          {
+            "key": "course_closest_to_deadline_percent_done",
+            "label": "Course closest to deadline - % done",
+            "target": ""
+          },
+          {
+            "key": "care_crew_stores_below_100_percent",
+            "label": "Care Crew stores below 100%",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "efficiency",
+        "title": "Efficiency this week",
+        "metrics": [
+          {
+            "key": "sales_per_labor_hour_dollars",
+            "label": "Sales per labor hour $",
+            "target": ""
+          },
+          {
+            "key": "overtime_percent_of_hours",
+            "label": "Overtime % of hours",
+            "target": "<3%"
+          },
+          {
+            "key": "open_shifts_unfilled",
+            "label": "Open shifts unfilled",
+            "target": "0"
+          },
+          {
+            "key": "safety_incidents",
+            "label": "Safety incidents",
+            "target": "0"
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "labor_cost",
+        "title": "Labor & cost",
+        "metrics": [
+          {
+            "key": "adjusted_labor_percent",
+            "label": "Adjusted labor %",
+            "target": "28%"
+          },
+          {
+            "key": "toast_payroll_dollars",
+            "label": "Toast payroll $",
+            "target": ""
+          },
+          {
+            "key": "rm_allocation_dollars",
+            "label": "RM allocation $",
+            "target": ""
+          },
+          {
+            "key": "prime_cost_percent",
+            "label": "Prime cost %",
+            "target": "53% ceiling"
+          }
+        ]
+      },
+      {
+        "key": "service",
+        "title": "Service",
+        "metrics": [
+          {
+            "key": "median_fulfillment",
+            "label": "Median fulfillment",
+            "target": ""
+          },
+          {
+            "key": "percent_items_10_min",
+            "label": "% items <=10 min",
+            "target": ""
+          },
+          {
+            "key": "items_30_min",
+            "label": "Items >30 min",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "execution",
+        "title": "Execution",
+        "metrics": [
+          {
+            "key": "checklist_completion_company",
+            "label": "Checklist completion - company",
+            "target": "90%"
+          },
+          {
+            "key": "lowest_store_plus_percent",
+            "label": "Lowest store + %",
+            "target": ""
+          },
+          {
+            "key": "care_crew_stores_at_100_percent",
+            "label": "Care Crew - stores at 100%",
+            "target": "5 of 5"
+          }
+        ]
+      },
+      {
+        "key": "efficiency",
+        "title": "Efficiency",
+        "metrics": [
+          {
+            "key": "sales_per_labor_hour_dollars",
+            "label": "Sales per labor hour $",
+            "target": ""
+          },
+          {
+            "key": "total_sales_all_stores_dollars",
+            "label": "Total sales - all stores $",
+            "target": ""
+          },
+          {
+            "key": "sales_growth_percent_vs_prior_month",
+            "label": "Sales growth % vs prior month",
+            "target": ""
+          },
+          {
+            "key": "overtime_percent_of_total_hours",
+            "label": "Overtime % of total hours",
+            "target": "<3%"
+          },
+          {
+            "key": "schedule_coverage_percent",
+            "label": "Schedule coverage %",
+            "target": "100%"
+          }
+        ]
+      },
+      {
+        "key": "training_people",
+        "title": "Training & people",
+        "metrics": [
+          {
+            "key": "training_completion_rate_percent",
+            "label": "Training completion rate %",
+            "target": "100%"
+          },
+          {
+            "key": "headcount",
+            "label": "Headcount",
+            "target": ""
+          },
+          {
+            "key": "turnover_percent_annualized",
+            "label": "Turnover % annualized",
+            "target": ""
+          },
+          {
+            "key": "avg_employee_tenure_months",
+            "label": "Avg employee tenure - months",
+            "target": ""
+          },
+          {
+            "key": "open_positions",
+            "label": "Open positions",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "standards_safety",
+        "title": "Standards & safety",
+        "metrics": [
+          {
+            "key": "audit_pass_rate_percent",
+            "label": "Audit pass rate %",
+            "target": "90%"
+          },
+          {
+            "key": "avg_store_audit_score",
+            "label": "Avg store audit score",
+            "target": "90"
+          },
+          {
+            "key": "store_uptime_percent",
+            "label": "Store uptime %",
+            "target": "98%"
+          },
+          {
+            "key": "waste_spoilage_percent_of_sales",
+            "label": "Waste / spoilage % of sales",
+            "target": "3%"
+          },
+          {
+            "key": "safety_incidents",
+            "label": "Safety incidents",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "product_mix",
+        "title": "Product mix",
+        "metrics": [
+          {
+            "key": "top_5_items_percent_of_units",
+            "label": "Top 5 items - % of units",
+            "target": ""
+          },
+          {
+            "key": "new_launch_units_sold",
+            "label": "New launch - units sold",
+            "target": ""
+          },
+          {
+            "key": "new_launch_attach_rate_percent",
+            "label": "New launch - attach rate %",
+            "target": ""
+          },
+          {
+            "key": "items_with_zero_sales",
+            "label": "Items with zero sales",
+            "target": ""
+          },
+          {
+            "key": "void_refund_rate_percent",
+            "label": "Void / refund rate %",
+            "target": "<1%"
+          }
+        ]
+      },
+      {
+        "key": "customer",
+        "title": "Customer",
+        "metrics": [
+          {
+            "key": "mystery_shopper_company_avg",
+            "label": "Mystery shopper - company avg",
+            "target": "90%"
+          },
+          {
+            "key": "lowest_store_score",
+            "label": "Lowest store score",
+            "target": ""
+          },
+          {
+            "key": "complaints_logged",
+            "label": "Complaints logged",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "marketing": {
+    "weekly": [
+      {
+        "key": "reach",
+        "title": "Reach",
+        "metrics": [
+          {
+            "key": "post_views",
+            "label": "Post views",
+            "target": ""
+          },
+          {
+            "key": "followers",
+            "label": "Followers",
+            "target": ""
+          },
+          {
+            "key": "content_published",
+            "label": "Content published",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "owned_numbers",
+        "title": "The three owned numbers",
+        "metrics": [
+          {
+            "key": "new_guest_percent_miguel",
+            "label": "New guest % - Miguel",
+            "target": "30% floor"
+          },
+          {
+            "key": "average_order_value_dollars_emily",
+            "label": "Average order value $ - Emily",
+            "target": "$15.50 floor"
+          },
+          {
+            "key": "repeat_rate_percent_rachel",
+            "label": "Repeat rate % - Rachel",
+            "target": "65% floor"
+          }
+        ]
+      },
+      {
+        "key": "money",
+        "title": "Money",
+        "metrics": [
+          {
+            "key": "ambassador_revenue_dollars",
+            "label": "Ambassador revenue $",
+            "target": ""
+          },
+          {
+            "key": "promo_redemptions",
+            "label": "Promo redemptions",
+            "target": ""
+          },
+          {
+            "key": "spend_this_week_dollars",
+            "label": "Spend this week $",
+            "target": ""
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "content",
+        "title": "Content",
+        "metrics": [
+          {
+            "key": "post_views",
+            "label": "Post views",
+            "target": ""
+          },
+          {
+            "key": "followers",
+            "label": "Followers",
+            "target": ""
+          },
+          {
+            "key": "videos_published",
+            "label": "Videos published",
+            "target": ""
+          },
+          {
+            "key": "top_post_plus_views",
+            "label": "Top post + views",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "ambassadors_loyalty",
+        "title": "Ambassadors & loyalty",
+        "metrics": [
+          {
+            "key": "active_ambassadors",
+            "label": "Active ambassadors",
+            "target": ""
+          },
+          {
+            "key": "ambassador_revenue_dollars",
+            "label": "Ambassador revenue $",
+            "target": ""
+          },
+          {
+            "key": "loyalty_members",
+            "label": "Loyalty members",
+            "target": ""
+          },
+          {
+            "key": "app_downloads",
+            "label": "App downloads",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "guests_by_store",
+        "title": "Guests by store",
+        "metrics": [
+          {
+            "key": "total_guests_company",
+            "label": "Total guests - company",
+            "target": ""
+          },
+          {
+            "key": "returning_guests",
+            "label": "Returning guests",
+            "target": ""
+          },
+          {
+            "key": "lapsed_guests",
+            "label": "Lapsed guests",
+            "target": ""
+          },
+          {
+            "key": "weakest_store_plus_change",
+            "label": "Weakest store + change",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "promotions",
+        "title": "Promotions",
+        "metrics": [
+          {
+            "key": "promos_running",
+            "label": "Promos running",
+            "target": ""
+          },
+          {
+            "key": "redemptions",
+            "label": "Redemptions",
+            "target": ""
+          },
+          {
+            "key": "redemption_vs_target",
+            "label": "Redemption vs target",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "owned_numbers",
+        "title": "The three owned numbers - red flags in brackets",
+        "metrics": [
+          {
+            "key": "new_guest_percent_miguel",
+            "label": "New guest % - Miguel",
+            "target": "30% floor"
+          },
+          {
+            "key": "average_order_value_dollars_emily",
+            "label": "Average order value $ - Emily",
+            "target": "$15.50 floor"
+          },
+          {
+            "key": "repeat_rate_percent_rachel",
+            "label": "Repeat rate % - Rachel",
+            "target": "65% floor"
+          }
+        ]
+      },
+      {
+        "key": "money",
+        "title": "Money",
+        "metrics": [
+          {
+            "key": "marketing_spend_dollars",
+            "label": "Marketing spend $",
+            "target": ""
+          },
+          {
+            "key": "revenue_attributed_dollars",
+            "label": "Revenue attributed $",
+            "target": ""
+          },
+          {
+            "key": "return_on_spend_x",
+            "label": "Return on spend (x)",
+            "target": "3x"
+          },
+          {
+            "key": "cost_per_lead_dollars",
+            "label": "Cost per lead $",
+            "target": ""
+          },
+          {
+            "key": "cost_per_new_guest_dollars",
+            "label": "Cost per new guest $",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "funnel",
+        "title": "Funnel",
+        "metrics": [
+          {
+            "key": "crm_leads_total",
+            "label": "CRM leads total",
+            "target": ""
+          },
+          {
+            "key": "leads_contacted",
+            "label": "Leads contacted",
+            "target": ""
+          },
+          {
+            "key": "leads_converted",
+            "label": "Leads converted",
+            "target": ""
+          },
+          {
+            "key": "conversion_percent",
+            "label": "Conversion %",
+            "target": ""
+          },
+          {
+            "key": "engagement_rate_percent",
+            "label": "Engagement rate %",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "research_and_development": {
+    "weekly": [
+      {
+        "key": "output",
+        "title": "Output",
+        "metrics": [
+          {
+            "key": "tests_completed",
+            "label": "Tests completed",
+            "target": ""
+          },
+          {
+            "key": "decisions_reached",
+            "label": "Decisions reached",
+            "target": ""
+          },
+          {
+            "key": "sops_published",
+            "label": "SOPs published",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "watch_list",
+        "title": "Watch list",
+        "metrics": [
+          {
+            "key": "vendor_samples_outstanding",
+            "label": "Vendor samples outstanding",
+            "target": "0"
+          },
+          {
+            "key": "oldest_sample_days",
+            "label": "Oldest sample - days",
+            "target": "21 max"
+          },
+          {
+            "key": "cost_saving_identified_dollars",
+            "label": "Cost saving identified $",
+            "target": ""
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "cost_impact",
+        "title": "Cost impact",
+        "metrics": [
+          {
+            "key": "items_reformulated",
+            "label": "Items reformulated",
+            "target": ""
+          },
+          {
+            "key": "cost_per_unit_saved_dollars",
+            "label": "Cost per unit saved $",
+            "target": ""
+          },
+          {
+            "key": "annualized_saving_dollars",
+            "label": "Annualized saving $",
+            "target": ""
+          },
+          {
+            "key": "rolled_out_to_stores",
+            "label": "Rolled out to stores",
+            "target": "5 of 5"
+          }
+        ]
+      },
+      {
+        "key": "standardization",
+        "title": "Standardization",
+        "metrics": [
+          {
+            "key": "sops_written",
+            "label": "SOPs written",
+            "target": ""
+          },
+          {
+            "key": "sops_live_in_connecteam",
+            "label": "SOPs live in Connecteam",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "pipeline",
+        "title": "Pipeline",
+        "metrics": [
+          {
+            "key": "tests_completed",
+            "label": "Tests completed",
+            "target": ""
+          },
+          {
+            "key": "decisions_reached",
+            "label": "Decisions reached",
+            "target": ""
+          },
+          {
+            "key": "vendor_samples_outstanding",
+            "label": "Vendor samples outstanding",
+            "target": "0"
+          },
+          {
+            "key": "oldest_sample_days",
+            "label": "Oldest sample - days",
+            "target": "21 max"
+          }
+        ]
+      },
+      {
+        "key": "vendor_pricing",
+        "title": "Vendor pricing",
+        "metrics": [
+          {
+            "key": "price_changes_received",
+            "label": "Price changes received",
+            "target": ""
+          },
+          {
+            "key": "accepted_dollars_mo_impact",
+            "label": "Accepted - $/mo impact",
+            "target": ""
+          },
+          {
+            "key": "challenged_reversed_dollars",
+            "label": "Challenged / reversed $",
+            "target": ""
+          },
+          {
+            "key": "alternatives_qualified",
+            "label": "Alternatives qualified",
+            "target": ""
+          },
+          {
+            "key": "net_cogs_impact_pts",
+            "label": "Net COGS impact - pts",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "post_launch",
+        "title": "Post-launch - did it sell?",
+        "metrics": [
+          {
+            "key": "items_launched_30_days_ago",
+            "label": "Items launched - 30 days ago",
+            "target": ""
+          },
+          {
+            "key": "units_sold_since_launch",
+            "label": "Units sold since launch",
+            "target": ""
+          },
+          {
+            "key": "attach_rate_percent",
+            "label": "Attach rate %",
+            "target": ""
+          },
+          {
+            "key": "actual_vs_forecast_food_cost_percent",
+            "label": "Actual vs forecast food cost %",
+            "target": ""
+          },
+          {
+            "key": "verdict_keep_fix_kill",
+            "label": "Verdict - keep / fix / kill",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "admin_and_payroll": {
+    "weekly": [
+      {
+        "key": "payroll_people",
+        "title": "Payroll & people",
+        "metrics": [
+          {
+            "key": "payroll_on_time_yes_no",
+            "label": "Payroll on time - yes/no",
+            "target": "yes"
+          },
+          {
+            "key": "corrections_needed",
+            "label": "Corrections needed",
+            "target": "0"
+          },
+          {
+            "key": "onboarding_outstanding",
+            "label": "Onboarding outstanding",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "money_compliance",
+        "title": "Money & compliance",
+        "metrics": [
+          {
+            "key": "vendor_payments_dollars",
+            "label": "Vendor payments $",
+            "target": ""
+          },
+          {
+            "key": "open_compliance_items",
+            "label": "Open compliance items",
+            "target": "0"
+          },
+          {
+            "key": "notices_with_a_deadline",
+            "label": "Notices with a deadline",
+            "target": "0"
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "payroll",
+        "title": "Payroll",
+        "metrics": [
+          {
+            "key": "runs_on_time",
+            "label": "Runs on time",
+            "target": "2 of 2"
+          },
+          {
+            "key": "corrections_needed",
+            "label": "Corrections needed",
+            "target": "0"
+          },
+          {
+            "key": "final_payrolls_processed",
+            "label": "Final payrolls processed",
+            "target": ""
+          },
+          {
+            "key": "overtime_hours",
+            "label": "Overtime hours",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "onboarding",
+        "title": "Onboarding",
+        "metrics": [
+          {
+            "key": "packages_sent",
+            "label": "Packages sent",
+            "target": ""
+          },
+          {
+            "key": "still_outstanding",
+            "label": "Still outstanding",
+            "target": "0"
+          },
+          {
+            "key": "square_accounts_created",
+            "label": "Square accounts created",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "payables_compliance",
+        "title": "Payables & compliance",
+        "metrics": [
+          {
+            "key": "vendor_payments_dollars",
+            "label": "Vendor payments $",
+            "target": ""
+          },
+          {
+            "key": "ap_due_30_days_dollars",
+            "label": "AP due 30 days $",
+            "target": ""
+          },
+          {
+            "key": "open_compliance_items",
+            "label": "Open compliance items",
+            "target": "0"
+          }
+        ]
+      }
+    ]
+  },
+  "design": {
+    "weekly": [
+      {
+        "key": "flow",
+        "title": "Flow",
+        "metrics": [
+          {
+            "key": "briefs_received",
+            "label": "Briefs received",
+            "target": ""
+          },
+          {
+            "key": "assets_delivered",
+            "label": "Assets delivered",
+            "target": ""
+          },
+          {
+            "key": "carried_over",
+            "label": "Carried over",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "speed",
+        "title": "Speed",
+        "metrics": [
+          {
+            "key": "oldest_open_brief_days",
+            "label": "Oldest open brief - days",
+            "target": "10 max"
+          },
+          {
+            "key": "delivered_within_sla_percent",
+            "label": "Delivered within SLA %",
+            "target": "90%"
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "throughput",
+        "title": "Throughput",
+        "metrics": [
+          {
+            "key": "assets_requested",
+            "label": "Assets requested",
+            "target": ""
+          },
+          {
+            "key": "assets_delivered",
+            "label": "Assets delivered",
+            "target": ""
+          },
+          {
+            "key": "carried_over",
+            "label": "Carried over",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "speed",
+        "title": "Speed - against the SLA",
+        "metrics": [
+          {
+            "key": "avg_brief_to_draft_days",
+            "label": "Avg brief-to-draft days",
+            "target": "2 days"
+          },
+          {
+            "key": "avg_brief_to_final_days",
+            "label": "Avg brief-to-final days",
+            "target": "5 days"
+          },
+          {
+            "key": "delivered_within_sla_percent",
+            "label": "Delivered within SLA %",
+            "target": "90%"
+          },
+          {
+            "key": "oldest_open_brief_days",
+            "label": "Oldest open brief - days",
+            "target": "10 max"
+          }
+        ]
+      },
+      {
+        "key": "projects",
+        "title": "Projects",
+        "metrics": [
+          {
+            "key": "multi_part_projects_complete",
+            "label": "Multi-part projects complete",
+            "target": ""
+          },
+          {
+            "key": "vendors_contacted",
+            "label": "Vendors contacted",
+            "target": ""
+          },
+          {
+            "key": "quotes_returned",
+            "label": "Quotes returned",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "rework",
+        "title": "Rework",
+        "metrics": [
+          {
+            "key": "assets_needing_3_plus_rounds",
+            "label": "Assets needing 3+ rounds",
+            "target": ""
+          },
+          {
+            "key": "most_common_reason",
+            "label": "Most common reason",
+            "target": ""
+          },
+          {
+            "key": "briefs_arriving_incomplete",
+            "label": "Briefs arriving incomplete",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "build_out": {
+    "weekly": [
+      {
+        "key": "money",
+        "title": "Money",
+        "metrics": [
+          {
+            "key": "spend_this_week_dollars",
+            "label": "Spend this week $",
+            "target": ""
+          },
+          {
+            "key": "open_change_orders_dollars",
+            "label": "Open change orders $",
+            "target": "0"
+          },
+          {
+            "key": "quotes_received",
+            "label": "Quotes received",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "schedule",
+        "title": "Schedule",
+        "metrics": [
+          {
+            "key": "weeks_ahead_behind",
+            "label": "Weeks ahead / behind",
+            "target": "0"
+          },
+          {
+            "key": "inspections_passed_failed",
+            "label": "Inspections passed / failed",
+            "target": ""
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "spend_by_project",
+        "title": "Spend by project",
+        "metrics": [
+          {
+            "key": "coi_spent_budget_dollars",
+            "label": "COI - spent / budget $",
+            "target": ""
+          },
+          {
+            "key": "rosemead_patio_spent_budget_dollars",
+            "label": "Rosemead patio - spent / budget $",
+            "target": ""
+          },
+          {
+            "key": "westminster_spent_budget_dollars",
+            "label": "Westminster - spent / budget $",
+            "target": ""
+          },
+          {
+            "key": "forecast_at_completion_dollars",
+            "label": "Forecast at completion $",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "schedule",
+        "title": "Schedule",
+        "metrics": [
+          {
+            "key": "coi_weeks_ahead_behind",
+            "label": "COI weeks ahead/behind",
+            "target": "0"
+          },
+          {
+            "key": "target_open_date",
+            "label": "Target open date",
+            "target": ""
+          },
+          {
+            "key": "driver_of_the_variance",
+            "label": "Driver of the variance",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "change_orders_bids",
+        "title": "Change orders & bids",
+        "metrics": [
+          {
+            "key": "open_change_orders_dollars",
+            "label": "Open change orders $",
+            "target": "0"
+          },
+          {
+            "key": "weeks_added",
+            "label": "Weeks added",
+            "target": ""
+          },
+          {
+            "key": "gc_inquiries_sent",
+            "label": "GC inquiries sent",
+            "target": ""
+          },
+          {
+            "key": "quotes_received",
+            "label": "Quotes received",
+            "target": "20"
+          },
+          {
+            "key": "inspections_passed",
+            "label": "Inspections passed",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "pr_and_partnerships": {
+    "weekly": [
+      {
+        "key": "events",
+        "title": "Events",
+        "metrics": [
+          {
+            "key": "events_held",
+            "label": "Events held",
+            "target": ""
+          },
+          {
+            "key": "event_revenue_dollars",
+            "label": "Event revenue $",
+            "target": ""
+          },
+          {
+            "key": "redemptions",
+            "label": "Redemptions",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "pipeline",
+        "title": "Pipeline",
+        "metrics": [
+          {
+            "key": "confirmed_next_month",
+            "label": "Confirmed next month",
+            "target": ""
+          },
+          {
+            "key": "contracts_returned",
+            "label": "Contracts returned",
+            "target": ""
+          },
+          {
+            "key": "codes_with_zero_redemptions",
+            "label": "Codes with zero redemptions",
+            "target": "0"
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "events",
+        "title": "Events",
+        "metrics": [
+          {
+            "key": "events_held",
+            "label": "Events held",
+            "target": ""
+          },
+          {
+            "key": "event_revenue_dollars",
+            "label": "Event revenue $",
+            "target": ""
+          },
+          {
+            "key": "redemptions",
+            "label": "Redemptions",
+            "target": ""
+          },
+          {
+            "key": "best_worst_event_plus_why",
+            "label": "Best / worst event + why",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "pipeline",
+        "title": "Pipeline",
+        "metrics": [
+          {
+            "key": "confirmed_next_month",
+            "label": "Confirmed - next month",
+            "target": ""
+          },
+          {
+            "key": "emails_sent",
+            "label": "Emails sent",
+            "target": ""
+          },
+          {
+            "key": "contracts_returned",
+            "label": "Contracts returned",
+            "target": ""
+          },
+          {
+            "key": "conversion_percent",
+            "label": "Conversion %",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "codes_reach",
+        "title": "Codes & reach",
+        "metrics": [
+          {
+            "key": "active_promo_codes",
+            "label": "Active promo codes",
+            "target": ""
+          },
+          {
+            "key": "codes_with_zero_redemptions",
+            "label": "Codes with zero redemptions",
+            "target": "0"
+          },
+          {
+            "key": "social_views",
+            "label": "Social views",
+            "target": ""
+          },
+          {
+            "key": "loyalty_id_rate",
+            "label": "Loyalty ID rate",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "executive_assistant": {
+    "weekly": [
+      {
+        "key": "compliance",
+        "title": "Compliance",
+        "metrics": [
+          {
+            "key": "reports_in_on_time",
+            "label": "Reports in on time",
+            "target": "9 of 9"
+          },
+          {
+            "key": "late",
+            "label": "Late",
+            "target": ""
+          },
+          {
+            "key": "missing",
+            "label": "Missing",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "open_items",
+        "title": "Open items",
+        "metrics": [
+          {
+            "key": "asana_errors_open",
+            "label": "Asana errors open",
+            "target": "0"
+          },
+          {
+            "key": "overdue_maintenance_open",
+            "label": "Overdue maintenance open",
+            "target": "0"
+          },
+          {
+            "key": "decisions_unanswered",
+            "label": "Decisions unanswered",
+            "target": "0"
+          },
+          {
+            "key": "oldest_unanswered_days",
+            "label": "Oldest unanswered - days",
+            "target": "5 max"
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "report_compliance",
+        "title": "Report compliance",
+        "metrics": [
+          {
+            "key": "reports_on_time",
+            "label": "Reports on time",
+            "target": "8 of 8"
+          },
+          {
+            "key": "late",
+            "label": "Late",
+            "target": ""
+          },
+          {
+            "key": "missing",
+            "label": "Missing",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "system_hygiene",
+        "title": "System hygiene",
+        "metrics": [
+          {
+            "key": "asana_errors_found",
+            "label": "Asana errors found",
+            "target": ""
+          },
+          {
+            "key": "errors_corrected",
+            "label": "Errors corrected",
+            "target": ""
+          },
+          {
+            "key": "owner_plus_due_date_coverage_percent",
+            "label": "Owner + due-date coverage %",
+            "target": "100%"
+          }
+        ]
+      },
+      {
+        "key": "overdue_maintenance",
+        "title": "Overdue maintenance",
+        "metrics": [
+          {
+            "key": "open_at_start",
+            "label": "Open at start",
+            "target": ""
+          },
+          {
+            "key": "closed",
+            "label": "Closed",
+            "target": ""
+          },
+          {
+            "key": "still_open",
+            "label": "Still open",
+            "target": "0"
+          },
+          {
+            "key": "oldest_item_days",
+            "label": "Oldest item - days",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "decision_latency",
+        "title": "Decision latency",
+        "metrics": [
+          {
+            "key": "decisions_requested_by_team",
+            "label": "Decisions requested by team",
+            "target": ""
+          },
+          {
+            "key": "decisions_answered",
+            "label": "Decisions answered",
+            "target": ""
+          },
+          {
+            "key": "still_unanswered",
+            "label": "Still unanswered",
+            "target": "0"
+          },
+          {
+            "key": "avg_days_to_answer",
+            "label": "Avg days to answer",
+            "target": "5 max"
+          },
+          {
+            "key": "oldest_unanswered_days",
+            "label": "Oldest unanswered - days",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "blocker_clearance",
+        "title": "Blocker clearance",
+        "metrics": [
+          {
+            "key": "blockers_raised",
+            "label": "Blockers raised",
+            "target": ""
+          },
+          {
+            "key": "cleared_within_the_week",
+            "label": "Cleared within the week",
+            "target": ""
+          },
+          {
+            "key": "repeated_2_plus_weeks",
+            "label": "Repeated 2+ weeks",
+            "target": "0"
+          },
+          {
+            "key": "repeated_3_plus_weeks_escalate",
+            "label": "Repeated 3+ weeks - escalate",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "own_work",
+        "title": "My own work",
+        "metrics": [
+          {
+            "key": "my_task_completion_percent",
+            "label": "My task completion %",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "finance": {
+    "weekly": [
+      {
+        "key": "trading",
+        "title": "Trading",
+        "metrics": [
+          {
+            "key": "net_sales_this_week_dollars",
+            "label": "Net sales this week $",
+            "target": ""
+          },
+          {
+            "key": "labor_percent_of_sales",
+            "label": "Labor % of sales",
+            "target": "28%"
+          },
+          {
+            "key": "cogs_percent_or_pending",
+            "label": "COGS % or PENDING",
+            "target": "25%"
+          },
+          {
+            "key": "prime_cost_percent",
+            "label": "Prime cost %",
+            "target": "53% ceiling"
+          }
+        ]
+      },
+      {
+        "key": "cash",
+        "title": "Cash",
+        "metrics": [
+          {
+            "key": "cash_days_on_hand",
+            "label": "Cash days on hand",
+            "target": ""
+          },
+          {
+            "key": "ar_over_30_days_dollars",
+            "label": "AR over 30 days $",
+            "target": ""
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "sales_income",
+        "title": "Sales & income",
+        "metrics": [
+          {
+            "key": "net_sales_company_dollars",
+            "label": "Net Sales - Company $",
+            "target": ""
+          },
+          {
+            "key": "garden_grove_sales_dollars",
+            "label": "Garden Grove Sales $",
+            "target": ""
+          },
+          {
+            "key": "strongest_store_sales_dollars",
+            "label": "Strongest store Sales $",
+            "target": ""
+          },
+          {
+            "key": "rowland_heights_sales_dollars",
+            "label": "Rowland Heights Sales $",
+            "target": ""
+          },
+          {
+            "key": "other_new_stores_sales_dollars",
+            "label": "Other / new stores Sales $",
+            "target": ""
+          },
+          {
+            "key": "delivery_platforms_total_dollars",
+            "label": "Delivery platforms total $",
+            "target": ""
+          },
+          {
+            "key": "in_store_vs_delivery_mix_percent",
+            "label": "In-store vs delivery mix %",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "cogs_gross_profit",
+        "title": "COGS & gross profit",
+        "metrics": [
+          {
+            "key": "cogs_dollars",
+            "label": "COGS $",
+            "target": ""
+          },
+          {
+            "key": "cogs_percent",
+            "label": "COGS %",
+            "target": ""
+          },
+          {
+            "key": "gross_profit_dollars",
+            "label": "Gross Profit $",
+            "target": ""
+          },
+          {
+            "key": "gross_margin_percent",
+            "label": "Gross Margin %",
+            "target": ""
+          },
+          {
+            "key": "target_gross_margin_percent",
+            "label": "Target Gross Margin %",
+            "target": "58%"
+          }
+        ]
+      },
+      {
+        "key": "prime_cost",
+        "title": "Prime cost",
+        "metrics": [
+          {
+            "key": "net_sales_dollars",
+            "label": "Net sales $",
+            "target": ""
+          },
+          {
+            "key": "cogs_percent",
+            "label": "COGS %",
+            "target": ""
+          },
+          {
+            "key": "adjusted_labor_percent",
+            "label": "Adjusted labor %",
+            "target": ""
+          },
+          {
+            "key": "prime_cost_percent",
+            "label": "Prime cost %",
+            "target": ""
+          },
+          {
+            "key": "prime_cost_ceiling",
+            "label": "Prime cost ceiling",
+            "target": "53%"
+          }
+        ]
+      },
+      {
+        "key": "operating_expenses",
+        "title": "Major operating expenses",
+        "metrics": [
+          {
+            "key": "payroll_salaries_and_wages_dollars",
+            "label": "Payroll / Salaries & wages $",
+            "target": ""
+          },
+          {
+            "key": "rent_dollars",
+            "label": "Rent $",
+            "target": ""
+          },
+          {
+            "key": "advertising_and_marketing_dollars",
+            "label": "Advertising & marketing $",
+            "target": ""
+          },
+          {
+            "key": "utilities_dollars",
+            "label": "Utilities $",
+            "target": ""
+          },
+          {
+            "key": "taxes_paid_dollars",
+            "label": "Taxes paid $",
+            "target": ""
+          },
+          {
+            "key": "general_business_accrued_dollars",
+            "label": "General business / Accrued $",
+            "target": ""
+          },
+          {
+            "key": "office_and_merchant_fees_dollars",
+            "label": "Office & merchant fees $",
+            "target": ""
+          },
+          {
+            "key": "insurance_plus_interest_plus_meals_dollars",
+            "label": "Insurance + Interest + Meals $",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "profitability",
+        "title": "Profitability",
+        "metrics": [
+          {
+            "key": "total_operating_expenses_dollars",
+            "label": "Total Operating Expenses $",
+            "target": ""
+          },
+          {
+            "key": "net_operating_income_dollars",
+            "label": "Net Operating Income $",
+            "target": ""
+          },
+          {
+            "key": "net_other_income_expense_dollars",
+            "label": "Net Other Income/Expense $",
+            "target": ""
+          },
+          {
+            "key": "net_income_dollars",
+            "label": "Net Income $",
+            "target": ""
+          },
+          {
+            "key": "four_wall_margin_percent",
+            "label": "Four-wall margin %",
+            "target": ""
+          },
+          {
+            "key": "break_even_monthly_sales_dollars",
+            "label": "Break-even monthly sales $",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "cash_working_capital",
+        "title": "Cash & working capital",
+        "metrics": [
+          {
+            "key": "cash_days_on_hand",
+            "label": "Cash days on hand",
+            "target": ""
+          },
+          {
+            "key": "ar_over_30_days_dollars",
+            "label": "AR over 30 days $",
+            "target": ""
+          },
+          {
+            "key": "ap_due_30_days_dollars",
+            "label": "AP due 30 days $",
+            "target": ""
+          },
+          {
+            "key": "disputed_on_hold_dollars",
+            "label": "Disputed / on hold $",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "capital_recurring",
+        "title": "Capital & recurring",
+        "metrics": [
+          {
+            "key": "build_out_spend_to_date_dollars",
+            "label": "Build-out spend to date $",
+            "target": ""
+          },
+          {
+            "key": "open_change_orders_dollars",
+            "label": "Open change orders $",
+            "target": ""
+          },
+          {
+            "key": "recurring_spend_dollars_mo",
+            "label": "Recurring spend $/mo",
+            "target": ""
+          },
+          {
+            "key": "recurring_as_percent_of_sales",
+            "label": "Recurring as % of sales",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "warehouse_and_spend": {
+    "weekly": [
+      {
+        "key": "stock",
+        "title": "Stock",
+        "metrics": [
+          {
+            "key": "inventory_variance_percent",
+            "label": "Inventory variance %",
+            "target": "+/-5%"
+          },
+          {
+            "key": "at_risk_stock_dollars",
+            "label": "At-risk stock $",
+            "target": "0"
+          },
+          {
+            "key": "days_of_supply",
+            "label": "Days of supply",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "spend",
+        "title": "Spend",
+        "metrics": [
+          {
+            "key": "dtb_invoiced_dollars",
+            "label": "DTB invoiced $",
+            "target": ""
+          },
+          {
+            "key": "3pl_spend_this_week_dollars",
+            "label": "3PL spend this week $",
+            "target": ""
+          },
+          {
+            "key": "subscriptions_flagged",
+            "label": "Subscriptions flagged",
+            "target": "0"
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "inventory",
+        "title": "Inventory",
+        "metrics": [
+          {
+            "key": "closing_inventory_dollars",
+            "label": "Closing inventory $",
+            "target": ""
+          },
+          {
+            "key": "days_of_supply",
+            "label": "Days of supply",
+            "target": ""
+          },
+          {
+            "key": "inventory_variance_percent",
+            "label": "Inventory variance %",
+            "target": "+/-5%"
+          },
+          {
+            "key": "worst_store_plus_variance",
+            "label": "Worst store + variance",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "at_risk_stock",
+        "title": "At-risk stock",
+        "metrics": [
+          {
+            "key": "at_risk_value_dollars",
+            "label": "At-risk value $",
+            "target": "0"
+          },
+          {
+            "key": "written_off_dollars",
+            "label": "Written off $",
+            "target": "0"
+          },
+          {
+            "key": "recovered_redeployed_dollars",
+            "label": "Recovered / redeployed $",
+            "target": ""
+          },
+          {
+            "key": "oldest_at_risk_item_plus_date",
+            "label": "Oldest at-risk item + date",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "intercompany",
+        "title": "Intercompany",
+        "metrics": [
+          {
+            "key": "dtb_invoiced_dollars",
+            "label": "DTB invoiced $",
+            "target": ""
+          },
+          {
+            "key": "ar_reconciled_yes_no",
+            "label": "AR reconciled - yes/no",
+            "target": "yes"
+          },
+          {
+            "key": "warehouse_cost_recovery_percent",
+            "label": "Warehouse cost recovery %",
+            "target": "100%"
+          }
+        ]
+      },
+      {
+        "key": "third_party_logistics",
+        "title": "3PL - OC3PL",
+        "metrics": [
+          {
+            "key": "total_3pl_spend_dollars",
+            "label": "Total 3PL spend $",
+            "target": ""
+          },
+          {
+            "key": "cost_per_order_shipped_dollars",
+            "label": "Cost per order shipped $",
+            "target": ""
+          },
+          {
+            "key": "storage_utilization_percent",
+            "label": "Storage utilization %",
+            "target": "70%+"
+          },
+          {
+            "key": "accessorials_as_percent_of_bill",
+            "label": "Accessorials as % of bill",
+            "target": "<10%"
+          }
+        ]
+      },
+      {
+        "key": "subscriptions",
+        "title": "Subscriptions",
+        "metrics": [
+          {
+            "key": "total_recurring_dollars_mo",
+            "label": "Total recurring $/mo",
+            "target": ""
+          },
+          {
+            "key": "annualized_dollars",
+            "label": "Annualized $",
+            "target": ""
+          },
+          {
+            "key": "zero_use_in_90_days_dollars",
+            "label": "Zero use in 90 days $",
+            "target": "0"
+          },
+          {
+            "key": "renewing_in_60_days_dollars",
+            "label": "Renewing in 60 days $",
+            "target": ""
+          },
+          {
+            "key": "cancelled_this_month_dollars_saved",
+            "label": "Cancelled this month $ saved",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  },
+  "equipment_and_maintenance": {
+    "weekly": [
+      {
+        "key": "work_orders",
+        "title": "Work orders",
+        "metrics": [
+          {
+            "key": "opened_this_week",
+            "label": "Opened this week",
+            "target": ""
+          },
+          {
+            "key": "closed_this_week",
+            "label": "Closed this week",
+            "target": ""
+          },
+          {
+            "key": "still_overdue",
+            "label": "Still overdue",
+            "target": "0"
+          },
+          {
+            "key": "emergency_vs_planned_percent",
+            "label": "Emergency vs planned %",
+            "target": "<30%"
+          }
+        ]
+      },
+      {
+        "key": "response_uptime",
+        "title": "Response & uptime",
+        "metrics": [
+          {
+            "key": "emergency_response_time_hrs",
+            "label": "Emergency response time - hrs",
+            "target": "4 hrs"
+          },
+          {
+            "key": "equipment_uptime_percent",
+            "label": "Equipment uptime %",
+            "target": "98%"
+          },
+          {
+            "key": "pm_tasks_due_completed",
+            "label": "PM tasks due / completed",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "cost",
+        "title": "Cost",
+        "metrics": [
+          {
+            "key": "maintenance_spend_this_week_dollars",
+            "label": "Maintenance spend this week $",
+            "target": ""
+          },
+          {
+            "key": "equipment_purchases_dollars",
+            "label": "Equipment purchases $",
+            "target": ""
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "response",
+        "title": "Response",
+        "metrics": [
+          {
+            "key": "avg_maintenance_response_time_hrs",
+            "label": "Avg maintenance response time - hrs",
+            "target": "24 hrs"
+          },
+          {
+            "key": "emergency_response_time_hrs",
+            "label": "Emergency response time - hrs",
+            "target": "4 hrs"
+          },
+          {
+            "key": "contractor_on_time_rate_percent",
+            "label": "Contractor on-time rate %",
+            "target": "90%"
+          }
+        ]
+      },
+      {
+        "key": "reliability",
+        "title": "Reliability",
+        "metrics": [
+          {
+            "key": "equipment_uptime_percent",
+            "label": "Equipment uptime %",
+            "target": "98%"
+          },
+          {
+            "key": "preventive_maintenance_compliance_percent",
+            "label": "Preventive maintenance compliance %",
+            "target": "95%"
+          },
+          {
+            "key": "assets_that_failed_twice",
+            "label": "Assets that failed twice",
+            "target": "0"
+          },
+          {
+            "key": "assets_out_of_service",
+            "label": "Assets out of service",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "work_orders",
+        "title": "Work orders",
+        "metrics": [
+          {
+            "key": "opened",
+            "label": "Opened",
+            "target": ""
+          },
+          {
+            "key": "closed",
+            "label": "Closed",
+            "target": ""
+          },
+          {
+            "key": "overdue",
+            "label": "Overdue",
+            "target": "0"
+          },
+          {
+            "key": "avg_days_to_close",
+            "label": "Avg days to close",
+            "target": "7"
+          }
+        ]
+      },
+      {
+        "key": "cost",
+        "title": "Cost",
+        "metrics": [
+          {
+            "key": "total_maintenance_cost_dollars",
+            "label": "Total maintenance cost $",
+            "target": ""
+          },
+          {
+            "key": "avg_cost_per_work_order_dollars",
+            "label": "Avg cost per work order $",
+            "target": ""
+          },
+          {
+            "key": "cost_per_store_dollars",
+            "label": "Cost per store $",
+            "target": ""
+          },
+          {
+            "key": "equipment_spend_dollars",
+            "label": "Equipment spend $",
+            "target": ""
+          },
+          {
+            "key": "emergency_share_of_spend_percent",
+            "label": "Emergency share of spend %",
+            "target": "<30%"
+          },
+          {
+            "key": "utility_cost_index",
+            "label": "Utility cost index",
+            "target": ""
+          }
+        ]
+      },
+      {
+        "key": "compliance",
+        "title": "Compliance",
+        "metrics": [
+          {
+            "key": "inspections_due",
+            "label": "Inspections due",
+            "target": ""
+          },
+          {
+            "key": "passed",
+            "label": "Passed",
+            "target": ""
+          },
+          {
+            "key": "failed_corrective_actions_open",
+            "label": "Failed / corrective actions open",
+            "target": "0"
+          }
+        ]
+      }
+    ]
+  },
+  "store_manager": {
+    "weekly": [
+      {
+        "key": "store_scorecard",
+        "title": "Scored numbers - my store",
+        "metrics": [
+          {
+            "key": "average_ticket_dollars",
+            "label": "Average ticket $",
+            "target": "see store target"
+          },
+          {
+            "key": "labor_percent_of_sales",
+            "label": "Labor % of sales",
+            "target": "see store target"
+          },
+          {
+            "key": "food_cost_percent",
+            "label": "Food cost %",
+            "target": "26%"
+          },
+          {
+            "key": "waste_percent_of_food_cost",
+            "label": "Waste % of food cost",
+            "target": "3%"
+          },
+          {
+            "key": "checklist_tasks_percent",
+            "label": "Checklist tasks %",
+            "target": "90%"
+          },
+          {
+            "key": "care_crew_sign_off_percent",
+            "label": "Care Crew sign-off %",
+            "target": "100%"
+          },
+          {
+            "key": "voids_percent_of_gross",
+            "label": "Voids % of gross",
+            "target": ""
+          },
+          {
+            "key": "cash_variance_dollars",
+            "label": "Cash variance $",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "leading_indicators",
+        "title": "Leading indicators - these move first",
+        "metrics": [
+          {
+            "key": "upsize_attach_rate",
+            "label": "Upsize / attach rate",
+            "target": ""
+          },
+          {
+            "key": "hours_used_vs_scheduled",
+            "label": "Hours used vs scheduled",
+            "target": ""
+          },
+          {
+            "key": "open_shifts_unfilled",
+            "label": "Open shifts unfilled",
+            "target": "0"
+          },
+          {
+            "key": "ticket_time_at_peak",
+            "label": "Ticket time at peak",
+            "target": ""
+          },
+          {
+            "key": "items_86_d",
+            "label": "Items 86'd",
+            "target": ""
+          }
+        ]
+      }
+    ],
+    "monthly": [
+      {
+        "key": "execution",
+        "title": "Execution",
+        "metrics": [
+          {
+            "key": "checklist_completion_percent",
+            "label": "Checklist completion %",
+            "target": "90%"
+          },
+          {
+            "key": "care_crew_sign_off",
+            "label": "Care Crew sign-off",
+            "target": "100%"
+          },
+          {
+            "key": "training_courses_at_deadline",
+            "label": "Training courses at deadline",
+            "target": ""
+          },
+          {
+            "key": "mystery_shopper_score",
+            "label": "Mystery shopper score",
+            "target": "90%"
+          }
+        ]
+      },
+      {
+        "key": "service",
+        "title": "Service",
+        "metrics": [
+          {
+            "key": "median_fulfillment",
+            "label": "Median fulfillment",
+            "target": ""
+          },
+          {
+            "key": "percent_items_10_min",
+            "label": "% items <=10 min",
+            "target": "80%"
+          },
+          {
+            "key": "items_30_min",
+            "label": "Items >30 min",
+            "target": "0"
+          },
+          {
+            "key": "tickets_bumped_at_completion_percent",
+            "label": "Tickets bumped at completion %",
+            "target": "100%"
+          }
+        ]
+      },
+      {
+        "key": "sales_labor",
+        "title": "Sales & labor",
+        "metrics": [
+          {
+            "key": "net_sales_dollars",
+            "label": "Net sales $",
+            "target": ""
+          },
+          {
+            "key": "transactions",
+            "label": "Transactions",
+            "target": ""
+          },
+          {
+            "key": "average_ticket_dollars",
+            "label": "Average ticket $",
+            "target": ""
+          },
+          {
+            "key": "labor_percent_of_sales",
+            "label": "Labor % of sales",
+            "target": "28%"
+          },
+          {
+            "key": "overtime_hours",
+            "label": "Overtime hours",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "people",
+        "title": "People",
+        "metrics": [
+          {
+            "key": "headcount",
+            "label": "Headcount",
+            "target": ""
+          },
+          {
+            "key": "new_hires",
+            "label": "New hires",
+            "target": ""
+          },
+          {
+            "key": "departures",
+            "label": "Departures",
+            "target": "0"
+          },
+          {
+            "key": "open_shifts_unfilled",
+            "label": "Open shifts unfilled",
+            "target": "0"
+          }
+        ]
+      },
+      {
+        "key": "store_condition",
+        "title": "Store condition",
+        "metrics": [
+          {
+            "key": "maintenance_tickets_open",
+            "label": "Maintenance tickets open",
+            "target": "0"
+          },
+          {
+            "key": "oldest_open_ticket_days",
+            "label": "Oldest open ticket - days",
+            "target": "7 max"
+          },
+          {
+            "key": "inventory_variance_percent",
+            "label": "Inventory variance %",
+            "target": "+/-5%"
+          },
+          {
+            "key": "waste_logged_dollars",
+            "label": "Waste logged $",
+            "target": ""
+          }
+        ]
+      }
+    ]
+  }
+}
