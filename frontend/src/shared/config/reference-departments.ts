@@ -61,7 +61,7 @@ export const referenceNav = [
   { key: 'tasks', label: 'My tasks', href: '#/tasks' },
   { key: 'learn', label: 'Learning', href: '#/learn' },
   { key: 'time', label: 'Time clock', href: '#/time' },
-  { key: 'reports', label: 'Monthly reports', href: '#/reports' },
+  { key: 'reports', label: 'Team reports', href: '#/reports' },
   { key: 'meetings', label: 'Meetings', href: '#/meetings' },
   { key: 'sop', label: 'SOP Studio', href: '#/sop' },
   { key: 'people', label: 'People & access', href: '#/people' },
