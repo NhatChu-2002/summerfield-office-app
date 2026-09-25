@@ -1,9 +1,14 @@
 // Pure task rules: no React, no network, only type imports. Tested by model.test.mjs.
 import type { HqTask } from './api'
+import type { DepartmentRole } from '@/features/auth'
 
 export type TaskBucket = { name: 'Overdue' | 'Today' | 'This week' | 'Later' | 'Done'; tasks: HqTask[] }
 
 const DONE_SHOWN = 15
+
+export function canChangeTaskForRole(role: DepartmentRole | null, task: HqTask, userId: string): boolean {
+  return role === 'lead' || (role === 'member' && (task.created_by === userId || task.assigned_to === userId))
+}
 
 /** Adds days to a YYYY-MM-DD date without time-zone drift. */
 export function addDays(date: string, days: number) {

@@ -27,7 +27,7 @@ import { PREVIEW_USER, previewNames, previewPeople, previewTask, previewTasks } 
 // Design preview: every screen with no company data and nothing saved.
 const previewAccess: Access = {
   userId: PREVIEW_USER, displayName: 'Preview', email: '',
-  organization: { organization_id: 'design-preview', organization_name: 'Summerfield', organization_slug: 'summerfield', role: 'viewer' },
+  organization: { organization_id: 'design-preview', organization_name: 'Summerfield', organization_slug: 'summerfield', role: 'viewer', stores: [] },
   organizations: [], assignments: [],
   departments: [...DEPARTMENTS, ...previewOnlyDepartments],
 }

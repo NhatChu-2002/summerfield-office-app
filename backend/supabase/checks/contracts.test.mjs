@@ -5,6 +5,7 @@ import { DEPARTMENTS } from '../../../frontend/src/shared/config/departments.ts'
 import { previewOnlyDepartments, referenceDepartments } from '../../../frontend/src/shared/config/reference-departments.ts'
 
 const migration = readFileSync(new URL('../migrations/202609220001_hq_mvp.sql', import.meta.url), 'utf8')
+const statusMigration = readFileSync(new URL('../migrations/202609250001_require_task_write_access_for_status.sql', import.meta.url), 'utf8')
 const supportedCodes = DEPARTMENTS.map(({ code }) => code).sort()
 
 test('HQ task and update constraints match supported membership departments', () => {
@@ -29,4 +30,11 @@ test('initial HQ migration declares RLS and narrow browser grants', () => {
   }
   assert.match(migration, /revoke all on public\.hq_tasks, public\.hq_updates from anon, authenticated;/i)
   assert.match(migration, /grant select, insert on public\.hq_tasks, public\.hq_updates to authenticated;/i)
+})
+
+test('task status RPC requires department write access and preserves restricted execution', () => {
+  assert.match(statusMigration, /create or replace function public\.set_hq_task_status\(/i)
+  assert.match(statusMigration, /if not public\.can_write_hq_department\(v_task\.organization_id, v_task\.department_code\)/i)
+  assert.match(statusMigration, /revoke all on function public\.set_hq_task_status\(uuid, uuid, integer, text\) from public, anon;/i)
+  assert.match(statusMigration, /grant execute on function public\.set_hq_task_status\(uuid, uuid, integer, text\) to authenticated, service_role;/i)
 })

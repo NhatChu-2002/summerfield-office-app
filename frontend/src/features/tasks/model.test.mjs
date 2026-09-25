@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { addDays, bucketMyTasks, delegatedTasks, isOverdue } from './model.ts'
+import { addDays, bucketMyTasks, canChangeTaskForRole, delegatedTasks, isOverdue } from './model.ts'
 
 const ME = 'me'
 let id = 0
@@ -10,6 +10,18 @@ const task = (fields) => ({
   created_at: '2026-09-01T10:00:00Z', updated_at: '2026-09-01T10:00:00Z', ...fields,
 })
 const names = (buckets) => buckets.map((bucket) => `${bucket.name}: ${bucket.tasks.map((t) => t.title).join(', ')}`)
+
+test('task status requires write access even for a creator or assignee', () => {
+  const assigned = task({ created_by: 'someone', assigned_to: ME })
+  const created = task({ created_by: ME, assigned_to: 'someone' })
+  assert.equal(canChangeTaskForRole('viewer', assigned, ME), false)
+  assert.equal(canChangeTaskForRole('viewer', created, ME), false)
+  assert.equal(canChangeTaskForRole(null, assigned, ME), false)
+  assert.equal(canChangeTaskForRole('member', assigned, ME), true)
+  assert.equal(canChangeTaskForRole('member', created, ME), true)
+  assert.equal(canChangeTaskForRole('member', task({ created_by: 'other', assigned_to: 'other' }), ME), false)
+  assert.equal(canChangeTaskForRole('lead', task({ created_by: 'other', assigned_to: 'other' }), ME), true)
+})
 
 test('addDays crosses month and leap-year boundaries', () => {
   assert.equal(addDays('2026-09-28', 7), '2026-10-05')
