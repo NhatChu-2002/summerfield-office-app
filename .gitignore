@@ -13,3 +13,6 @@ __pycache__/
 .claude/
 CLAUDE.md
 AGENTS.md
+
+# Personal work journal stays out of every commit.
+docs/journal/
