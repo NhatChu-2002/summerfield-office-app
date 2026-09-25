@@ -16,7 +16,7 @@ import { MeetingsPage } from '@/features/meetings'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { PeoplePage } from '@/features/people'
 import { ProjectPage, ProjectsPage } from '@/features/projects'
-import { LiveReportPage, LiveReportsPage } from '@/features/reports'
+import { LiveReportPage, LiveReportsPage, ReportLibraryPage } from '@/features/reports'
 import { SopPage } from '@/features/sop'
 import { todayLocal } from '@/shared/lib/format'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
@@ -86,10 +86,12 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
   } else if (route.page === 'time') {
     content = <Suspense fallback={<p role="status">Loading Time clock...</p>}><TimePage entries={[]} corrections={[]} preview={false} canReview={access.organization.role === 'admin'} /></Suspense>
   } else if (route.page === 'reports') {
-    content = <Suspense fallback={<p role="status">Loading reports...</p>}><LiveReportsPage key={`${access.organization.organization_id}-${route.reportType}-${route.month}`} access={access} selectedType={route.reportType} selectedPeriod={route.month} /></Suspense>
+    content = <Suspense fallback={<p role="status">Loading reports...</p>}>{route.month
+      ? <LiveReportsPage key={`${access.organization.organization_id}-${route.reportType}-${route.month}`} access={access} selectedType={route.reportType} selectedPeriod={route.month} />
+      : <ReportLibraryPage key={access.organization.organization_id} access={access} view={route.reportView || 'all'} />}</Suspense>
   } else if (route.page === 'report') {
     content = route.month
-      ? <Suspense fallback={<p role="status">Loading report...</p>}><LiveReportPage key={`${access.organization.organization_id}-${route.code}-${route.reportType}-${route.month}-${route.storeId}`} access={access} departmentCode={route.code || ''} reportType={route.reportType || 'monthly'} periodToken={route.month} storeId={route.storeId} /></Suspense>
+      ? <Suspense fallback={<p role="status">Loading report...</p>}><LiveReportPage key={`${access.organization.organization_id}-${route.code}-${route.reportType}-${route.month}-${route.storeId}-${route.periodEnd}`} access={access} departmentCode={route.code || ''} reportType={route.reportType || 'monthly'} periodToken={route.month} periodStart={route.periodStart} periodEnd={route.periodEnd} storeId={route.storeId} returnView={route.reportView || 'all'} /></Suspense>
       : <div className="vy-report-unavailable"><h1>Choose a report period</h1><a className="vy-button" href="#/reports">All reports</a></div>
   } else if (route.page === 'meetings') {
     content = <Suspense fallback={<p role="status">Loading meetings...</p>}><MeetingsPage departments={access.departments.map(referenceForDepartment)} meetings={[]} preview={false} /></Suspense>

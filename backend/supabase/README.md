@@ -31,6 +31,17 @@ From the local project directory, run `npx --yes supabase@2.118.0 start`, then `
 
 The preparer explicitly excludes `202609160003_add_seasonal_drinks.sql`: it seeds real Summerfield product data and aborts on a clean database without the existing organization and vendor. The 43 remaining schema files applied locally, including both HQ migrations, and all 42 synthetic access/report assertions passed after a clean local reset. This validates the schema/RLS slice, **not** the full production data migration or the hosted migration ledger. CI still runs only offline checks because the inventory repository is private and its migration checkout is not available to the HQ workflow token; add a read-only cross-repository credential or another reproducible source before requiring pgTAP in CI.
 
+## HQ migration register
+
+Record every new HQ migration here with its prerequisite, isolated-local test, and hosted status. Mark a hosted migration applied only after verifying it against the hosted ledger. This register is a deployment checklist, not approval to apply SQL to production.
+
+| Migration | Prerequisite and local verification | Hosted status |
+| --- | --- | --- |
+| `202609220001_hq_mvp.sql` | Inventory schema; applied in isolated local stack and covered by HQ pgTAP tests | Pending reconciliation; HQ tables absent in last read-only snapshot |
+| `202609250001_require_task_write_access_for_status.sql` | HQ MVP migration; applied in isolated local stack and covered by task-status pgTAP tests | Pending reconciliation; not deployed by this work |
+
+The Team Report history library adds **no migration**. It reads the existing inventory-owned `team_reports` table through its SELECT RLS policy. Local `team_report_history.test.sql` covers its access and multi-period contract. Hosted migration-ledger drift, backup, and role/RLS validation still need resolution before applying either HQ migration online.
+
 ## Department codes
 
 The twelve codes in `frontend/src/shared/config/departments.ts` are supported by inventory membership constraints and the initial HQ task/update constraints. `it` and `hr` remain in `previewOnlyDepartments` for the design preview, not authenticated access. Do not alias them to `admin_and_payroll` or another department: that would change who can see records. Adding them as real departments later requires coordinated inventory membership/template changes, a new HQ migration, access tests, and a product decision.

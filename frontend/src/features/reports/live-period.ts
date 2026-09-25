@@ -8,6 +8,7 @@ function dateParts(date: Date): string {
 
 function iso(date: Date): string { return date.toISOString().slice(0, 10) }
 function utcDate(value: string): Date { return new Date(`${value}T00:00:00Z`) }
+function validDate(value: string): boolean { return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(utcDate(value).getTime()) && iso(utcDate(value)) === value }
 
 export function currentPeriod(type: LiveReportType, now = new Date()): ReportPeriod {
   const today = dateParts(now)
@@ -25,12 +26,18 @@ export function periodFromToken(type: LiveReportType, token: string): ReportPeri
     const end = iso(new Date(Date.UTC(year, month, 0)))
     return { type, start, end, label: utcDate(start).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }) }
   }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(token)) return null
+  if (!validDate(token)) return null
   const date = utcDate(token)
-  if (Number.isNaN(date.getTime()) || iso(date) !== token || date.getUTCDay() !== 0) return null
+  if (date.getUTCDay() !== 0) return null
   const end = new Date(date)
   end.setUTCDate(end.getUTCDate() + 6)
-  return { type, start: token, end: iso(end), label: `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}` }
+  return periodFromDates(type, token, iso(end))
+}
+
+export function periodFromDates(type: LiveReportType, start: string, end: string): ReportPeriod | null {
+  if (!validDate(start) || !validDate(end) || end < start) return null
+  if (type === 'monthly') return { type, start, end, label: utcDate(start).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }) }
+  return { type, start, end, label: `${utcDate(start).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${utcDate(end).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}` }
 }
 
 export function recentPeriods(type: LiveReportType, now = new Date(), count = 12): ReportPeriod[] {
