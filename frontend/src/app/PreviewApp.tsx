@@ -1,6 +1,6 @@
 import { Suspense, useState, type ReactNode } from 'react'
 import { DEPARTMENTS } from '@/shared/config/departments'
-import { companyDepartment, referenceByCode, referenceDepartments } from '@/shared/config/reference-departments'
+import { companyDepartment, previewOnlyDepartments, referenceByCode, referenceDepartments } from '@/shared/config/reference-departments'
 import type { Route } from '@/shared/lib/routing'
 import type { Access } from '@/features/auth'
 import { CalendarPage, type CalendarDraft } from '@/features/calendar'
@@ -29,11 +29,7 @@ const previewAccess: Access = {
   userId: PREVIEW_USER, displayName: 'Preview', email: '',
   organization: { organization_id: 'design-preview', organization_name: 'Summerfield', organization_slug: 'summerfield', role: 'viewer' },
   organizations: [], assignments: [],
-  departments: [
-    ...DEPARTMENTS,
-    { code: 'it', name: 'IT', shortName: 'IT', description: 'Systems, POS, devices and access' },
-    { code: 'hr', name: 'HR', shortName: 'HR', description: 'People, hiring and policies' },
-  ],
+  departments: [...DEPARTMENTS, ...previewOnlyDepartments],
 }
 
 // Stable, so the task dialog doesn't reload its people list on every render.
