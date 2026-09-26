@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { canReviewTicket, canSubmitTicket, nextTicketStatuses, statusLabel, ticketServiceMessage, validateTicketDraft } from './model.ts'
+import { canReviewTicket, canRouteTicket, canSubmitTicket, nextTicketStatuses, statusLabel, ticketServiceMessage, validateTicketDraft } from './model.ts'
 
 const access = (role, teamRole = 'viewer', stores = []) => ({
   organization: { role, stores }, assignments: [{ department_code: 'marketing', team_role: teamRole }],
@@ -8,10 +8,13 @@ const access = (role, teamRole = 'viewer', stores = []) => ({
 const draft = { storeId: 'store-1', departmentCode: 'marketing', category: 'facility', priority: 'normal', title: '  Broken shelf  ', description: '' }
 const departments = ['operations', 'marketing']
 
-test('submission needs an admin or manager with a manageable store', () => {
+test('submission includes department leads without widening store-manager access', () => {
   assert.equal(canSubmitTicket(access('manager', 'viewer', [{ id: 'store-1' }])), true)
   assert.equal(canSubmitTicket(access('manager')), false)
-  assert.equal(canSubmitTicket(access('viewer', 'lead', [{ id: 'store-1' }])), false)
+  assert.equal(canSubmitTicket(access('viewer', 'lead')), true)
+  assert.equal(canSubmitTicket(access('viewer', 'member')), false)
+  assert.equal(canRouteTicket(access('viewer', 'lead')), true)
+  assert.equal(canRouteTicket(access('manager', 'viewer', [{ id: 'store-1' }])), false)
 })
 
 test('review follows admin or department lead access, not store management', () => {

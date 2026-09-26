@@ -1,10 +1,10 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { ArrowLeft, RefreshCw } from 'lucide-react'
 import type { Access } from '@/features/auth'
-import { departmentByCode } from '@/shared/config/departments'
+import { DEPARTMENTS, departmentByCode } from '@/shared/config/departments'
 import { SelectField } from '@/shared/ui/SelectField'
-import { assignTicket, getTicket, listTicketAssignees, listTicketEvents, updateTicketStatus, type Ticket, type TicketAssignee, type TicketEvent } from '../api'
-import { canReviewTicket, nextTicketStatuses, statusLabel, ticketCategories, ticketPriorities, ticketServiceMessage, ticketStatuses, type TicketStatus } from '../model'
+import { assignTicket, getTicket, listTicketAssignees, listTicketEvents, listTicketStores, rerouteTicket, updateTicketStatus, type Ticket, type TicketAssignee, type TicketEvent, type TicketStore } from '../api'
+import { canReviewTicket, canRouteTicket, nextTicketStatuses, statusLabel, ticketCategories, ticketPriorities, ticketServiceMessage, ticketStatuses, type TicketStatus } from '../model'
 
 const dateLabel = (value: string) => new Date(value).toLocaleString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
 
@@ -13,6 +13,7 @@ export function TicketDetails({ access, ticketId }: { access: Access; ticketId: 
   const [ticket, setTicket] = useState<Ticket | null>(null)
   const [events, setEvents] = useState<TicketEvent[]>([])
   const [assignees, setAssignees] = useState<TicketAssignee[]>([])
+  const [stores, setStores] = useState<TicketStore[]>([])
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -22,6 +23,15 @@ export function TicketDetails({ access, ticketId }: { access: Access; ticketId: 
   const [nextStatus, setNextStatus] = useState<TicketStatus | ''>('')
   const [note, setNote] = useState('')
   const [assigneeId, setAssigneeId] = useState('')
+  const [nextDepartment, setNextDepartment] = useState('')
+
+  useEffect(() => {
+    let active = true
+    listTicketStores(organizationId)
+      .then((result) => { if (active) setStores(result) })
+      .catch(() => {})
+    return () => { active = false }
+  }, [organizationId])
 
   useEffect(() => {
     let active = true
@@ -34,6 +44,7 @@ export function TicketDetails({ access, ticketId }: { access: Access; ticketId: 
       if (!result) return
       setNextStatus(nextTicketStatuses(result.status)[0] || '')
       setAssigneeId(result.assignee_id || '')
+      setNextDepartment(result.department_code)
       listTicketEvents(organizationId, ticketId)
         .then((items) => { if (active) setEvents(items) })
         .catch((cause: unknown) => { if (active) setEventsError(ticketServiceMessage(cause)) })
@@ -80,8 +91,27 @@ export function TicketDetails({ access, ticketId }: { access: Access; ticketId: 
     finally { setBusy(false) }
   }
 
+  async function changeDepartment(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (!ticket || busy || nextDepartment === ticket.department_code) return
+    setBusy(true); setError(''); setSuccess('')
+    try {
+      const updated = await rerouteTicket(organizationId, ticket, nextDepartment)
+      setTicket(updated)
+      setAssigneeId('')
+      setAssignees([])
+      setSuccess('Ticket sent to the new team.')
+      await refreshEvents()
+      if (canReviewTicket(access, updated.department_code)) {
+        try { setAssignees(await listTicketAssignees(organizationId, updated.department_code)) }
+        catch (cause) { setError(`Assignee list: ${ticketServiceMessage(cause)}`) }
+      }
+    } catch (cause) { setError(ticketServiceMessage(cause)) }
+    finally { setBusy(false) }
+  }
+
   const reviewer = ticket ? canReviewTicket(access, ticket.department_code) : false
-  const store = ticket && access.organization.stores.find((item) => item.id === ticket.store_id)
+  const store = ticket && (stores.find((item) => item.store_id === ticket.store_id) || access.organization.stores.find((item) => item.id === ticket.store_id))
   const category = ticket && ticketCategories.find((item) => item.value === ticket.category)?.label
   const priority = ticket && ticketPriorities.find((item) => item.value === ticket.priority)?.label
   const currentAssignee = ticket?.assignee_id ? assignees.find((item) => item.user_id === ticket.assignee_id) : undefined
@@ -122,6 +152,14 @@ export function TicketDetails({ access, ticketId }: { access: Access; ticketId: 
             <h2>Issue</h2>
             <p className="vy-ticket-description">{ticket.description || 'No further details were provided.'}</p>
           </section>
+          {canRouteTicket(access) && <section className="vy-ticket-detail-section vy-ticket-route">
+            <h2>Send to team</h2>
+            <form onSubmit={(event) => void changeDepartment(event)}>
+              <label>Department<SelectField value={nextDepartment} onChange={setNextDepartment} options={DEPARTMENTS.map((item) => ({ value: item.code, label: item.name }))} /></label>
+              <button className="vy-button" type="submit" disabled={busy || nextDepartment === ticket.department_code}>{busy ? 'Saving...' : 'Update team'}</button>
+            </form>
+            {ticket.assignee_id && nextDepartment !== ticket.department_code && <p className="vy-ticket-route-note">The current teammate assignment will be cleared.</p>}
+          </section>}
           {reviewer && (
             <div className="vy-ticket-review">
               <section className="vy-ticket-detail-section">
@@ -157,7 +195,7 @@ export function TicketDetails({ access, ticketId }: { access: Access; ticketId: 
             {events.length ? (
               <ol>{events.map((item) => <li key={item.event_id}>
                 <div>
-                  <strong>{item.event_type === 'created' ? 'Ticket submitted' : item.event_type === 'assigned' ? 'Assignment changed' : `Moved to ${ticketStatuses.find((status) => status.value === item.to_value)?.label || item.to_value}`}</strong>
+                  <strong>{item.event_type === 'created' ? 'Ticket submitted' : item.event_type === 'assigned' ? 'Assignment changed' : item.event_type === 'routed' ? `Sent to ${departmentByCode(item.to_value || '')?.name || item.to_value}` : `Moved to ${ticketStatuses.find((status) => status.value === item.to_value)?.label || item.to_value}`}</strong>
                   <time dateTime={item.created_at}>{dateLabel(item.created_at)}</time>
                 </div>
                 {item.body && <p>{item.body}</p>}

@@ -44,7 +44,14 @@ export function statusLabel(status: TicketStatus): string {
 export function nextTicketStatuses(status: TicketStatus): TicketStatus[] { return nextStatuses[status] }
 
 export function canSubmitTicket(access: Access): boolean {
-  return (access.organization.role === 'admin' || access.organization.role === 'manager') && access.organization.stores.length > 0
+  return access.organization.role === 'admin'
+    || (access.organization.role === 'manager' && access.organization.stores.length > 0)
+    || access.assignments.some((item) => item.team_role === 'lead')
+}
+
+export function canRouteTicket(access: Access): boolean {
+  return access.organization.role === 'admin'
+    || access.assignments.some((item) => item.team_role === 'lead')
 }
 
 export function canReviewTicket(access: Access, departmentCode: string): boolean {
@@ -61,7 +68,7 @@ export type TicketDraft = {
 }
 
 export function validateTicketDraft(draft: TicketDraft, storeIds: string[], departmentCodes: string[]): string | null {
-  if (!storeIds.includes(draft.storeId)) return 'Choose a store you can manage.'
+  if (!storeIds.includes(draft.storeId)) return 'Choose an available store.'
   if (!departmentCodes.includes(draft.departmentCode)) return 'Choose a department.'
   if (!ticketCategories.some((item) => item.value === draft.category)) return 'Choose a ticket category.'
   if (!ticketPriorities.some((item) => item.value === draft.priority)) return 'Choose a priority.'
