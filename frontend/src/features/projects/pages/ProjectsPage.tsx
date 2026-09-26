@@ -9,7 +9,7 @@ import { ProjectTaskDialog } from '../components/ProjectTaskDialog'
 import { filterProjects, projectStatuses, projectSummary, type ProjectPerson, type ProjectRecord, type ProjectTask } from '../model'
 import './projects.css'
 
-export function ProjectsPage({ departments, people, currentUser, projects, tasks, preview, liveTaskStats, ticketManager, onTicketManagerChange, onProjectsChange, onTasksChange }: {
+export function ProjectsPage({ departments, people, currentUser, projects, tasks, preview, liveTaskStats, canSubmitStoreTicket, ticketManager, onTicketManagerChange, onProjectsChange, onTasksChange }: {
   departments: ReferenceDepartment[]
   people: ProjectPerson[]
   currentUser: string
@@ -17,6 +17,7 @@ export function ProjectsPage({ departments, people, currentUser, projects, tasks
   tasks: ProjectTask[]
   preview: boolean
   liveTaskStats?: { overdue: number; mine: number }
+  canSubmitStoreTicket?: boolean
   ticketManager?: string
   onTicketManagerChange?: (id: string) => void
   onProjectsChange?: (projects: ProjectRecord[]) => void
@@ -52,12 +53,12 @@ export function ProjectsPage({ departments, people, currentUser, projects, tasks
 
   return <>
     <header className="vy-hero vy-projects-hero"><div><h1>Projects</h1><p>Every running project, who owns it, and what is due. Set up like your Asana: same priorities, statuses and sections.</p></div>
-      <div className="vy-hero-actions"><button type="button" className="vy-button" disabled={!preview} title={preview ? undefined : 'Ticket routing is not connected yet'} onClick={() => setTicketEditor('new')}>Submit a ticket</button><button type="button" className="vy-button vy-button-dark" disabled={!preview} title={preview ? undefined : 'Shared project saving is not connected yet'} onClick={() => setEditor('new')}>New project</button><a className="vy-button" href="#/tasks">My tasks</a></div></header>
-    {preview ? <p className="vy-projects-status">Sample design data. Projects, tickets, and task changes stay in this preview until you reload.</p> : <p className="vy-projects-status">Shared projects and tickets are not connected yet. Task totals below come from HQ; no project assignments are inferred.</p>}
+      <div className="vy-hero-actions">{preview ? <button type="button" className="vy-button" onClick={() => setTicketEditor('new')}>Submit a ticket</button> : canSubmitStoreTicket && <a className="vy-button" href="#/tickets/new">Submit a ticket</a>}<button type="button" className="vy-button vy-button-dark" disabled={!preview} title={preview ? undefined : 'Shared project saving is not connected yet'} onClick={() => setEditor('new')}>New project</button><a className="vy-button" href="#/tasks">My tasks</a></div></header>
+    {preview ? <p className="vy-projects-status">Sample design data. Projects, tickets, and task changes stay in this preview until you reload.</p> : <p className="vy-projects-status">Shared projects are not connected yet. The Ticket desk below opens live store tickets; task totals come from HQ.</p>}
     <div className="vy-project-stats" aria-label="Project summary">
       <div><strong>{preview ? summary.running : '—'}</strong><span>Running projects</span></div>
       <div><strong>{preview ? summary.overdue : liveTaskStats?.overdue ?? '—'}</strong><span>Overdue tasks</span></div>
-      <div><strong>{preview ? summary.tickets : '—'}</strong><span>Tickets waiting to be assigned</span></div>
+      <div><strong>{preview ? summary.tickets : '—'}</strong><span>{preview ? 'Tickets waiting to be assigned' : 'Store ticket desk'}</span></div>
       <div><strong>{preview ? summary.mine : liveTaskStats?.mine ?? '—'}</strong><span>Open tasks assigned to you</span></div>
     </div>
     <div className="vy-project-toolbar"><label className="vy-project-search"><Search size={16} aria-hidden="true" /><input type="search" aria-label="Search projects" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search projects" /></label>
@@ -66,9 +67,9 @@ export function ProjectsPage({ departments, people, currentUser, projects, tasks
       <label className="vy-project-only-mine"><input type="checkbox" checked={onlyMine} onChange={(event) => setOnlyMine(event.target.checked)} />Only mine</label></div>
     {shown.length ? <div className="vy-project-grid">{shown.map((project) => <ProjectCard key={project.id} project={project} tasks={tasks} people={people} department={byCode(project.department)} today={todayLocal()} />)}</div>
       : <p className="vy-project-empty">{projects.length ? 'No projects match these filters.' : preview ? 'No projects yet. Create the first one.' : 'Shared projects will appear here when the project service is connected.'}</p>}
-    <section className="vy-ticket-desk" aria-labelledby="vy-ticket-desk-title"><div className="vy-ticket-desk-head"><div><h2 id="vy-ticket-desk-title">Ticket desk</h2><p>{ticketManager ? `${people.find((person) => person.id === ticketManager)?.name || 'Project manager'} keeps these moving.` : 'No project manager set yet.'}</p></div>{preview && <label>Project manager<SelectField ariaLabel="Project manager" size="compact" value={ticketManager || ''} onChange={(next) => onTicketManagerChange?.(next)} options={[{ value: '', label: 'Not set' }, ...people.map((person) => ({ value: person.id, label: person.name }))]} /></label>}</div>
+    <section className="vy-ticket-desk" aria-labelledby="vy-ticket-desk-title"><div className="vy-ticket-desk-head"><div><h2 id="vy-ticket-desk-title">Ticket desk</h2><p>{preview ? ticketManager ? `${people.find((person) => person.id === ticketManager)?.name || 'Project manager'} keeps these moving.` : 'No project manager set yet.' : 'Store issues, assignments, and status history.'}</p></div>{preview && <label>Project manager<SelectField ariaLabel="Project manager" size="compact" value={ticketManager || ''} onChange={(next) => onTicketManagerChange?.(next)} options={[{ value: '', label: 'Not set' }, ...people.map((person) => ({ value: person.id, label: person.name }))]} /></label>}</div>
       {preview ? waiting.length ? <ul className="vy-ticket-list">{waiting.map((task) => <li key={task.id}><div><strong>{task.title}</strong><span>{byCode(task.department).name}{task.due && ` · due ${displayDate(task.due)}`}</span></div><button type="button" className="vy-button vy-button-small" onClick={() => setTicketEditor(task.id)}>Assign</button></li>)}</ul> : <p className="vy-project-empty">No tickets waiting. Good place to be.</p>
-        : <p className="vy-project-empty">Ticket intake and assignment are not connected yet.</p>}
+        : <a className="vy-button vy-button-small" href="#/tickets">Open ticket desk</a>}
     </section>
     {editor && <ProjectDialog key={editor} project={selectedProject} departments={allDepartments} people={people} currentUser={currentUser} onSave={saveProject} onDelete={deleteProject} onClose={() => setEditor(null)} />}
     {ticketEditor && <ProjectTaskDialog key={ticketEditor} task={selectedTicket} kind="ticket" requireAssignee={!!selectedTicket} departments={allDepartments} projects={projects} people={people} onSave={saveTicket} onClose={() => setTicketEditor(null)} />}

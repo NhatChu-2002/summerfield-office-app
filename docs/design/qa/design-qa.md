@@ -298,3 +298,9 @@ final result: passed for the UI-first scope
 - Browser checked the phone-pane index, reference department links, and horizontal width. Typecheck, import-boundary check, frontend tests, and production build pass. A signed-in account was not available for browser testing.
 
 final result: passed for the UI-first scope
+
+## Connected Ticket Desk - September 25, 2026
+
+- Added a separate signed-in Ticket desk at `#/tickets`, linked from Projects, using the inventory ticket RPCs. The existing Design preview remains memory-only. The queue, submission form, and detail/activity views do not present sample tickets as company records.
+- Checked the local synthetic admin workflow in the browser: submitted a store ticket, moved it to Acknowledged with a note, assigned the QA user, and saw both events. At 351px and 1528px viewport widths, the document had no horizontal overflow; the browser reported no console errors. A small-screen empty-state spacing and optional-note label were adjusted after inspection.
+- This is not a hosted deployment verification. Ticket photos, project links, chat, and notifications remain outside this slice.
