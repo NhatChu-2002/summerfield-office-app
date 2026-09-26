@@ -8,7 +8,7 @@ This is the HQ implementation contract for one Supabase Auth account per person.
 | --- | --- | --- |
 | Organization | `organization_memberships.role`: `admin`, `manager`, `viewer` | `admin` crosses departments and active stores. `manager` can manage assigned stores; it does not automatically enter departments. `viewer` is the baseline organization membership, not a promise that every assigned department is read-only. |
 | Department | `team_report_memberships.team_role`: `lead`, `member`, `viewer` per code | Active assignments control department reads, edits, and submission. One person may hold different roles in different departments. |
-| Store | `store_memberships` plus active organization/store checks | A non-admin can access only assigned active stores. Store management also requires organization `manager`. |
+| Store | `store_memberships` plus active organization/store checks | A non-admin normally accesses only assigned active stores. Store management also requires organization `manager`; Operations and Stores leads have a scoped inspection exception, not general store-management access. |
 
 The source functions are `has_org_role`, `has_team_report_role`, `can_access_store`, and `can_manage_store` in the inventory migrations. HQ uses those helpers in its department functions. The frontend now preserves active stores returned by `get_my_access_context`; that context shapes navigation, but RLS and RPC checks make the final decision. Never add a broad `manager` bypass to department policies or put authorization only in a JWT claim. Revocations should take effect against the membership tables without waiting for a token refresh.
 
@@ -39,7 +39,11 @@ The `reportCapabilities` helper mirrors these rules for future controls. The RPC
 
 ## Verification gate
 
-The isolated local replay passed 168 pgTAP assertions across access layers, report history, tickets, and projects on 2026-09-26. The full versioned report template payload still needs coverage, and pgTAP must run in CI before hosted deployment. The hosted project is not a fixture environment; this audit made no data changes there.
+The isolated local replay passed 197 pgTAP assertions across access layers, report history, tickets, projects, and store walk-throughs on 2026-09-26. The full versioned report template payload still needs coverage, and pgTAP must run in CI before hosted deployment. The hosted project is not a fixture environment; this audit made no data changes there.
+
+## Store walk-throughs
+
+Inventory `202609260004_store_inspection_lead_access.sql` grants active Operations and Stores (`store_manager` department) leads inspection read/edit access across active stores in their organization. It does not give them general store management or ticket permissions. Organization admins retain all-store inspection access; store managers retain edit access for assigned active stores; assigned-store viewers retain read-only access. Other department leads do not gain inspection access. The `can_read_store_inspection` and `can_edit_store_inspection` functions enforce this for inspection rows, photos, and storage; HQ navigation is only a convenience. The first connected HQ page supports listing, reopening, and saving visit details, arrival, and order draft data through the existing revision-checked RPC. It does not yet submit or score visits, upload photos, or render PDFs. Keep the legacy payload's other fields intact during these draft edits.
 
 ## Ticket routing
 
