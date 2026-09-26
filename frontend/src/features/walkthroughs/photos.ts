@@ -23,15 +23,19 @@ export async function listInspectionPhotos(organizationId: string, inspectionId:
 }
 
 async function prepareImage(file: File): Promise<Blob> {
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) throw new Error('Choose a JPEG, PNG, or WebP photo.')
-  if (file.size <= maxPhotoBytes) return file
-  const image = await createImageBitmap(file)
+  if (!file.type.startsWith('image/')) throw new Error('Choose an image from your camera or photo library.')
+  if (['image/jpeg', 'image/png', 'image/webp'].includes(file.type) && file.size <= maxPhotoBytes) return file
+  let image: ImageBitmap
+  try { image = await createImageBitmap(file) }
+  catch { throw new Error('This photo format could not be opened. Choose a JPEG, PNG, or WebP image.') }
   try {
     const scale = Math.min(1, maxSide / Math.max(image.width, image.height))
     const canvas = document.createElement('canvas')
     canvas.width = Math.max(1, Math.round(image.width * scale))
     canvas.height = Math.max(1, Math.round(image.height * scale))
-    canvas.getContext('2d')?.drawImage(image, 0, 0, canvas.width, canvas.height)
+    const context = canvas.getContext('2d')
+    if (!context) throw new Error('Photo processing is not available in this browser.')
+    context.drawImage(image, 0, 0, canvas.width, canvas.height)
     for (const quality of [0.7, 0.5, 0.35]) {
       const compressed = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality))
       if (compressed && compressed.size <= maxPhotoBytes) return compressed

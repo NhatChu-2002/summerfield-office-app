@@ -12,8 +12,8 @@ const safetyChoices: { value: SafetyValue; label: string }[] = [
   { value: 'pass', label: 'Pass' }, { value: 'fail', label: 'Fail' }, { value: 'na', label: 'N/A' },
 ]
 
-export function ChecklistSection({ lane, form, editable, onScore, onNote, organizationId, inspectionId, photos, onPhotos, onPhotoBusy }: {
-  lane: CheckLane; form: InspectionForm; editable: boolean
+export function ChecklistSection({ lane, form, canEdit, editable, onScore, onNote, organizationId, inspectionId, photos, onPhotos, onPhotoBusy }: {
+  lane: CheckLane; form: InspectionForm; canEdit: boolean; editable: boolean
   onScore: (key: string, value: ScoreValue) => void; onNote: (key: string, note: string) => void
   organizationId: string; inspectionId: string | null; photos: InspectionPhoto[]; onPhotos: (photos: InspectionPhoto[]) => void; onPhotoBusy: (busy: boolean) => void
 }) {
@@ -28,14 +28,14 @@ export function ChecklistSection({ lane, form, editable, onScore, onNote, organi
         <div className="vy-walk-check-answer"><div className="vy-walk-choice" role="group" aria-label={item.label}>{scoreChoices.map((choice) =>
           <button type="button" key={choice.label} aria-pressed={answer?.value === choice.value} disabled={!editable} onClick={() => onScore(key, choice.value)}>{choice.label}</button>
         )}</div></div>
-        {(editable || answer?.note || photos.some((photo) => photo.question_key === key)) && <details className="vy-walk-check-note"><summary>Notes & photos {photos.filter((photo) => photo.question_key === key).length || ''}</summary><textarea aria-label={`${item.label} notes`} value={answer?.note || ''} onChange={(event) => onNote(key, event.target.value)} disabled={!editable} rows={2} maxLength={2000} placeholder="What you saw" /><PhotoEvidence organizationId={organizationId} inspectionId={inspectionId} questionKey={key} photos={photos} editable={editable} onPhotos={onPhotos} onBusy={onPhotoBusy} /></details>}
+        {(canEdit || answer?.note || photos.some((photo) => photo.question_key === key)) && <details className="vy-walk-check-note"><summary>Notes & photos {photos.filter((photo) => photo.question_key === key).length || ''}</summary><textarea aria-label={`${item.label} notes`} value={answer?.note || ''} onChange={(event) => onNote(key, event.target.value)} disabled={!editable} rows={2} maxLength={2000} placeholder="What you saw" /><PhotoEvidence organizationId={organizationId} inspectionId={inspectionId} questionKey={key} questionLabel={item.label} photos={photos} canEdit={canEdit} editable={editable} onPhotos={onPhotos} onBusy={onPhotoBusy} /></details>}
       </div>
     })}</div>
   </section>
 }
 
-export function SafetySection({ form, editable, onSafety, onNote, organizationId, inspectionId, photos, onPhotos, onPhotoBusy }: {
-  form: InspectionForm; editable: boolean
+export function SafetySection({ form, canEdit, editable, onSafety, onNote, organizationId, inspectionId, photos, onPhotos, onPhotoBusy }: {
+  form: InspectionForm; canEdit: boolean; editable: boolean
   onSafety: (key: string, value: SafetyValue) => void; onNote: (key: string, note: string) => void
   organizationId: string; inspectionId: string | null; photos: InspectionPhoto[]; onPhotos: (photos: InspectionPhoto[]) => void; onPhotoBusy: (busy: boolean) => void
 }) {
@@ -52,7 +52,7 @@ export function SafetySection({ form, editable, onSafety, onNote, organizationId
         <div className="vy-walk-check-answer"><div className="vy-walk-choice" role="group" aria-label={item.label}>{safetyChoices.map((choice) =>
           <button type="button" key={choice.label} aria-pressed={answer?.value === choice.value} disabled={!editable} onClick={() => onSafety(key, choice.value)}>{choice.label}</button>
         )}</div></div>
-        {(editable || answer?.note || photos.some((photo) => photo.question_key === key)) && <details className="vy-walk-check-note"><summary>Notes & photos {photos.filter((photo) => photo.question_key === key).length || ''}</summary><textarea aria-label={`${item.label} notes`} value={answer?.note || ''} onChange={(event) => onNote(key, event.target.value)} disabled={!editable} rows={2} maxLength={2000} placeholder="What you found and what was done" /><PhotoEvidence organizationId={organizationId} inspectionId={inspectionId} questionKey={key} photos={photos} editable={editable} onPhotos={onPhotos} onBusy={onPhotoBusy} /></details>}
+        {(canEdit || answer?.note || photos.some((photo) => photo.question_key === key)) && <details className="vy-walk-check-note"><summary>Notes & photos {photos.filter((photo) => photo.question_key === key).length || ''}</summary><textarea aria-label={`${item.label} notes`} value={answer?.note || ''} onChange={(event) => onNote(key, event.target.value)} disabled={!editable} rows={2} maxLength={2000} placeholder="What you found and what was done" /><PhotoEvidence organizationId={organizationId} inspectionId={inspectionId} questionKey={key} questionLabel={item.label} photos={photos} canEdit={canEdit} editable={editable} onPhotos={onPhotos} onBusy={onPhotoBusy} /></details>}
       </div>
     })}</div>
     <details className="vy-walk-health-questions"><summary>Health questions for two crew members</summary><ul>{healthQuestions.map((question) => <li key={question}>{question}</li>)}</ul></details>

@@ -324,3 +324,10 @@ final result: passed for the UI-first scope
 - Ticket desk, connected report history, and shared project rows now use the same left-edge highlight and soft horizontal fill for hover and keyboard focus. Report history uses the Ticket desk's compact title, secondary text, status, and date scale; row contents and page-level controls remain feature-specific.
 - Report history now responds to its container width rather than only the browser viewport. In the forced Phone pane, four desktop columns become stacked rows without horizontal overflow; Sunny is hidden there so it does not cover search results. The existing ticket appearance was retained.
 - Browser-checked the connected admin library at desktop and Phone widths. Searching `M` showed M&M and I&M reports; keyboard focus on a result used the shared treatment. No report search logic or database query changed.
+
+## Walk-through Progress and Phone Photos - September 26, 2026
+
+- Replaced the overflowing section tab strip with a grouped section map on desktop and a compact expandable picker on phones. Each step shows its completion count; the overall indicator uses the same required fields as submission validation. Previous/next controls and focus movement make a long visit easier to traverse.
+- Added separate camera and photo-library actions with phone-sized touch targets. Browser-decodable phone images beyond JPEG/PNG/WebP are converted to bounded JPEGs before upload. The notes/photo panel now stays open while an upload is busy.
+- Checked the connected synthetic Store One draft at desktop and a 390px phone viewport. Camera and library file pickers opened with the expected single/multiple modes; two non-sensitive local test images uploaded to the isolated Supabase project, opened from private storage, and remained after reload. The phone page had no horizontal overflow or browser console errors. A physical phone camera and hosted storage were not tested.
+- Frontend typecheck, 100 unit tests, import boundaries, and production build passed. The existing large-chunk build warning remains. No schema migration or hosted data change was made.
