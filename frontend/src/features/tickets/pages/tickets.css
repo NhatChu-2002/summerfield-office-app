@@ -16,9 +16,7 @@
 .vy-ticket-list-head { padding:12px 14px; border-bottom:1px solid #cddacf; color:#54655a; font-size:11px; font-weight:700; }
 .vy-ticket-queue { margin:0; padding:0; list-style:none; }
 .vy-ticket-queue li { border-bottom:1px solid #e0e8e2; }
-.vy-ticket-queue a { min-height:72px; padding:12px 14px; border-left:2px solid transparent; color:inherit; background:linear-gradient(90deg,#eff5ef 0%,#f7faf7 28%,#fff 72%); background-size:0 100%; background-repeat:no-repeat; transition:background-size .18s ease,border-color .18s ease; }
-.vy-ticket-queue a:hover,.vy-ticket-queue a:focus-visible { border-left-color:#638d6a; background-size:100% 100%; }
-.vy-ticket-queue a:focus-visible { outline:2px solid #24573a; outline-offset:-2px; }
+.vy-ticket-queue a { min-height:72px; padding:12px 14px; }
 .vy-ticket-row-title,.vy-ticket-row-meta { display:flex; flex-direction:column; min-width:0; gap:4px; font-size:12px; overflow-wrap:anywhere; }
 .vy-ticket-row-title strong { font-size:13px; }
 .vy-ticket-row-title small,.vy-ticket-row-meta small { color:#69776d; font-size:11px; }

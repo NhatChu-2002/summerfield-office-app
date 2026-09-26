@@ -44,7 +44,7 @@ export function TicketQueue({ access }: { access: Access }) {
       <ul className="vy-ticket-queue">{rows.map((ticket) => {
         const store = access.organization.stores.find((item) => item.id === ticket.store_id)
         const team = departmentByCode(ticket.department_code)?.name || ticket.department_code
-        return <li key={ticket.ticket_id}><a href={`#/tickets/${ticket.ticket_id}`} aria-label={`Open ${ticket.title} ticket`}>
+        return <li key={ticket.ticket_id}><a className="vy-list-row-link" href={`#/tickets/${ticket.ticket_id}`} aria-label={`Open ${ticket.title} ticket`}>
           <span className="vy-ticket-row-title"><strong>{ticket.title}</strong><small>{ticket.priority === 'urgent' ? 'Urgent' : ticket.priority === 'high' ? 'High priority' : ticketCategories.find((item) => item.value === ticket.category)?.label || ticket.category}</small></span>
           <span className="vy-ticket-row-meta">{team}<small>{store?.name || `Store ${ticket.store_id.slice(0, 8)}`}</small></span>
           <span className={`vy-ticket-status is-${ticket.status}`}>{statusLabel(ticket.status)}</span>

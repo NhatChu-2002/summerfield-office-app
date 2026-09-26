@@ -59,7 +59,7 @@ export function ConnectedProjectsPage({ access, liveTaskStats }: {
       {error && <p className="vy-project-error" role="alert">{error}</p>}
       {loading ? <p className="vy-project-live-message" role="status">Loading projects...</p>
         : !error && (shown.length ? <ul className="vy-project-live-rows">{shown.map((project) => <li key={project.id}>
-          <a href={`#/project/${project.id}`}>
+          <a className="vy-list-row-link" href={`#/project/${project.id}`}>
             <span><strong>{project.name}</strong><small>{access.departments.find((item) => item.code === project.department_code)?.name || project.department_code}{project.due_date && ` · due ${displayDate(project.due_date)}`}</small></span>
             <span className={`vy-project-status is-${project.status}`}>{projectStatuses.find((item) => item.value === project.status)?.label}</span>
           </a>
