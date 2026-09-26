@@ -19,6 +19,21 @@ const object = (value: unknown): Record<string, unknown> =>
 export const scoreKey = (laneId: string, index: number) => `${laneId}:${index}`
 export const safetyKey = (index: number) => `safe:${index}`
 
+export const requiredVisitFields: { field: keyof VisitMeta; label: string; section: string }[] = [
+  { field: 'geo', label: 'Address at time of visit', section: 'details' },
+  { field: 'time', label: 'Arrival time', section: 'details' },
+  { field: 'mgrName', label: 'Store manager on site', section: 'details' },
+  { field: 'queue', label: 'Guests ahead in line', section: 'arrival' },
+  { field: 'waitOrder', label: 'Wait to place the order', section: 'arrival' },
+  { field: 'waitDrink', label: 'Wait for the drink', section: 'arrival' },
+  { field: 'crew', label: 'Crew on shift', section: 'arrival' },
+  { field: 'channel', label: 'Order channel', section: 'order' },
+  { field: 'orderTime', label: 'Order placed at', section: 'order' },
+  { field: 'readyTime', label: 'Handed to you at', section: 'order' },
+  { field: 'orderTotal', label: 'Order total', section: 'order' },
+  { field: 'orderItems', label: 'What you ordered', section: 'order' },
+]
+
 export function readInspection(payload: unknown): InspectionForm {
   const visit = object(object(payload).visit)
   const scores: Record<string, ScoreAnswer> = {}
@@ -108,21 +123,7 @@ export function inspectionStats(form: InspectionForm) {
 }
 
 export function firstMissing(form: InspectionForm): { section: string; label: string } | null {
-  const required: { field: keyof VisitMeta; label: string; section: string }[] = [
-    { field: 'geo', label: 'Address at time of visit', section: 'details' },
-    { field: 'time', label: 'Arrival time', section: 'details' },
-    { field: 'mgrName', label: 'Store manager on site', section: 'details' },
-    { field: 'queue', label: 'Guests ahead in line', section: 'arrival' },
-    { field: 'waitOrder', label: 'Wait to place the order', section: 'arrival' },
-    { field: 'waitDrink', label: 'Wait for the drink', section: 'arrival' },
-    { field: 'crew', label: 'Crew on shift', section: 'arrival' },
-    { field: 'channel', label: 'Order channel', section: 'order' },
-    { field: 'orderTime', label: 'Order placed at', section: 'order' },
-    { field: 'readyTime', label: 'Handed to you at', section: 'order' },
-    { field: 'orderTotal', label: 'Order total', section: 'order' },
-    { field: 'orderItems', label: 'What you ordered', section: 'order' },
-  ]
-  for (const entry of required) if (!form.meta[entry.field].trim()) return { section: entry.section, label: entry.label }
+  for (const entry of requiredVisitFields) if (!form.meta[entry.field].trim()) return { section: entry.section, label: entry.label }
   for (let index = 0; index < safetyItems.length; index += 1) {
     if (!form.safety[safetyKey(index)]?.value) return { section: 'safety', label: safetyItems[index].label }
   }

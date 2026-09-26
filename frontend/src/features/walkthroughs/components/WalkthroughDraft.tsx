@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, RefreshCw } from 'lucide-react'
+import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react'
 import { Dialog } from 'radix-ui'
 import type { Access } from '@/features/auth'
 import { displayDate } from '@/shared/lib/format'
@@ -11,10 +11,10 @@ import { orderChannels, validVisitDate, walkthroughMessage } from '../model'
 import { activeLanes, lanes, safetyItems } from '../template'
 import { downloadInspectionPhoto, listInspectionPhotos, type InspectionPhoto } from '../photos'
 import { inspectionReport } from '../report'
+import { walkthroughProgress, type WalkthroughSection } from '../section-progress'
 import { ChecklistSection, SafetySection } from './ChecklistSection'
 import { WalkthroughReview } from './WalkthroughReview'
-
-type Section = 'details' | 'arrival' | 'order' | 'safety' | 'review' | 'ops' | 'kiosk' | 'rd' | 'eq' | 'mkt' | 'dt'
+import { WalkthroughSectionNav } from './WalkthroughSectionNav'
 
 function VisitInput({ label, value, onChange, disabled, placeholder }: {
   label: string; value: string; onChange: (value: string) => void; disabled: boolean; placeholder?: string
@@ -31,7 +31,7 @@ export function WalkthroughDraft({ access, storeId, visitDate }: { access: Acces
   const [photoError, setPhotoError] = useState('')
   const [form, setForm] = useState<InspectionForm>(() => readInspection(null))
   const [savedForm, setSavedForm] = useState<InspectionForm>(() => readInspection(null))
-  const [section, setSection] = useState<Section>('details')
+  const [section, setSection] = useState<WalkthroughSection>('details')
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -41,6 +41,7 @@ export function WalkthroughDraft({ access, storeId, visitDate }: { access: Acces
   const [pendingHref, setPendingHref] = useState<string | null>(null)
 
   useEffect(() => { setError('') }, [form])
+  useEffect(() => { if (section === 'dt' && form.meta.hasDT !== 'yes') setSection('order') }, [form.meta.hasDT, section])
 
   useEffect(() => {
     if (!validVisitDate(visitDate)) { setError('Invalid visit date.'); setLoading(false); return }
@@ -87,12 +88,13 @@ export function WalkthroughDraft({ access, storeId, visitDate }: { access: Acces
     }
   }, [dirty, canEdit])
   const stats = inspectionStats(form)
-  const sections: { key: Section; label: string }[] = [
-    { key: 'details', label: 'Store details' }, { key: 'arrival', label: 'Arrival' },
-    { key: 'order', label: 'Your order' }, { key: 'safety', label: 'Food safety' },
-    ...activeLanes(form.meta.hasDT === 'yes').map((lane) => ({ key: lane.id as Section, label: lane.name })),
-    { key: 'review', label: 'Review & actions' },
-  ]
+  const progress = walkthroughProgress(form)
+  const sections = progress.sections
+  const sectionIndex = Math.max(0, sections.findIndex((item) => item.key === section))
+  const moveToSection = (next: WalkthroughSection) => {
+    setSection(next)
+    requestAnimationFrame(() => document.getElementById('vy-walk-current-section')?.focus())
+  }
   const setMeta = (field: keyof InspectionForm['meta'], value: string) => setForm((previous) => ({ ...previous, meta: { ...previous.meta, [field]: value } }))
   const setScore = (key: string, value: ScoreValue) => setForm((previous) => ({ ...previous, scores: { ...previous.scores, [key]: { ...previous.scores[key], value } } }))
   const setScoreNote = (key: string, note: string) => setForm((previous) => ({ ...previous, scores: { ...previous.scores, [key]: { ...previous.scores[key], note } } }))
@@ -125,7 +127,7 @@ export function WalkthroughDraft({ access, storeId, visitDate }: { access: Acces
 
   function requestSubmit() {
     const missing = firstMissing(form)
-    if (missing) { setSection(missing.section as Section); setError(`Complete ${missing.label} before submitting.`); setSuccess(''); return }
+    if (missing) { moveToSection(missing.section as WalkthroughSection); setError(`Complete ${missing.label} before submitting.`); setSuccess(''); return }
     setConfirmAction('submit')
   }
 
@@ -168,10 +170,10 @@ export function WalkthroughDraft({ access, storeId, visitDate }: { access: Acces
       {error && <p className="vy-walk-error" role="alert">{error} <button type="button" onClick={() => setReload((value) => value + 1)}>Reload</button></p>}
       {photoError && <p className="vy-walk-error" role="alert">Photo evidence could not be loaded: {photoError}</p>}
       {success && <p className="vy-walk-success" role="status">{success}</p>}
-      <div className="vy-walk-section-tabs" role="group" aria-label="Visit sections">
-        {sections.map((item) => <button key={item.key} type="button" aria-pressed={section === item.key} onClick={() => setSection(item.key)}>{item.label}</button>)}
-      </div>
-      <div className="vy-walk-fields vy-walk-full-form">
+      <div className="vy-walk-layout">
+        <WalkthroughSectionNav sections={sections} current={section} answered={progress.answered} total={progress.total} onSelect={moveToSection} />
+        <div className="vy-walk-main">
+      <div id="vy-walk-current-section" className="vy-walk-fields vy-walk-full-form" tabIndex={-1}>
         {section === 'details' && <section aria-label="Store details"><h2>Store details</h2><div className="vy-walk-form-grid">
           <div className="vy-walk-static-field"><span>Store</span><strong>{store.name}</strong></div>
           <div className="vy-walk-static-field"><span>Visit date</span><strong>{displayDate(visitDate, true)}</strong></div>
@@ -199,9 +201,15 @@ export function WalkthroughDraft({ access, storeId, visitDate }: { access: Acces
           <VisitInput label="Window to hand-off" value={form.meta.dtWindow} onChange={(value) => setMeta('dtWindow', value)} disabled={!editable} placeholder="Seconds" />
           <VisitInput label="Total time in lane" value={form.meta.dtTotal} onChange={(value) => setMeta('dtTotal', value)} disabled={!editable} placeholder="Seconds" />
         </div></>}</section>}
-        {section === 'safety' && <SafetySection form={form} editable={editable} onSafety={setSafety} onNote={setSafetyNote} organizationId={organizationId} inspectionId={record?.id || null} photos={photos} onPhotos={setPhotos} onPhotoBusy={setPhotoBusy} />}
-        {activeLanes(form.meta.hasDT === 'yes').filter((lane) => lane.id === section).map((lane) => <ChecklistSection key={lane.id} lane={lane} form={form} editable={editable} onScore={setScore} onNote={setScoreNote} organizationId={organizationId} inspectionId={record?.id || null} photos={photos} onPhotos={setPhotos} onPhotoBusy={setPhotoBusy} />)}
+        {section === 'safety' && <SafetySection form={form} canEdit={canEdit} editable={editable} onSafety={setSafety} onNote={setSafetyNote} organizationId={organizationId} inspectionId={record?.id || null} photos={photos} onPhotos={setPhotos} onPhotoBusy={setPhotoBusy} />}
+        {activeLanes(form.meta.hasDT === 'yes').filter((lane) => lane.id === section).map((lane) => <ChecklistSection key={lane.id} lane={lane} form={form} canEdit={canEdit} editable={editable} onScore={setScore} onNote={setScoreNote} organizationId={organizationId} inspectionId={record?.id || null} photos={photos} onPhotos={setPhotos} onPhotoBusy={setPhotoBusy} />)}
         {section === 'review' && <><WalkthroughReview form={form} editable={editable} onMeta={setMeta} onFindings={setFindings} /><section className="vy-walk-export" aria-label="Download report"><h2>Download report</h2><div><button type="button" className="vy-button" disabled={busy || photoBusy} onClick={() => void exportPdf('manager')}>Manager PDF</button><button type="button" className="vy-button" disabled={busy || photoBusy} onClick={() => void exportPdf('internal')}>Internal PDF</button></div></section></>}
+      </div>
+      <div className="vy-walk-section-controls">
+        {sectionIndex > 0 ? <button type="button" className="vy-button" onClick={() => moveToSection(sections[sectionIndex - 1].key)}><ArrowLeft size={16} /> Previous</button> : <span />}
+        {sectionIndex < sections.length - 1 && <button type="button" className="vy-button" onClick={() => moveToSection(sections[sectionIndex + 1].key)}>Next: {sections[sectionIndex + 1].label} <ArrowRight size={16} /></button>}
+      </div>
+        </div>
       </div>
       {canEdit && <div className="vy-walk-savebar"><span role="status">{busy || photoBusy ? 'Working...' : dirty ? 'Unsaved changes' : record ? 'All changes saved' : 'Not saved yet'}</span><button className="vy-button" type="button" disabled={busy || photoBusy || (!!record && !dirty)} onClick={() => void save()}>{busy ? 'Working...' : 'Save draft'}</button><button className="vy-button vy-button-dark" type="button" disabled={busy || photoBusy} onClick={requestSubmit}>Submit</button></div>}
       {record?.status === 'submitted' && access.organization.role === 'admin' && <div className="vy-walk-savebar"><button type="button" className="vy-button" disabled={busy} onClick={() => setConfirmAction('reopen')}>Reopen as draft</button></div>}
