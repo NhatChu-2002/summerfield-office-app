@@ -7,7 +7,8 @@ import { listTeamReportHistory, type TeamReportSummary } from '../api'
 import type { ReportCursor } from '../history-cursor'
 import { matchingDepartmentCodes, matchingStoreIds } from '../history-search'
 import { appendHistory, historyHref, historyPeriod } from '../history-model'
-import { currentPeriod, reportsHref, type LiveReportType } from '../live-period'
+import { reportsHref, type LiveReportType } from '../live-period'
+import { useCurrentReportPeriod } from '../use-current-report-period'
 import './report-library.css'
 
 type View = 'all' | 'draft' | 'submitted'
@@ -15,6 +16,7 @@ const PAGE_SIZE = 25
 const views: { value: View; label: string }[] = [{ value: 'draft', label: 'Drafts' }, { value: 'submitted', label: 'Submitted' }, { value: 'all', label: 'All reports' }]
 
 export default function ReportLibraryPage({ access, view }: { access: Access; view: View }) {
+  const currentMonthly = useCurrentReportPeriod('monthly')
   const [type, setType] = useState<LiveReportType | ''>('')
   const [departmentCode, setDepartmentCode] = useState('')
   const [storeId, setStoreId] = useState('')
@@ -80,7 +82,7 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
 
   const stores = access.organization.stores
   return <>
-    <header className="vy-report-library-head"><div><h1>Team reports</h1><p>Drafts and submitted reports across your teams.</p></div><a className="vy-button vy-button-dark" href={reportsHref(currentPeriod('monthly'))}><Plus size={16} /> Start report</a></header>
+    <header className="vy-report-library-head"><div><h1>Team reports</h1><p>Drafts and submitted reports across your teams.</p></div><a className="vy-button vy-button-dark" href={reportsHref(currentMonthly)}><Plus size={16} /> Start report</a></header>
     <nav className="vy-report-library-tabs" aria-label="Report views">{views.map((item) => <a key={item.value} href={item.value === 'all' ? '#/reports' : `#/reports?view=${item.value}`} aria-current={view === item.value ? 'page' : undefined}>{item.label}</a>)}</nav>
     <div className="vy-report-library-filters">
       <label className="vy-report-library-search"><Search size={16} aria-hidden="true" /><span className="sr-only">Search report name, summary, or date</span><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, summary, or date" maxLength={120} /></label>

@@ -6,7 +6,7 @@ import type { Route } from '@/shared/lib/routing'
 import { DepartmentIcon, SectionIcon } from '@/shared/ui/icons'
 import { SelectField } from '@/shared/ui/SelectField'
 import { departmentRole, type Access } from '@/features/auth'
-import { reportsHomeHref } from '@/features/reports'
+import { reportsHref, useCurrentReportPeriod } from '@/features/reports'
 import { SunnyPet } from '@/features/sunny'
 // Styles for everything drawn inside the shell (Vy's HQ design), including the dashboard and department pages.
 import './workspace.css'
@@ -29,11 +29,12 @@ export function WorkspaceShell({ access, route, preview, children, onRefresh, re
   const [query, setQuery] = useState('')
   const [myDepartment, selectMine] = useMyDepartment()
   const [notificationOpen, setNotificationOpen] = useState(false)
+  const currentReportMonth = useCurrentReportPeriod('monthly')
   useEffect(() => { setMoreOpen(false); setSearchOpen(false); window.scrollTo(0, 0) }, [route.page, route.code])
   const visibleDepartments = preview ? [companyDepartment, ...referenceDepartments] : sortLikeReference(access.departments.map(referenceForDepartment))
   const visibleSections = referenceNav.filter((item) => item.key !== 'people' || access.organization.role === 'admin' || preview)
   // The preview retains its legacy route; signed-in navigation opens the live report board.
-  const sectionHref = (key: string, href: string) => key === 'reports' && !preview ? reportsHomeHref() : href
+  const sectionHref = (key: string, href: string) => key === 'reports' && !preview ? reportsHref(currentReportMonth) : href
   const selected = route.page === 'department' ? route.code : route.page === 'project' ? 'projects' : route.page === 'lesson' ? 'learn' : route.page === 'report' ? 'reports' : route.page
   const mobile = layout === 'phone'
   const departmentOptions = visibleDepartments.filter((item) => item.code !== 'company')
