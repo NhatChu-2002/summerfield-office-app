@@ -1,6 +1,6 @@
 import { dataOrThrow, requireSupabase } from '@/shared/api/supabase'
 import { historyCursorFilter, type ReportCursor } from './history-cursor'
-import { historySearchFilter } from './history-search'
+import { historySearchFilter, isMissingDateSearch } from './history-search'
 import type { ReportPeriod } from './live-period'
 
 export type TeamReport = {
@@ -30,24 +30,30 @@ export type HistoryFilters = {
   storeId: string | null
   search: string
   searchDepartmentCodes: string[]
+  searchStoreIds: string[]
 }
 
-export async function listTeamReportHistory(filters: HistoryFilters, cursor: ReportCursor | null, pageSize = 25): Promise<{ items: TeamReportSummary[]; nextCursor: ReportCursor | null }> {
-  let query = requireSupabase().from('team_reports')
-    .select('id,department_code,report_type,period_start,period_end,store_id,status,summary,updated_at,submitted_at')
-    .eq('organization_id', filters.organizationId)
-    .in('report_type', ['weekly', 'monthly'])
-  if (filters.status) query = query.eq('status', filters.status)
-  if (filters.type) query = query.eq('report_type', filters.type)
-  if (filters.departmentCode) query = query.eq('department_code', filters.departmentCode)
-  if (filters.storeId) query = query.eq('store_id', filters.storeId)
-  if (filters.search.trim()) query = query.or(historySearchFilter(filters.search, filters.searchDepartmentCodes))
-  if (cursor) query = query.or(historyCursorFilter(cursor))
-  const { data, error } = await query.order('updated_at', { ascending: false }).order('id', { ascending: false }).limit(pageSize + 1)
-  const rows = dataOrThrow(data as TeamReportSummary[] | null, error)
+export async function listTeamReportHistory(filters: HistoryFilters, cursor: ReportCursor | null, pageSize = 25): Promise<{ items: TeamReportSummary[]; nextCursor: ReportCursor | null; dateSearchAvailable: boolean }> {
+  const run = (includeDates: boolean) => {
+    let query = requireSupabase().from('team_reports')
+      .select('id,department_code,report_type,period_start,period_end,store_id,status,summary,updated_at,submitted_at')
+      .eq('organization_id', filters.organizationId)
+      .in('report_type', ['weekly', 'monthly'])
+    if (filters.status) query = query.eq('status', filters.status)
+    if (filters.type) query = query.eq('report_type', filters.type)
+    if (filters.departmentCode) query = query.eq('department_code', filters.departmentCode)
+    if (filters.storeId) query = query.eq('store_id', filters.storeId)
+    if (filters.search.trim()) query = query.or(historySearchFilter(filters.search, filters.searchDepartmentCodes, filters.searchStoreIds, includeDates))
+    if (cursor) query = query.or(historyCursorFilter(cursor))
+    return query.order('updated_at', { ascending: false }).order('id', { ascending: false }).limit(pageSize + 1)
+  }
+  let result = await run(true)
+  const dateSearchAvailable = !isMissingDateSearch(result.error)
+  if (!dateSearchAvailable) result = await run(false)
+  const rows = dataOrThrow(result.data as TeamReportSummary[] | null, result.error)
   const items = rows.slice(0, pageSize)
   const last = items.at(-1)
-  return { items, nextCursor: rows.length > pageSize && last ? { updated_at: last.updated_at, id: last.id } : null }
+  return { items, nextCursor: rows.length > pageSize && last ? { updated_at: last.updated_at, id: last.id } : null, dateSearchAvailable }
 }
 
 export type TeamReportCard = Pick<TeamReport, 'department_code' | 'store_id' | 'status' | 'summary'>
