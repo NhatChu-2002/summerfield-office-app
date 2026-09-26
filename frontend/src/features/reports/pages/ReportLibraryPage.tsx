@@ -5,7 +5,7 @@ import { referenceForDepartment } from '@/shared/config/reference-departments'
 import { SelectField } from '@/shared/ui/SelectField'
 import { listTeamReportHistory, type TeamReportSummary } from '../api'
 import type { ReportCursor } from '../history-cursor'
-import { matchingDepartmentCodes } from '../history-search'
+import { matchingDepartmentCodes, matchingStoreIds } from '../history-search'
 import { appendHistory, historyHref, historyPeriod } from '../history-model'
 import { currentPeriod, reportsHref, type LiveReportType } from '../live-period'
 import './report-library.css'
@@ -25,14 +25,16 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState('')
+  const [dateSearchAvailable, setDateSearchAvailable] = useState(true)
   const [retry, setRetry] = useState(0)
   const generation = useRef(0)
   const organizationId = access.organization.organization_id
-  const searchDepartmentCodes = matchingDepartmentCodes(query, access.departments.map((department) => {
-    const reference = referenceForDepartment(department)
-    return { code: department.code, labels: [department.name, department.shortName, department.description, reference.name, reference.full, department.code] }
-  }))
+  const searchDepartmentCodes = matchingDepartmentCodes(query, access.departments.map((department) => ({
+    code: department.code, labels: [referenceForDepartment(department).name],
+  })))
+  const searchStoreIds = matchingStoreIds(query, access.organization.stores)
   const searchCodesKey = searchDepartmentCodes.join(',')
+  const searchStoresKey = searchStoreIds.join(',')
 
   useEffect(() => {
     const timer = window.setTimeout(() => setQuery(search.trim()), 250)
@@ -46,18 +48,20 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
     setLoading(true)
     setLoadingMore(false)
     setError('')
-    listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query, searchDepartmentCodes }, null, PAGE_SIZE)
+    setDateSearchAvailable(true)
+    listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query, searchDepartmentCodes, searchStoreIds }, null, PAGE_SIZE)
       .then((page) => {
         if (generation.current !== current) return
         setReports(page.items)
         setNextCursor(page.nextCursor)
+        setDateSearchAvailable(page.dateSearchAvailable)
       })
       .catch((cause: unknown) => { if (generation.current === current) setError(cause instanceof Error ? cause.message : 'Report history could not be loaded.') })
       .finally(() => { if (generation.current === current) setLoading(false) })
     return () => { generation.current++ }
   // The matching codes are derived from the same stable access list as the filters.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [organizationId, view, type, departmentCode, storeId, query, searchCodesKey, retry])
+  }, [organizationId, view, type, departmentCode, storeId, query, searchCodesKey, searchStoresKey, retry])
 
   async function loadMore() {
     if (loadingMore || !nextCursor) return
@@ -65,10 +69,11 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
     setLoadingMore(true)
     setError('')
     try {
-      const page = await listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query, searchDepartmentCodes }, nextCursor, PAGE_SIZE)
+      const page = await listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query, searchDepartmentCodes, searchStoreIds }, nextCursor, PAGE_SIZE)
       if (generation.current !== current) return
       setReports((existing) => appendHistory(existing, page.items))
       setNextCursor(page.nextCursor)
+      setDateSearchAvailable(page.dateSearchAvailable)
     } catch (cause) { if (generation.current === current) setError(cause instanceof Error ? cause.message : 'More reports could not be loaded.') }
     finally { if (generation.current === current) setLoadingMore(false) }
   }
@@ -78,12 +83,13 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
     <header className="vy-report-library-head"><div><h1>Team reports</h1><p>Drafts and submitted reports across your teams.</p></div><a className="vy-button vy-button-dark" href={reportsHref(currentPeriod('monthly'))}><Plus size={16} /> Start report</a></header>
     <nav className="vy-report-library-tabs" aria-label="Report views">{views.map((item) => <a key={item.value} href={item.value === 'all' ? '#/reports' : `#/reports?view=${item.value}`} aria-current={view === item.value ? 'page' : undefined}>{item.label}</a>)}</nav>
     <div className="vy-report-library-filters">
-      <label className="vy-report-library-search"><Search size={16} aria-hidden="true" /><span className="sr-only">Search teams or summaries</span><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search teams or summaries" maxLength={120} /></label>
+      <label className="vy-report-library-search"><Search size={16} aria-hidden="true" /><span className="sr-only">Search report name, summary, or date</span><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, summary, or date" maxLength={120} /></label>
       <SelectField ariaLabel="Report type" value={type} onChange={(value) => setType(value as LiveReportType | '')} options={[{ value: '', label: 'All types' }, { value: 'weekly', label: 'Weekly' }, { value: 'monthly', label: 'Monthly' }]} size="compact" />
       <SelectField ariaLabel="Department" value={departmentCode} onChange={(value) => { setDepartmentCode(value); setStoreId('') }} options={[{ value: '', label: 'All teams' }, ...access.departments.map((department) => ({ value: department.code, label: referenceForDepartment(department).name }))]} size="compact" />
       {departmentCode === 'store_manager' && <SelectField ariaLabel="Store" value={storeId} onChange={setStoreId} options={[{ value: '', label: 'All stores' }, ...stores.map((store) => ({ value: store.id, label: store.name }))]} size="compact" />}
     </div>
     {error && <div className="vy-report-error" role="alert">{error} <button type="button" onClick={() => setRetry((value) => value + 1)}>Retry</button></div>}
+    {!dateSearchAvailable && query && <p className="vy-report-status">Date search is unavailable until this environment's report migration is applied. Name and summary search still work.</p>}
     {loading ? <p className="vy-report-status" role="status">Loading report history...</p> : <section className="vy-report-history" aria-label="Report history">
       {reports.length ? <><div className="vy-report-history-heading" aria-hidden="true"><span>Report</span><span>Summary</span><span>Status</span><span>Updated</span><span></span></div><ul>{reports.map((report) => {
         const department = access.departments.find((item) => item.code === report.department_code)

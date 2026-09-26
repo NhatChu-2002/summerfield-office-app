@@ -36,6 +36,8 @@ select extensions.is((select count(*) from public.team_reports where organizatio
 select extensions.is((select count(*) from public.team_reports where organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd2'), 0::bigint, 'other organization reports stay hidden');
 select extensions.is((select summary from public.team_reports where organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1' and department_code = 'marketing' order by period_end desc limit 1 offset 1), 'August', 'second page retains another period');
 select extensions.is((select count(*) from public.team_reports where organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1' and report_type = 'monthly' and period_start = '2026-08-01' and period_end = '2026-08-31'), 1::bigint, 'period metadata query returns only the assigned August card');
+select extensions.is((select count(*) from public.team_reports report where report.organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1' and public.team_report_search_dates(report) ilike '%August 2026%'), 1::bigint, 'visible monthly period is searchable without exposing another department');
+select extensions.is((select count(*) from public.team_reports report where report.organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1' and public.team_report_search_dates(report) ilike '%Sep 21 - Sep 27, 2026%'), 1::bigint, 'visible weekly period is searchable');
 select extensions.is((with first_page as (
   select updated_at, id from public.team_reports
   where organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1'
@@ -44,6 +46,7 @@ select extensions.is((with first_page as (
   where report.organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1'
     and (report.updated_at, report.id) < (cursor.updated_at, cursor.id)), 2::bigint, 'cursor boundary retains both older visible reports');
 select extensions.ok(to_regclass('public.team_reports_org_updated_cursor_idx') is not null, 'organization-wide cursor index exists');
+select extensions.ok(not has_function_privilege('anon', 'public.team_report_search_dates(public.team_reports)', 'EXECUTE'), 'anonymous users cannot call report date search');
 
 select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', true);
 select extensions.is((select count(*) from public.team_reports where organization_id = 'dddddddd-dddd-dddd-dddd-ddddddddddd1'), 0::bigint, 'organization role without department assignment cannot see reports');
