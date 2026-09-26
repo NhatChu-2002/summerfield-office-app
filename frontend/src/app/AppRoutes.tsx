@@ -15,7 +15,7 @@ import { LocationPage, LocationsPage } from '@/features/locations'
 import { MeetingsPage } from '@/features/meetings'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { PeoplePage } from '@/features/people'
-import { ProjectPage, ProjectsPage } from '@/features/projects'
+import { ConnectedProjectsPage, ProjectPage } from '@/features/projects'
 import { LiveReportPage, LiveReportsPage, ReportLibraryPage } from '@/features/reports'
 import { SopPage } from '@/features/sop'
 import { todayLocal } from '@/shared/lib/format'
@@ -70,7 +70,7 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
   } else if (route.page === 'people') {
     content = <Suspense fallback={<p role="status">Loading People & access...</p>}><PeoplePage departments={access.departments.map(referenceForDepartment)} people={[]} requests={[]} preview={false} admin={access.organization.role === 'admin'} currentAccess={{ name: access.displayName, email: access.email, organizationRole: access.organization.role, departments: access.departments.map((item) => item.shortName) }} /></Suspense>
   } else if (route.page === 'projects') {
-    content = <ProjectsPage departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} preview={false} canSubmitStoreTicket={canSubmitTicket(access)}
+    content = <ConnectedProjectsPage canSubmitStoreTicket={canSubmitTicket(access)}
       liveTaskStats={dataReady ? { overdue: tasks.filter((task) => task.status === 'open' && !!task.due_date && task.due_date < todayLocal()).length, mine: myOpenTasks.length } : undefined} />
   } else if (route.page === 'project') {
     content = <ProjectPage id={route.code || ''} departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} messages={[]} preview={false} />

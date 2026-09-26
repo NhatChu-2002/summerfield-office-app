@@ -76,4 +76,4 @@ Run `npm run build` for a production bundle in `dist/`. The app uses hash routes
 
 ## Scope
 
-Connected workflows now include HQ tasks, team updates, version-one weekly/monthly Team Reports, and store tickets where their shared migrations are applied. The other prototype sections are UI-first previews until their shared services are integrated; this React app does not yet replace the full inventory report form, inventory, calendar, or department tools.
+Connected workflows now include HQ tasks, team updates, version-one weekly/monthly Team Reports, and store tickets where their shared migrations are applied. Ticket assignees also need inventory migration `202609260001_ticket_assignee_read_access.sql` to read assigned tickets. Signed-in Projects links to the connected Ticket desk and HQ tasks; shared project records remain unconnected. The other prototype sections are UI-first previews until their shared services are integrated; this React app does not yet replace the full inventory report form, inventory, calendar, or department tools.

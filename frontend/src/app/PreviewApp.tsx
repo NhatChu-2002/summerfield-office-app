@@ -15,7 +15,7 @@ import { MeetingsPage, previewMeetings, type MeetingRecord } from '@/features/me
 import { todayLocal } from '@/shared/lib/format'
 import { DecisionChartPage, previewAreas, previewDecisions, previewProfiles, WhoToAskPage, type ContactProfile, type DecisionRule, type OwnershipArea } from '@/features/ownership'
 import { PeoplePage, previewAccessPeople, previewAccessRequests, type PreviewPerson, type PreviewRequest } from '@/features/people'
-import { ProjectPage, ProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
+import { ProjectPage, PreviewProjectsPage, previewProjectMessages, previewProjects, previewProjectTasks, type ProjectMessage, type ProjectRecord, type ProjectTask } from '@/features/projects'
 import { ReportPage, ReportsPage, previewReports, type ReportRecord } from '@/features/reports'
 import { SopPage, previewSops, type SopDraft } from '@/features/sop'
 import { MyTasksPage, TaskDetailsDialog, TaskDialog, type HqTask } from '@/features/tasks'
@@ -90,7 +90,7 @@ export function PreviewApp({ route, onExit }: { route: Route; onExit: () => void
   } else if (route.page === 'people') {
     content = <Suspense fallback={<p role="status">Loading People & access...</p>}><PeoplePage departments={referenceDepartments} people={accessPeople} requests={accessRequests} preview admin onPeopleChange={setAccessPeople} onRequestsChange={setAccessRequests} /></Suspense>
   } else if (route.page === 'projects') {
-    content = <ProjectsPage departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} preview ticketManager={ticketManager} onTicketManagerChange={setTicketManager} onProjectsChange={setProjects} onTasksChange={setProjectTasks} />
+    content = <PreviewProjectsPage departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} ticketManager={ticketManager} onTicketManagerChange={setTicketManager} onProjectsChange={setProjects} onTasksChange={setProjectTasks} />
   } else if (route.page === 'project') {
     content = <ProjectPage id={route.code || ''} departments={referenceDepartments} people={projectPeople} currentUser={PREVIEW_USER} projects={projects} tasks={projectTasks} messages={projectMessages} preview onProjectsChange={setProjects} onTasksChange={setProjectTasks} onMessagesChange={setProjectMessages} />
   } else if (route.page === 'locations') {

@@ -1,4 +1,10 @@
 .vy-projects-hero { background:#c6d5d0; }
+.vy-project-live { container-type:inline-size; }
+.vy-project-live-section { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px 0; border-bottom:1px solid #d9e3dc; }
+.vy-project-live-section h2 { margin:0 0 4px; font-size:20px; }
+.vy-project-live-section p { margin:0; color:#637168; font-size:13px; line-height:1.5; }
+.vy-project-live-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:9px; }
+@container (max-width:640px) { .vy-project-live .vy-hero,.vy-project-live-section { align-items:flex-start; flex-direction:column; } .vy-project-live-actions { justify-content:flex-start; } }
 .vy-projects-hero > div:first-child,.vy-project-detail-hero > div:first-child { min-width:0; }
 .vy-projects-hero .vy-hero-actions,.vy-project-detail-hero .vy-hero-actions { flex:none; }
 .vy-projects-status { margin:-9px 0 18px; color:#637168; font-size:12px; }
