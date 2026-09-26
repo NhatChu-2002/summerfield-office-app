@@ -8,7 +8,7 @@ const hours = Array.from({ length: 12 }, (_, index) => ({ value: String(index + 
 const minutes = Array.from({ length: 60 }, (_, index) => ({ value: String(index), label: String(index).padStart(2, '0') }))
 const periods = [{ value: 'AM', label: 'AM' }, { value: 'PM', label: 'PM' }]
 
-export function TimeField({ value, onChange, ariaLabel }: { value: string; onChange: (value: string) => void; ariaLabel?: string }) {
+export function TimeField({ value, onChange, ariaLabel, disabled = false }: { value: string; onChange: (value: string) => void; ariaLabel?: string; disabled?: boolean }) {
   const [trigger, setTrigger] = useState<HTMLButtonElement | null>(null)
   const [open, setOpen] = useState(false)
   const parsed = parseClockTime(value)
@@ -23,7 +23,7 @@ export function TimeField({ value, onChange, ariaLabel }: { value: string; onCha
 
   return <span className="vy-control vy-time-control">
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <Popover.Trigger asChild><button ref={setTrigger} type="button" className="vy-control-trigger vy-date-trigger" aria-label={ariaLabel}>
+      <Popover.Trigger asChild><button ref={setTrigger} type="button" className="vy-control-trigger vy-date-trigger" aria-label={ariaLabel} disabled={disabled}>
         <span className={parsed ? '' : 'vy-control-placeholder'}>{parsed ? `${hour}:${String(minute).padStart(2, '0')} ${period}` : 'Choose time'}</span>
         <Clock3 size={17} strokeWidth={1.8} aria-hidden="true" />
       </button></Popover.Trigger>

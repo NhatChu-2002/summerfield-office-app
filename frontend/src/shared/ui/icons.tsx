@@ -1,6 +1,6 @@
 import {
   BookOpen, Boxes, BriefcaseBusiness, Building2, CalendarDays, ChartNoAxesCombined,
-  Clock3, FileText, FlaskConical, FolderKanban, FolderOpen, HardHat, House,
+  ClipboardCheck, Clock3, FileText, FlaskConical, FolderKanban, FolderOpen, HardHat, House,
   Landmark, Lightbulb, ListTodo, Megaphone, Menu, MessageCircleQuestion,
   MonitorCog, Newspaper, Palette, Scale, Search, Store, UsersRound, Wrench,
   type LucideIcon,
@@ -19,6 +19,7 @@ const sectionIcons: Record<string, LucideIcon> = {
   learn: BookOpen,
   time: Clock3,
   reports: ChartNoAxesCombined,
+  walkthroughs: ClipboardCheck,
   meetings: UsersRound,
   sop: FileText,
   people: UsersRound,

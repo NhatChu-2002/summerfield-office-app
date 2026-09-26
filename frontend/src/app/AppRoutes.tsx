@@ -24,6 +24,7 @@ import { TicketsPage } from '@/features/tickets'
 import { TimePage } from '@/features/time'
 import { UpdateList, UpdatesPage } from '@/features/updates'
 import { WatchPage } from '@/features/watch'
+import { WalkthroughsPage } from '@/features/walkthroughs'
 import { PlaceholderPage, WorkspaceShell } from '@/features/workspace'
 import { useHqData } from './providers/HqDataProvider'
 
@@ -76,6 +77,8 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
     content = <ConnectedProjectPage key={`${access.organization.organization_id}-${route.code}`} access={access} id={route.code || ''} />
   } else if (route.page === 'tickets') {
     content = <Suspense fallback={<p role="status">Loading tickets...</p>}><TicketsPage key={`${access.organization.organization_id}-${route.code || 'queue'}`} access={access} ticketId={route.code} /></Suspense>
+  } else if (route.page === 'walkthroughs') {
+    content = <WalkthroughsPage key={`${access.organization.organization_id}-${route.storeId || route.code || 'list'}-${route.visitDate || ''}`} access={access} mode={route.code} storeId={route.storeId} visitDate={route.visitDate} />
   } else if (route.page === 'locations') {
     content = <LocationsPage locations={[]} equipment={[]} preview={false} />
   } else if (route.page === 'location') {
