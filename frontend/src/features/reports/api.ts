@@ -1,5 +1,6 @@
 import { dataOrThrow, requireSupabase } from '@/shared/api/supabase'
 import { historyCursorFilter, type ReportCursor } from './history-cursor'
+import { historySearchFilter } from './history-search'
 import type { ReportPeriod } from './live-period'
 
 export type TeamReport = {
@@ -28,6 +29,7 @@ export type HistoryFilters = {
   departmentCode: string | null
   storeId: string | null
   search: string
+  searchDepartmentCodes: string[]
 }
 
 export async function listTeamReportHistory(filters: HistoryFilters, cursor: ReportCursor | null, pageSize = 25): Promise<{ items: TeamReportSummary[]; nextCursor: ReportCursor | null }> {
@@ -39,7 +41,7 @@ export async function listTeamReportHistory(filters: HistoryFilters, cursor: Rep
   if (filters.type) query = query.eq('report_type', filters.type)
   if (filters.departmentCode) query = query.eq('department_code', filters.departmentCode)
   if (filters.storeId) query = query.eq('store_id', filters.storeId)
-  if (filters.search.trim()) query = query.ilike('summary', `%${filters.search.trim().slice(0, 120)}%`)
+  if (filters.search.trim()) query = query.or(historySearchFilter(filters.search, filters.searchDepartmentCodes))
   if (cursor) query = query.or(historyCursorFilter(cursor))
   const { data, error } = await query.order('updated_at', { ascending: false }).order('id', { ascending: false }).limit(pageSize + 1)
   const rows = dataOrThrow(data as TeamReportSummary[] | null, error)
