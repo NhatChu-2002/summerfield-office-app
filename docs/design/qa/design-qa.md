@@ -331,3 +331,9 @@ final result: passed for the UI-first scope
 - Added separate camera and photo-library actions with phone-sized touch targets. Browser-decodable phone images beyond JPEG/PNG/WebP are converted to bounded JPEGs before upload. The notes/photo panel now stays open while an upload is busy.
 - Checked the connected synthetic Store One draft at desktop and a 390px phone viewport. Camera and library file pickers opened with the expected single/multiple modes; two non-sensitive local test images uploaded to the isolated Supabase project, opened from private storage, and remained after reload. The phone page had no horizontal overflow or browser console errors. A physical phone camera and hosted storage were not tested.
 - Frontend typecheck, 100 unit tests, import boundaries, and production build passed. The existing large-chunk build warning remains. No schema migration or hosted data change was made.
+
+## Walk-through Library Header - September 26, 2026
+
+- Matched the Team reports reference header on the connected Store walk-throughs library: soft green hero, serif title, short description, and the shared striped lower edge. Moved the new-visit link beside the filters below the header, preserving its existing edit-access condition.
+- Compared the rendered desktop header against the supplied Team reports screenshot and checked the library at 375px. The phone title wraps cleanly; filters and new-visit link remain accessible, and the page has no horizontal overflow or console errors. The new-visit link still opens the existing start form.
+- Frontend typecheck, 100 unit tests, import-boundary check, and production build passed. The pre-existing large-chunk warning remains. No database or form behavior changed.
