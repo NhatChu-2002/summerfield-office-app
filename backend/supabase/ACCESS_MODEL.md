@@ -39,4 +39,8 @@ The `reportCapabilities` helper mirrors these rules for future controls. The RPC
 
 ## Verification gate
 
-The local pgTAP suite passes 42 contract checks with synthetic admins, leads, members, viewers, store managers, inactive accounts, and another organization. The separate report-history test covers cross-period reads, a period-filtered metadata read, cursor boundaries, index presence, department access, and organization isolation. The full versioned template payload still needs coverage, and pgTAP must run in CI before hosted deployment. The hosted project is not a fixture environment; this audit made no data changes there.
+The isolated local replay passed 136 pgTAP assertions across access layers, report history, tickets, and projects on 2026-09-26. The full versioned report template payload still needs coverage, and pgTAP must run in CI before hosted deployment. The hosted project is not a fixture environment; this audit made no data changes there.
+
+## Shared Projects
+
+HQ-owned `hq_projects` uses the same supported department codes and access helpers as HQ tasks. Any active assigned viewer can read that department's projects. A member, lead, or organization admin can create. Only active department members/leads and organization admins can own a project; the owner-picker RPC uses the same rule. A project creator or active owner may edit only while they retain department write access; a lead or admin can edit any project in their scope. Only a lead or admin can archive and restore. Store-management role alone is not department access. Clients cannot insert, update, or delete project rows directly; create, edit, and archive RPCs check current memberships and revisions. Archiving is reversible, and archived records remain readable. Department reassignment, project-task membership, file storage, chat, and Asana synchronization are not part of this first connected contract.

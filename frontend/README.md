@@ -67,7 +67,7 @@ The database enforces department access with Row Level Security and the `set_hq_
 
 ## Run locally
 
-1. Apply `../backend/supabase/migrations/202609220001_hq_mvp.sql` to the target Supabase environment after the existing Summerfield schema migrations.
+1. Apply the required inventory and HQ migrations in filename order after reconciling the target ledger; see `../backend/supabase/README.md`. Connected Projects needs `202609260002_hq_projects.sql`.
 2. In this folder, copy `.env.example` to `.env.local` and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` for that environment. The key is public; do not place database passwords or service role keys here.
 3. Run `npm install` and `npm run dev`.
 4. Sign in with an account already assigned to the organization. Department membership is managed through the existing Team Access page.
@@ -76,4 +76,4 @@ Run `npm run build` for a production bundle in `dist/`. The app uses hash routes
 
 ## Scope
 
-Connected workflows now include HQ tasks, team updates, version-one weekly/monthly Team Reports, and store tickets where their shared migrations are applied. Ticket assignees also need inventory migration `202609260001_ticket_assignee_read_access.sql` to read assigned tickets. Signed-in Projects links to the connected Ticket desk and HQ tasks; shared project records remain unconnected. The other prototype sections are UI-first previews until their shared services are integrated; this React app does not yet replace the full inventory report form, inventory, calendar, or department tools.
+Connected workflows now include HQ tasks, team updates, version-one weekly/monthly Team Reports, store tickets, and department-scoped shared projects where their migrations are applied. Ticket assignees need inventory migration `202609260001_ticket_assignee_read_access.sql` to read assigned tickets. Projects supports list, create, edit, detail, and reversible archive; Asana is an optional link. Project tasks, chat, files, and Asana synchronization are not connected yet. The other prototype sections are UI-first previews until their shared services are integrated; this React app does not yet replace the full inventory report form, inventory, calendar, or department tools.
