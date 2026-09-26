@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowUpRight, Plus, Search } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import type { Access } from '@/features/auth'
 import { referenceForDepartment } from '@/shared/config/reference-departments'
 import { SelectField } from '@/shared/ui/SelectField'
@@ -91,14 +91,14 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
     {error && <div className="vy-report-error" role="alert">{error} <button type="button" onClick={() => setRetry((value) => value + 1)}>Retry</button></div>}
     {!dateSearchAvailable && query && <p className="vy-report-status">Date search is unavailable until this environment's report migration is applied. Name and summary search still work.</p>}
     {loading ? <p className="vy-report-status" role="status">Loading report history...</p> : <section className="vy-report-history" aria-label="Report history">
-      {reports.length ? <><div className="vy-report-history-heading" aria-hidden="true"><span>Report</span><span>Summary</span><span>Status</span><span>Updated</span><span></span></div><ul>{reports.map((report) => {
+      {reports.length ? <><div className="vy-report-history-heading" aria-hidden="true"><span>Report</span><span>Summary</span><span>Status</span><span>Updated</span></div><ul>{reports.map((report) => {
         const department = access.departments.find((item) => item.code === report.department_code)
         const store = stores.find((item) => item.id === report.store_id)
         const period = historyPeriod(report)
         const href = historyHref(report, view)
         const name = `${department ? referenceForDepartment(department).name : report.department_code}${store ? ` · ${store.name}` : ''}`
         const periodLabel = period?.label || `${report.period_start} - ${report.period_end}`
-        const row = <><div className="vy-report-history-identity"><strong>{name}</strong><span>{report.report_type === 'weekly' ? 'Weekly' : 'Monthly'} · {periodLabel}</span></div><p>{report.summary || 'No summary yet'}</p><span className={`vy-report-history-status is-${report.status}`}>{report.status === 'draft' ? 'Draft' : 'Submitted'}</span><time dateTime={report.updated_at}>{new Date(report.updated_at).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric' })}</time>{href && <span className="vy-report-history-open"><span className="vy-report-open-label">Open report</span><ArrowUpRight size={17} aria-hidden="true" /></span>}</>
+        const row = <><div className="vy-report-history-identity"><strong>{name}</strong><span>{report.report_type === 'weekly' ? 'Weekly' : 'Monthly'} · {periodLabel}</span></div><p>{report.summary || 'No summary yet'}</p><span className={`vy-report-history-status is-${report.status}`}>{report.status === 'draft' ? 'Draft' : 'Submitted'}</span><time dateTime={report.updated_at}>{new Date(report.updated_at).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric' })}</time></>
         return <li key={report.id}>{href
           ? <a className="vy-report-history-row" href={href} aria-label={`Open ${name} ${report.report_type} report for ${periodLabel}`}>{row}</a>
           : <div className="vy-report-history-row">{row}</div>}</li>
