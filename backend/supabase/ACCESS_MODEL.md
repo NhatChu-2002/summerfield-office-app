@@ -39,7 +39,11 @@ The `reportCapabilities` helper mirrors these rules for future controls. The RPC
 
 ## Verification gate
 
-The isolated local replay passed 136 pgTAP assertions across access layers, report history, tickets, and projects on 2026-09-26. The full versioned report template payload still needs coverage, and pgTAP must run in CI before hosted deployment. The hosted project is not a fixture environment; this audit made no data changes there.
+The isolated local replay passed 168 pgTAP assertions across access layers, report history, tickets, and projects on 2026-09-26. The full versioned report template payload still needs coverage, and pgTAP must run in CI before hosted deployment. The hosted project is not a fixture environment; this audit made no data changes there.
+
+## Ticket routing
+
+Ticket permissions are deliberately different from the general department/store layers above. Inventory `202609260003_ticket_lead_routing.sql` allows any active department lead or organization admin to see all tickets in their organization and move a wrong-department ticket to another supported department. A reroute clears the prior assignee, increments the revision, and records activity. A department lead can submit for any active organization store, including a request to a different team. They can assign a teammate during submission only for a department they lead. Reviewer status and assignment edits remain restricted to the ticket's current department lead or organization admin. Store managers can submit only for their assigned active stores and see tickets they reported or were assigned; ordinary members are not newly granted submission. All reads and writes are checked by database functions against current memberships, not only by the frontend.
 
 ## Shared Projects
 
