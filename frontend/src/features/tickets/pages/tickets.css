@@ -1,4 +1,4 @@
-.vy-tickets { color:#231f20; }
+.vy-tickets { color:#231f20; container-type:inline-size; }
 .vy-ticket-back { display:inline-flex; align-items:center; gap:6px; min-height:32px; margin:0 0 13px; color:#365f45; font-size:12px; }
 .vy-ticket-back:hover { text-decoration:underline; }
 .vy-ticket-head { display:flex; align-items:end; justify-content:space-between; gap:16px; padding:0 0 22px; border-bottom:1px solid #d7e2da; }
@@ -56,6 +56,24 @@
 .vy-ticket-events strong { font-size:12px; }
 .vy-ticket-events time { color:#6b786e; font-size:11px; }
 .vy-ticket-events li p { margin:5px 0 0; font-size:12px; line-height:1.5; white-space:pre-wrap; overflow-wrap:anywhere; }
-@media (max-width:720px) { .vy-ticket-list-head { display:none; } .vy-ticket-queue a { grid-template-columns:minmax(0,1fr) auto; gap:5px 10px; } .vy-ticket-row-title { grid-column:1; } .vy-ticket-row-meta { grid-column:1; grid-row:2; } .vy-ticket-status { grid-column:2; grid-row:1; } .vy-ticket-queue time { grid-column:2; grid-row:2; text-align:right; } .vy-ticket-review { grid-template-columns:1fr; gap:0; } }
-@media (max-width:510px) { .vy-ticket-head { align-items:flex-start; flex-direction:column; } .vy-ticket-form-grid { grid-template-columns:1fr; } .vy-ticket-filters > .vy-control { flex:1 1 140px; } .vy-ticket-queue a { grid-template-columns:1fr; } .vy-ticket-row-title,.vy-ticket-row-meta,.vy-ticket-status,.vy-ticket-queue time { grid-column:1; grid-row:auto; text-align:left; } .vy-ticket-empty { padding-right:100px; min-height:180px; } .vy-ticket-queue { padding-bottom:105px; } }
+.vy-force-phone:has(.vy-ticket-form) :is(.vy-pet,.vy-pet-toggle) { display:none; }
+@media (max-width:510px) { .vy-shell:not(.vy-force-desktop):has(.vy-ticket-form) :is(.vy-pet,.vy-pet-toggle) { display:none; } }
+@container (max-width:720px) {
+  .vy-ticket-list-head { display:none; }
+  .vy-ticket-queue a { grid-template-columns:minmax(0,1fr) auto; gap:5px 10px; }
+  .vy-ticket-row-title { grid-column:1; }
+  .vy-ticket-row-meta { grid-column:1; grid-row:2; }
+  .vy-ticket-status { grid-column:2; grid-row:1; }
+  .vy-ticket-queue time { grid-column:2; grid-row:2; text-align:right; }
+  .vy-ticket-review { grid-template-columns:1fr; gap:0; }
+}
+@container (max-width:510px) {
+  .vy-ticket-head { align-items:flex-start; flex-direction:column; }
+  .vy-ticket-form-grid { grid-template-columns:1fr; }
+  .vy-ticket-filters > .vy-control { flex:1 1 140px; }
+  .vy-ticket-queue a { grid-template-columns:1fr; }
+  .vy-ticket-row-title,.vy-ticket-row-meta,.vy-ticket-status,.vy-ticket-queue time { grid-column:1; grid-row:auto; text-align:left; }
+  .vy-ticket-empty { padding-right:100px; min-height:180px; }
+  .vy-ticket-queue { padding-bottom:105px; }
+}
 @media (prefers-reduced-motion:reduce) { .vy-ticket-queue a { transition:none; } }
