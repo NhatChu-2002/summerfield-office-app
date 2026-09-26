@@ -4,7 +4,8 @@ import type { Access } from '@/features/auth'
 import { departmentStyle, referenceForDepartment } from '@/shared/config/reference-departments'
 import { SelectField } from '@/shared/ui/SelectField'
 import { reportCapabilities } from '../access'
-import { getTeamReport, type ReportIdentity, type TeamReport } from '../api'
+import { listTeamReportsForPeriod, type TeamReportCard } from '../api'
+import { reportCardKey } from '../history-model'
 import { currentPeriod, periodFromToken, recentPeriods, reportHref, reportsHref, type LiveReportType } from '../live-period'
 import './reports.css'
 import './live-reports.css'
@@ -12,13 +13,13 @@ import './live-reports.css'
 export default function LiveReportsPage({ access, selectedType, selectedPeriod }: { access: Access; selectedType?: LiveReportType; selectedPeriod?: string }) {
   const type = selectedType || 'monthly'
   const period = selectedPeriod ? periodFromToken(type, selectedPeriod) : currentPeriod(type)
-  const [records, setRecords] = useState<Record<string, TeamReport | null>>({})
+  const [records, setRecords] = useState<Record<string, TeamReportCard>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
   const cards = access.departments.flatMap((department) => {
     const stores = department.code === 'store_manager' ? access.organization.stores : [null]
-    return stores.map((store) => ({ department, store, key: `${department.code}:${store?.id || ''}` }))
+    return stores.map((store) => ({ department, store, key: reportCardKey(department.code, store?.id || null) }))
       .filter(({ store }) => reportCapabilities(access, department.code, store?.id || null).read)
   })
 
@@ -27,11 +28,11 @@ export default function LiveReportsPage({ access, selectedType, selectedPeriod }
     let active = true
     setLoading(true)
     setError('')
-    const identities: { key: string; identity: ReportIdentity }[] = cards.map(({ department, store, key }) => ({ key, identity: {
-      organizationId: access.organization.organization_id, departmentCode: department.code, period, storeId: store?.id || null,
-    } }))
-    Promise.all(identities.map(async ({ key, identity }) => [key, await getTeamReport(identity)] as const))
-      .then((result) => { if (active) setRecords(Object.fromEntries(result)) })
+    const visibleKeys = new Set(cards.map((card) => card.key))
+    listTeamReportsForPeriod(access.organization.organization_id, period)
+      .then((result) => { if (active) setRecords(Object.fromEntries(result
+        .map((report) => [reportCardKey(report.department_code, report.store_id), report] as const)
+        .filter(([key]) => visibleKeys.has(key)))) })
       .catch((cause: unknown) => { if (active) setError(cause instanceof Error ? cause.message : 'Reports could not be loaded.') })
       .finally(() => { if (active) setLoading(false) })
     return () => { active = false }

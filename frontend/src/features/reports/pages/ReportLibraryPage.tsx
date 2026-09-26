@@ -4,6 +4,7 @@ import type { Access } from '@/features/auth'
 import { referenceForDepartment } from '@/shared/config/reference-departments'
 import { SelectField } from '@/shared/ui/SelectField'
 import { listTeamReportHistory, type TeamReportSummary } from '../api'
+import type { ReportCursor } from '../history-cursor'
 import { appendHistory, historyHref, historyPeriod } from '../history-model'
 import { currentPeriod, reportsHref, type LiveReportType } from '../live-period'
 import './report-library.css'
@@ -19,8 +20,7 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
   const [search, setSearch] = useState('')
   const [query, setQuery] = useState('')
   const [reports, setReports] = useState<TeamReportSummary[]>([])
-  const [nextOffset, setNextOffset] = useState(0)
-  const [hasMore, setHasMore] = useState(false)
+  const [nextCursor, setNextCursor] = useState<ReportCursor | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState('')
@@ -36,17 +36,15 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
   useEffect(() => {
     const current = ++generation.current
     setReports([])
-    setNextOffset(0)
-    setHasMore(false)
+    setNextCursor(null)
     setLoading(true)
     setLoadingMore(false)
     setError('')
-    listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query }, 0, PAGE_SIZE)
+    listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query }, null, PAGE_SIZE)
       .then((page) => {
         if (generation.current !== current) return
         setReports(page.items)
-        setNextOffset(page.items.length)
-        setHasMore(page.hasMore)
+        setNextCursor(page.nextCursor)
       })
       .catch((cause: unknown) => { if (generation.current === current) setError(cause instanceof Error ? cause.message : 'Report history could not be loaded.') })
       .finally(() => { if (generation.current === current) setLoading(false) })
@@ -54,16 +52,15 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
   }, [organizationId, view, type, departmentCode, storeId, query, retry])
 
   async function loadMore() {
-    if (loadingMore || !hasMore) return
+    if (loadingMore || !nextCursor) return
     const current = generation.current
     setLoadingMore(true)
     setError('')
     try {
-      const page = await listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query }, nextOffset, PAGE_SIZE)
+      const page = await listTeamReportHistory({ organizationId, status: view === 'all' ? null : view, type: type || null, departmentCode: departmentCode || null, storeId: storeId || null, search: query }, nextCursor, PAGE_SIZE)
       if (generation.current !== current) return
       setReports((existing) => appendHistory(existing, page.items))
-      setNextOffset((offset) => offset + page.items.length)
-      setHasMore(page.hasMore)
+      setNextCursor(page.nextCursor)
     } catch (cause) { if (generation.current === current) setError(cause instanceof Error ? cause.message : 'More reports could not be loaded.') }
     finally { if (generation.current === current) setLoadingMore(false) }
   }
@@ -87,7 +84,7 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
         const href = historyHref(report, view)
         return <li key={report.id} className="vy-report-history-row"><div className="vy-report-history-identity"><strong>{department ? referenceForDepartment(department).name : report.department_code}{store ? ` · ${store.name}` : ''}</strong><span>{report.report_type === 'weekly' ? 'Weekly' : 'Monthly'} · {period?.label || `${report.period_start} - ${report.period_end}`}</span></div><p>{report.summary || 'No summary yet'}</p><span className={`vy-report-history-status is-${report.status}`}>{report.status === 'draft' ? 'Draft' : 'Submitted'}</span><time dateTime={report.updated_at}>{new Date(report.updated_at).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric' })}</time>{href && <a href={href} aria-label={`Open ${department ? referenceForDepartment(department).name : report.department_code} ${report.report_type} report for ${period?.label || report.period_start}`} title="Open report"><span className="vy-report-open-label">Open report</span><ArrowUpRight size={17} /></a>}</li>
       })}</ul></> : !error && <div className="vy-report-history-empty"><h2>No reports found</h2><p>{view === 'draft' ? 'No saved drafts match these filters.' : view === 'submitted' ? 'No submitted reports match these filters.' : 'Start a weekly or monthly report to build this history.'}</p></div>}
-      {hasMore && <button type="button" className="vy-button vy-report-history-more" disabled={loadingMore} onClick={() => void loadMore()}>{loadingMore ? 'Loading...' : 'Load more'}</button>}
+      {nextCursor && <button type="button" className="vy-button vy-report-history-more" disabled={loadingMore} onClick={() => void loadMore()}>{loadingMore ? 'Loading...' : 'Load more'}</button>}
     </section>}
   </>
 }

@@ -22,3 +22,7 @@ export function appendHistory(existing: TeamReportSummary[], incoming: TeamRepor
     return true
   })]
 }
+
+export function reportCardKey(departmentCode: string, storeId: string | null): string {
+  return `${departmentCode}:${storeId || ''}`
+}

@@ -29,7 +29,7 @@ python backend/supabase/checks/prepare_local.py --inventory-migrations ../invent
 
 From the local project directory, run `npx --yes supabase@2.118.0 start`, then `npx --yes supabase@2.118.0 test db`. `npx --yes supabase@2.118.0 db reset --local` replays migrations after local changes; **never use `--linked` for this test workflow**. Re-run the preparer with `--refresh` when source SQL or tests change; without that explicit flag it refuses to overwrite changed copies. Neither source repository is modified.
 
-The preparer explicitly excludes `202609160003_add_seasonal_drinks.sql`: it seeds real Summerfield product data and aborts on a clean database without the existing organization and vendor. The 43 remaining schema files applied locally, including both HQ migrations, and all 42 synthetic access/report assertions passed after a clean local reset. This validates the schema/RLS slice, **not** the full production data migration or the hosted migration ledger. CI still runs only offline checks because the inventory repository is private and its migration checkout is not available to the HQ workflow token; add a read-only cross-repository credential or another reproducible source before requiring pgTAP in CI.
+The preparer explicitly excludes `202609160003_add_seasonal_drinks.sql`: it seeds real Summerfield product data and aborts on a clean database without the existing organization and vendor. The original 43-file schema set applied locally and all 42 synthetic access/report assertions passed after a clean reset. The current 45-file set has unique migration versions and is prepared, but has **not** had a fresh combined replay because the unlinked stack holds QA records. The new index SQL was applied directly to that isolated stack and the 11 report-history assertions passed. This validates the tested schema/RLS slices, **not** the full production data migration or the hosted migration ledger. CI still runs only offline checks because the inventory repository is private and its migration checkout is not available to the HQ workflow token; add a read-only cross-repository credential or another reproducible source before requiring pgTAP in CI.
 
 ## HQ migration register
 
@@ -38,9 +38,11 @@ Record every new HQ migration here with its prerequisite, isolated-local test, a
 | Migration | Prerequisite and local verification | Hosted status |
 | --- | --- | --- |
 | `202609220001_hq_mvp.sql` | Inventory schema; applied in isolated local stack and covered by HQ pgTAP tests | Pending reconciliation; HQ tables absent in last read-only snapshot |
-| `202609250001_require_task_write_access_for_status.sql` | HQ MVP migration; applied in isolated local stack and covered by task-status pgTAP tests | Pending reconciliation; not deployed by this work |
+| `202609250003_require_task_write_access_for_status.sql` | HQ MVP migration; SQL applied in isolated local stack under its former `202609250001` filename and covered by task-status pgTAP tests | Pending reconciliation; not deployed by this work |
 
-The Team Report history library adds **no migration**. It reads the existing inventory-owned `team_reports` table through its SELECT RLS policy. Local `team_report_history.test.sql` covers its access and multi-period contract. Hosted migration-ledger drift, backup, and role/RLS validation still need resolution before applying either HQ migration online.
+The Team Report history library originally added no migration. Its organization-wide cursor query now requires inventory-owned `202609250002_team_reports_org_updated_cursor.sql`; the SQL was checked in the unlinked local stack, but has not been applied to the hosted project. Local `team_report_history.test.sql` covers its access and multi-period contract.
+
+**Version collision resolved in source:** inventory added `202609250001_store_inspection_photo_limits.sql` after the HQ task-status SQL had been tested locally under the same numeric version. HQ's not-yet-hosted file was renamed to `202609250003_require_task_write_access_for_status.sql`, and the local preparer now rejects numeric version overlaps. The existing unlinked QA stack still records the old HQ `202609250001` version; do not reset or repair that stack merely to align the ledger. Validate a fresh combined replay separately before hosted deployment. If a hosted ledger unexpectedly records the old HQ version, investigate before applying anything. Hosted migration-ledger drift, backup, and role/RLS validation remain deployment gates.
 
 ## Department codes
 
