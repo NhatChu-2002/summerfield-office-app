@@ -15,12 +15,12 @@ import { LocationPage, LocationsPage } from '@/features/locations'
 import { MeetingsPage } from '@/features/meetings'
 import { DecisionChartPage, WhoToAskPage } from '@/features/ownership'
 import { PeoplePage } from '@/features/people'
-import { ConnectedProjectsPage, ProjectPage } from '@/features/projects'
+import { ConnectedProjectPage, ConnectedProjectsPage } from '@/features/projects'
 import { LiveReportPage, LiveReportsPage, ReportLibraryPage } from '@/features/reports'
 import { SopPage } from '@/features/sop'
 import { todayLocal } from '@/shared/lib/format'
 import { compareTasks, MyTasksPage, TaskDetailsDialog, TaskDialog, TaskList } from '@/features/tasks'
-import { canSubmitTicket, TicketsPage } from '@/features/tickets'
+import { TicketsPage } from '@/features/tickets'
 import { TimePage } from '@/features/time'
 import { UpdateList, UpdatesPage } from '@/features/updates'
 import { WatchPage } from '@/features/watch'
@@ -70,10 +70,10 @@ export function AppRoutes({ route, access, onSignOut, onOrganization, onEnterPre
   } else if (route.page === 'people') {
     content = <Suspense fallback={<p role="status">Loading People & access...</p>}><PeoplePage departments={access.departments.map(referenceForDepartment)} people={[]} requests={[]} preview={false} admin={access.organization.role === 'admin'} currentAccess={{ name: access.displayName, email: access.email, organizationRole: access.organization.role, departments: access.departments.map((item) => item.shortName) }} /></Suspense>
   } else if (route.page === 'projects') {
-    content = <ConnectedProjectsPage canSubmitStoreTicket={canSubmitTicket(access)}
+    content = <ConnectedProjectsPage access={access}
       liveTaskStats={dataReady ? { overdue: tasks.filter((task) => task.status === 'open' && !!task.due_date && task.due_date < todayLocal()).length, mine: myOpenTasks.length } : undefined} />
   } else if (route.page === 'project') {
-    content = <ProjectPage id={route.code || ''} departments={access.departments.map(referenceForDepartment)} people={[]} currentUser={access.userId} projects={[]} tasks={[]} messages={[]} preview={false} />
+    content = <ConnectedProjectPage key={`${access.organization.organization_id}-${route.code}`} access={access} id={route.code || ''} />
   } else if (route.page === 'tickets') {
     content = <Suspense fallback={<p role="status">Loading tickets...</p>}><TicketsPage key={`${access.organization.organization_id}-${route.code || 'queue'}`} access={access} ticketId={route.code} /></Suspense>
   } else if (route.page === 'locations') {

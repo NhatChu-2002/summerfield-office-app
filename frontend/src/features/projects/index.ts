@@ -1,5 +1,6 @@
 export { PreviewProjectsPage } from './pages/PreviewProjectsPage'
 export { ConnectedProjectsPage } from './pages/ConnectedProjectsPage'
+export { ConnectedProjectPage } from './pages/ConnectedProjectPage'
 export { ProjectPage } from './pages/ProjectPage'
 export type { ProjectRecord, ProjectTask, ProjectMessage, ProjectPerson } from './model'
 export { previewProjectMessages, previewProjects, previewProjectTasks } from './preview-data'
