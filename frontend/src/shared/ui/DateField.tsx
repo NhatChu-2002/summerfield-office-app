@@ -9,13 +9,14 @@ const months = Array.from({ length: 12 }, (_, index) => ({
   value: String(index), label: new Date(2020, index, 1).toLocaleDateString('en-US', { month: 'long' }),
 }))
 
-export function DateField({ value, onChange, name, min, required = false, ariaLabel }: {
+export function DateField({ value, onChange, name, min, required = false, ariaLabel, disabled = false }: {
   value: string
   onChange: (value: string) => void
   name?: string
   min?: string
   required?: boolean
   ariaLabel?: string
+  disabled?: boolean
 }) {
   const [trigger, setTrigger] = useState<HTMLButtonElement | null>(null)
   const [open, setOpen] = useState(false)
@@ -34,7 +35,7 @@ export function DateField({ value, onChange, name, min, required = false, ariaLa
   return <span className="vy-control vy-date-control">
     {name && <input type="hidden" name={name} value={value} />}
     <Popover.Root open={open} onOpenChange={(next) => { if (next) setMonth(selected || minimum || new Date()); setOpen(next) }}>
-      <Popover.Trigger asChild><button ref={setTrigger} type="button" className="vy-control-trigger vy-date-trigger" aria-label={ariaLabel} aria-required={required}>
+      <Popover.Trigger asChild><button ref={setTrigger} type="button" className="vy-control-trigger vy-date-trigger" aria-label={ariaLabel} aria-required={required} disabled={disabled}>
         <span className={selected ? '' : 'vy-control-placeholder'}>{selected ? selected.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Choose date'}</span>
         <CalendarDays size={17} strokeWidth={1.8} aria-hidden="true" />
       </button></Popover.Trigger>
