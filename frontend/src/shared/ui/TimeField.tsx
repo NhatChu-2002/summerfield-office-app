@@ -36,7 +36,7 @@ export function TimeField({ value, onChange, ariaLabel, disabled = false }: { va
             <SelectField ariaLabel="Minute" value={String(minute)} onChange={(next) => change(hour, Number(next))} options={minutes} />
             <SelectField ariaLabel="AM or PM" value={period} onChange={(next) => change(hour, minute, next)} options={periods} />
           </div>
-          <button type="button" className="vy-time-done" onClick={() => setOpen(false)}>Done</button>
+          <button type="button" className="vy-time-done" onClick={() => { if (!parsed) change(); setOpen(false) }}>Done</button>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

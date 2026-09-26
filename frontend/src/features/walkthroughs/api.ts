@@ -54,7 +54,7 @@ export async function getWalkthrough(organizationId: string, storeId: string, vi
   return data as WalkthroughRecord | null
 }
 
-export async function saveWalkthroughDraft(organizationId: string, storeId: string, visitDate: string, payload: Record<string, unknown>, record: WalkthroughRecord | null, summary: string): Promise<WalkthroughRecord> {
+export async function saveWalkthroughDraft(organizationId: string, storeId: string, visitDate: string, payload: Record<string, unknown>, record: WalkthroughRecord | null, summary: string, score: number | null, grade: string | null): Promise<WalkthroughRecord> {
   const { data, error } = await requireSupabase().rpc('save_store_inspection_draft', {
     p_organization_id: organizationId,
     p_store_id: storeId,
@@ -62,9 +62,23 @@ export async function saveWalkthroughDraft(organizationId: string, storeId: stri
     p_template_version: 1,
     p_payload: payload,
     p_expected_revision: record?.revision ?? 0,
-    p_score: record?.score ?? null,
-    p_grade: record?.grade ?? null,
-    p_summary: record?.summary ?? summary,
+    p_score: score,
+    p_grade: grade,
+    p_summary: summary,
+  })
+  return dataOrThrow(data as WalkthroughRecord | null, error)
+}
+
+export async function submitWalkthrough(organizationId: string, record: WalkthroughRecord): Promise<WalkthroughRecord> {
+  const { data, error } = await requireSupabase().rpc('submit_store_inspection', {
+    p_organization_id: organizationId, p_inspection_id: record.id, p_expected_revision: record.revision,
+  })
+  return dataOrThrow(data as WalkthroughRecord | null, error)
+}
+
+export async function reopenWalkthrough(organizationId: string, record: WalkthroughRecord): Promise<WalkthroughRecord> {
+  const { data, error } = await requireSupabase().rpc('reopen_store_inspection', {
+    p_organization_id: organizationId, p_inspection_id: record.id, p_expected_revision: record.revision,
   })
   return dataOrThrow(data as WalkthroughRecord | null, error)
 }

@@ -19,6 +19,16 @@ export type VisitMeta = {
   dtSpeaker: string
   dtWindow: string
   dtTotal: string
+  q1: string
+  q2: string
+  q3: string
+  followBy: string
+  followDate: string
+  team_ops: string
+  team_rd: string
+  team_eq: string
+  team_mkt: string
+  team_hq: string
 }
 
 export const orderChannels = [
@@ -32,6 +42,7 @@ const metaFields: (keyof VisitMeta)[] = [
   'geo', 'time', 'mgrName', 'inspectors', 'hasDT', 'queue', 'waitOrder',
   'waitDrink', 'crew', 'channel', 'orderTime', 'readyTime', 'orderTotal',
   'orderItems', 'dtCars', 'dtSpeaker', 'dtWindow', 'dtTotal',
+  'q1', 'q2', 'q3', 'followBy', 'followDate', 'team_ops', 'team_rd', 'team_eq', 'team_mkt', 'team_hq',
 ]
 
 function object(value: unknown): Record<string, unknown> {
