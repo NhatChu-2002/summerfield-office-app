@@ -7,5 +7,6 @@ export const LiveReportPage = lazy(() => import('./pages/LiveReportPage'))
 export const ReportLibraryPage = lazy(() => import('./pages/ReportLibraryPage'))
 export { previewReports } from './preview-data'
 export { reportCapabilities } from './access'
+export { reportsHomeHref } from './live-period'
 export type { ReportCapabilities } from './access'
 export type { ReportRecord } from './model'

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FileText } from 'lucide-react'
+import { BookOpen, CalendarDays, FileText } from 'lucide-react'
 import type { Access } from '@/features/auth'
 import { departmentStyle, referenceForDepartment } from '@/shared/config/reference-departments'
 import { SelectField } from '@/shared/ui/SelectField'
@@ -47,11 +47,11 @@ export default function LiveReportsPage({ access, selectedType, selectedPeriod }
   const periods = recentPeriods(type)
 
   return <>
-    <header className="vy-hero vy-reports-hero"><div><h1>Team reports</h1><p>Weekly commitments and monthly reviews from your teams.</p></div><div className="vy-hero-actions">
-      <a className="vy-button" href="#/reports">Report library</a>
-      <div className="vy-live-report-modes" role="group" aria-label="Report frequency"><a className={type === 'weekly' ? 'is-active' : ''} href={reportsHref(currentPeriod('weekly'))}>Weekly</a><a className={type === 'monthly' ? 'is-active' : ''} href={reportsHref(currentPeriod('monthly'))}>Monthly</a></div>
-      <SelectField ariaLabel="Report period" value={period.start} onChange={(value) => { const next = periodFromToken(type, type === 'monthly' ? value.slice(0, 7) : value); if (next) window.location.hash = reportsHref(next) }} options={periods.map((item) => ({ value: item.start, label: item.label }))} size="compact" />
-    </div></header>
+    <header className="vy-hero vy-reports-hero vy-reports-board-hero"><div><h1>Team reports</h1><p>Weekly commitments and monthly reviews from your teams.</p></div></header>
+    <div className="vy-report-board-toolbar">
+      <nav className="vy-live-report-modes" aria-label="Report frequency"><a className={type === 'weekly' ? 'is-active' : ''} aria-current={type === 'weekly' ? 'page' : undefined} href={reportsHref(currentPeriod('weekly'))}>Weekly</a><a className={type === 'monthly' ? 'is-active' : ''} aria-current={type === 'monthly' ? 'page' : undefined} href={reportsHref(currentPeriod('monthly'))}>Monthly</a></nav>
+      <div className="vy-report-board-toolbar-end"><div className="vy-report-board-period"><CalendarDays size={16} aria-hidden="true" /><SelectField ariaLabel="Report period" value={period.start} onChange={(value) => { const next = periodFromToken(type, type === 'monthly' ? value.slice(0, 7) : value); if (next) window.location.hash = reportsHref(next) }} options={periods.map((item) => ({ value: item.start, label: item.label }))} size="compact" /></div><a className="vy-report-board-library" href="#/reports"><BookOpen size={16} aria-hidden="true" /> Report library</a></div>
+    </div>
     {error && <div role="alert" className="vy-report-error">Reports could not be loaded: {error} <button type="button" onClick={() => setRetry((value) => value + 1)}>Retry</button></div>}
     {loading ? <p role="status" className="vy-report-status">Loading team reports...</p> : !error && <>
       <div className="vy-report-totals" aria-label="Report status"><div><strong>{submitted}</strong><span>Submitted</span></div><div><strong>{drafts}</strong><span>Drafts</span></div><div><strong>{cards.length - submitted - drafts}</strong><span>Not started</span></div></div>

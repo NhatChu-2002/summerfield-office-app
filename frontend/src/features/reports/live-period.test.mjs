@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { currentPeriod, periodFromDates, periodFromToken, recentPeriods, reportHref, reportsHref } from './live-period.ts'
+import { currentPeriod, periodFromDates, periodFromToken, recentPeriods, reportHref, reportsHomeHref, reportsHref } from './live-period.ts'
 
 test('weekly reports use Sunday through Saturday in Los Angeles', () => {
   const period = currentPeriod('weekly', new Date('2026-09-27T06:30:00Z'))
@@ -20,6 +20,7 @@ test('report links preserve type, period, and store scope', () => {
   const period = periodFromToken('weekly', '2026-09-20')
   assert.equal(reportsHref(period), '#/reports/weekly/2026-09-20')
   assert.equal(reportHref('store_manager', period, 'store-id'), '#/report/store_manager/weekly/2026-09-20?store=store-id')
+  assert.equal(reportsHomeHref(new Date('2026-09-27T06:30:00Z')), '#/reports/monthly/2026-09')
 })
 
 test('stored historical periods may differ from current default week boundaries', () => {
