@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from '@/app/App'
 import '@/shared/styles/global.css'
+import '@/shared/styles/interactive-list.css'
 import 'react-day-picker/style.css'
 import '@/shared/styles/controls.css'
 

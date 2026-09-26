@@ -12,11 +12,10 @@
 .vy-project-live-filters > .vy-control { flex:0 1 180px; min-width:140px; }
 .vy-project-live-rows { margin:0; padding:0; list-style:none; border-top:1px solid #d9e3dc; }
 .vy-project-live-rows li { border-bottom:1px solid #d9e3dc; }
-.vy-project-live-rows a { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:76px; padding:12px 10px; color:#231f20; text-decoration:none; }
-.vy-project-live-rows a:hover,.vy-project-live-rows a:focus-visible { background:#f0f6f0; box-shadow:inset 3px 0 #477958; }
+.vy-project-live-rows a { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:72px; padding:12px 14px; color:#231f20; text-decoration:none; }
 .vy-project-live-rows a > span:first-child { display:flex; flex-direction:column; gap:4px; min-width:0; }
-.vy-project-live-rows strong { font-size:14px; overflow-wrap:anywhere; }
-.vy-project-live-rows small { color:#637168; font-size:12px; }
+.vy-project-live-rows strong { font-size:13px; overflow-wrap:anywhere; }
+.vy-project-live-rows small { color:#637168; font-size:11px; }
 .vy-project-live-message { margin:0; padding:18px 2px; color:#637168; font-size:13px; }
 .vy-project-live-note { color:#637168; font-size:12px; }
 .vy-project-live-details { margin-top:26px; }

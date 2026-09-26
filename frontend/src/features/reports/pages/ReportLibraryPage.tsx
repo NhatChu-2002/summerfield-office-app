@@ -81,7 +81,7 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
   }
 
   const stores = access.organization.stores
-  return <>
+  return <div className="vy-report-library">
     <header className="vy-report-library-head"><div><h1>Team reports</h1><p>Drafts and submitted reports across your teams.</p></div><a className="vy-button vy-button-dark" href={reportsHref(currentMonthly)}><Plus size={16} /> Start report</a></header>
     <nav className="vy-report-library-tabs" aria-label="Report views">{views.map((item) => <a key={item.value} href={item.value === 'all' ? '#/reports' : `#/reports?view=${item.value}`} aria-current={view === item.value ? 'page' : undefined}>{item.label}</a>)}</nav>
     <div className="vy-report-library-filters">
@@ -102,10 +102,10 @@ export default function ReportLibraryPage({ access, view }: { access: Access; vi
         const periodLabel = period?.label || `${report.period_start} - ${report.period_end}`
         const row = <><div className="vy-report-history-identity"><strong>{name}</strong><span>{report.report_type === 'weekly' ? 'Weekly' : 'Monthly'} · {periodLabel}</span></div><p>{report.summary || 'No summary yet'}</p><span className={`vy-report-history-status is-${report.status}`}>{report.status === 'draft' ? 'Draft' : 'Submitted'}</span><time dateTime={report.updated_at}>{new Date(report.updated_at).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric' })}</time></>
         return <li key={report.id}>{href
-          ? <a className="vy-report-history-row" href={href} aria-label={`Open ${name} ${report.report_type} report for ${periodLabel}`}>{row}</a>
+          ? <a className="vy-report-history-row vy-list-row-link" href={href} aria-label={`Open ${name} ${report.report_type} report for ${periodLabel}`}>{row}</a>
           : <div className="vy-report-history-row">{row}</div>}</li>
       })}</ul></> : !error && <div className="vy-report-history-empty"><h2>No reports found</h2><p>{view === 'draft' ? 'No saved drafts match these filters.' : view === 'submitted' ? 'No submitted reports match these filters.' : 'Start a weekly or monthly report to build this history.'}</p></div>}
       {nextCursor && <button type="button" className="vy-button vy-report-history-more" disabled={loadingMore} onClick={() => void loadMore()}>{loadingMore ? 'Loading...' : 'Load more'}</button>}
     </section>}
-  </>
+  </div>
 }
