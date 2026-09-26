@@ -15,13 +15,13 @@ Code moves through `dev` → `test` → `stage` → `main` by pull request, but 
 | Branch | Purpose | Database for write tests | Hosting status |
 | --- | --- | --- | --- | --- |
 | `feat/*` | Local implementation | Isolated local Supabase stack with synthetic data | Local Vite/API only |
-| `dev` | Integrated code | Local stack in CI | No separate Render service confirmed |
+| `dev` | Integrated code | Isolated local stack manually; database CI pending | No separate Render service confirmed |
 | `test` | QA candidate | Local stack plus explicit QA plan | No separate Render service confirmed |
 | `stage` | Final code sign-off | Local migration rehearsal and backup plan | No separate Render service confirmed |
 | `main` | Production code | Never a fixture or test database | Render Blueprint defined, not connected |
 
 - The single hosted project is labeled production. Both local app configurations currently point to it; do not use those configurations for write-based tests.
-- Docker Desktop and an unlinked local Supabase stack are now running on this workstation. The inventory/HQ schema sequence and 42 synthetic RLS/report checks pass locally, with one production-data inventory seed explicitly excluded. CI still lacks a cross-repository inventory migration checkout; do not promote database-dependent code for deployment until that gap and hosted migration history are addressed.
+- Docker Desktop and an unlinked local Supabase QA stack are available on this workstation. A second, stopped local project replayed the current 46-file inventory/HQ schema sequence from scratch and passed 56 synthetic RLS/report assertions, with one production-data inventory seed explicitly excluded. CI still lacks a cross-repository inventory migration checkout; do not promote database-dependent code for deployment until that gap and hosted migration history are addressed.
 - A second hosted project is optional in the future. If added, it must use synthetic data, not a copy of production personnel or customer data.
 
 ## Environment variables
@@ -42,7 +42,7 @@ Secrets the API will need later, such as the Supabase service-role key and integ
 1. Push the repository to GitHub.
 2. In Render, create a **Blueprint** from the repository, with its file path set to `infra/render.yaml`.
 3. Enter `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` for the production project when prompted.
-4. Reconcile the hosted migration ledger against inventory's migration history. Apply pending HQ migrations only after the combined sequence and role/RLS tests pass locally, with a backup and deployment plan.
+4. Reconcile the hosted migration ledger against inventory's migration history. The clean combined schema/RLS replay passed locally; apply pending migrations only after the hosted ledger, excluded data seed, backup, and deployment plan are reviewed.
 5. Open the site, sign in with a real account, and check that the dashboard, a department page, and task create/complete all work.
 6. Add the site's URL to Supabase Auth's allowed redirect URLs, if sign-in redirects are used later.
 
