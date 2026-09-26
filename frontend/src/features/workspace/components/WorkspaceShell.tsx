@@ -35,7 +35,7 @@ export function WorkspaceShell({ access, route, preview, children, onRefresh, re
   const visibleSections = referenceNav.filter((item) => item.key !== 'people' || access.organization.role === 'admin' || preview)
   // The preview retains its legacy route; signed-in navigation opens the live report board.
   const sectionHref = (key: string, href: string) => key === 'reports' && !preview ? reportsHref(currentReportMonth) : href
-  const selected = route.page === 'department' ? route.code : route.page === 'project' ? 'projects' : route.page === 'lesson' ? 'learn' : route.page === 'report' ? 'reports' : route.page
+  const selected = route.page === 'department' ? route.code : route.page === 'project' || route.page === 'tickets' ? 'projects' : route.page === 'lesson' ? 'learn' : route.page === 'report' ? 'reports' : route.page
   const mobile = layout === 'phone'
   const departmentOptions = visibleDepartments.filter((item) => item.code !== 'company')
   const myDepartmentOptions = [{ value: '', label: 'Choose…' }, ...departmentOptions.map((item) => ({ value: item.code, label: item.name }))]

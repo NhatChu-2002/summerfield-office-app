@@ -11,6 +11,7 @@ function currentRoute(): Route {
   const reportView = requestedView === 'draft' || requestedView === 'submitted' ? requestedView : 'all'
   if (path[0] === 'department' && path[1]) return { page: 'department', code: path[1] }
   if (path[0] === 'project' && path[1]) return { page: 'project', code: decodeURIComponent(path[1]) }
+  if (path[0] === 'tickets' && path[1]) return { page: 'tickets', code: decodeURIComponent(path[1]) }
   if (path[0] === 'location' && path[1]) return { page: 'location', code: decodeURIComponent(path[1]) }
   if (path[0] === 'lesson' && path[1]) return { page: 'lesson', code: decodeURIComponent(path[1]) }
   if (path[0] === 'report' && path[1] && (path[2] === 'weekly' || path[2] === 'monthly') && path[3]) return { page: 'report', code: decodeURIComponent(path[1]), reportType: path[2], month: path[3], storeId: params.get('store') || undefined, periodStart: params.get('start') || undefined, periodEnd: params.get('end') || undefined, reportView }
