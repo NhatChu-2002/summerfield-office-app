@@ -16,6 +16,15 @@ test('monthly reports use exact calendar bounds, including leap years', () => {
   assert.deepEqual(recentPeriods('monthly', new Date('2026-01-20T20:00:00Z'), 2).map((item) => item.start), ['2026-01-01', '2025-12-01'])
 })
 
+test('the default report month changes at Los Angeles midnight, not UTC midnight', () => {
+  assert.equal(reportsHomeHref(new Date('2026-10-01T06:59:59Z')), '#/reports/monthly/2026-09')
+  assert.equal(reportsHomeHref(new Date('2026-10-01T07:00:00Z')), '#/reports/monthly/2026-10')
+  assert.equal(reportsHomeHref(new Date('2026-12-01T07:59:59Z')), '#/reports/monthly/2026-11')
+  assert.equal(reportsHomeHref(new Date('2026-12-01T08:00:00Z')), '#/reports/monthly/2026-12')
+  assert.equal(reportsHomeHref(new Date('2027-01-01T08:00:00Z')), '#/reports/monthly/2027-01')
+  assert.equal(periodFromToken('monthly', '2026-09').label, 'September 2026')
+})
+
 test('report links preserve type, period, and store scope', () => {
   const period = periodFromToken('weekly', '2026-09-20')
   assert.equal(reportsHref(period), '#/reports/weekly/2026-09-20')
