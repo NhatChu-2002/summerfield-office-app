@@ -51,6 +51,7 @@ export function recentPeriods(type: LiveReportType, now = new Date(), count = 12
 }
 
 export function reportsHref(period: ReportPeriod): string { return `#/reports/${period.type}/${period.type === 'weekly' ? period.start : period.start.slice(0, 7)}` }
+export function reportsHomeHref(now = new Date()): string { return reportsHref(currentPeriod('monthly', now)) }
 export function reportHref(code: string, period: ReportPeriod, storeId?: string): string {
   return `#/report/${encodeURIComponent(code)}/${period.type}/${period.type === 'weekly' ? period.start : period.start.slice(0, 7)}${storeId ? `?store=${encodeURIComponent(storeId)}` : ''}`
 }

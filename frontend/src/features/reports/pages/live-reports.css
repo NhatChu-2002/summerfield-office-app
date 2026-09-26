@@ -1,6 +1,14 @@
-.vy-live-report-modes{display:inline-flex;align-items:center;padding:3px;border:1px solid #c9d5ca;border-radius:6px;background:#fff;gap:2px}
-.vy-live-report-modes a{padding:8px 11px;border-radius:4px;color:#465849;font-size:12px;text-decoration:none}
-.vy-live-report-modes a.is-active{background:#2d4735;color:#fff}
+.vy-reports-board-hero{min-height:170px;margin-bottom:16px}
+.vy-report-board-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;margin-bottom:25px;padding:0 2px 9px;border-bottom:1px solid #d8e2da}
+.vy-live-report-modes{display:flex;align-items:center;gap:22px}
+.vy-live-report-modes a{padding:10px 2px 9px;border-bottom:2px solid transparent;color:#526258;font-size:13px;text-decoration:none}
+.vy-live-report-modes a:hover{color:#274e35}.vy-live-report-modes a.is-active{border-color:#3a6748;color:#213f2c;font-weight:700}
+.vy-report-board-toolbar-end{display:flex;align-items:center;flex-wrap:wrap;gap:10px 21px}
+.vy-report-board-period{display:flex;align-items:center;gap:6px;color:#607368}.vy-report-board-period .vy-control{width:182px}
+.vy-report-board-period .vy-control-trigger{min-height:36px;padding:6px 3px;border:0;border-bottom:1px solid #b9cabb;border-radius:0;background:transparent;font-size:13px}
+.vy-report-board-period .vy-control-trigger:hover{border-bottom-color:#5f8669;background:transparent}
+.vy-report-board-library{display:inline-flex;align-items:center;gap:7px;color:#315640;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
+.vy-report-board-library:hover{text-decoration:underline;text-underline-offset:3px}
 .vy-live-report-store{font-weight:600;color:#3f6349!important}
 .vy-live-report-message{padding:9px 12px;border-left:4px solid #527957;background:#edf5eb;color:#33583b;font-size:12px}
 .vy-live-report-section-head{display:flex;gap:13px;margin-bottom:17px}
@@ -33,4 +41,5 @@
 .vy-live-report-legacy dt{color:#627168;font-size:12px}.vy-live-report-legacy dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
 .vy-live-report-footer{max-width:1000px;display:flex;justify-content:flex-end;padding:18px 0;border-top:1px solid #d8e2da}
 @media(max-width:700px){.vy-live-report-metric{grid-template-columns:repeat(2,minmax(0,1fr))}.vy-live-report-metric>div{grid-column:1/-1}.vy-live-report-legacy dl>div{grid-template-columns:1fr;gap:2px}}
+@media(max-width:650px){.vy-report-board-toolbar{align-items:stretch}.vy-report-board-toolbar-end{width:100%;justify-content:space-between}.vy-report-board-period{flex:1 1 155px}.vy-report-board-period .vy-control{width:100%}}
 @media(max-width:480px){.vy-live-report-row{flex-direction:column}.vy-live-report-icon{align-self:flex-end}}
