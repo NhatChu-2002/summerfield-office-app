@@ -1,4 +1,5 @@
 import { dataOrThrow, requireSupabase } from '@/shared/api/supabase'
+import { historyCursorFilter, type ReportCursor } from './history-cursor'
 import type { ReportPeriod } from './live-period'
 
 export type TeamReport = {
@@ -29,7 +30,7 @@ export type HistoryFilters = {
   search: string
 }
 
-export async function listTeamReportHistory(filters: HistoryFilters, offset: number, pageSize = 25): Promise<{ items: TeamReportSummary[]; hasMore: boolean }> {
+export async function listTeamReportHistory(filters: HistoryFilters, cursor: ReportCursor | null, pageSize = 25): Promise<{ items: TeamReportSummary[]; nextCursor: ReportCursor | null }> {
   let query = requireSupabase().from('team_reports')
     .select('id,department_code,report_type,period_start,period_end,store_id,status,summary,updated_at,submitted_at')
     .eq('organization_id', filters.organizationId)
@@ -39,9 +40,24 @@ export async function listTeamReportHistory(filters: HistoryFilters, offset: num
   if (filters.departmentCode) query = query.eq('department_code', filters.departmentCode)
   if (filters.storeId) query = query.eq('store_id', filters.storeId)
   if (filters.search.trim()) query = query.ilike('summary', `%${filters.search.trim().slice(0, 120)}%`)
-  const { data, error } = await query.order('updated_at', { ascending: false }).order('id', { ascending: false }).range(offset, offset + pageSize)
+  if (cursor) query = query.or(historyCursorFilter(cursor))
+  const { data, error } = await query.order('updated_at', { ascending: false }).order('id', { ascending: false }).limit(pageSize + 1)
   const rows = dataOrThrow(data as TeamReportSummary[] | null, error)
-  return { items: rows.slice(0, pageSize), hasMore: rows.length > pageSize }
+  const items = rows.slice(0, pageSize)
+  const last = items.at(-1)
+  return { items, nextCursor: rows.length > pageSize && last ? { updated_at: last.updated_at, id: last.id } : null }
+}
+
+export type TeamReportCard = Pick<TeamReport, 'department_code' | 'store_id' | 'status' | 'summary'>
+
+export async function listTeamReportsForPeriod(organizationId: string, period: ReportPeriod): Promise<TeamReportCard[]> {
+  const { data, error } = await requireSupabase().from('team_reports')
+    .select('department_code,store_id,status,summary')
+    .eq('organization_id', organizationId)
+    .eq('report_type', period.type)
+    .eq('period_start', period.start)
+    .eq('period_end', period.end)
+  return dataOrThrow(data as TeamReportCard[] | null, error)
 }
 
 export async function getTeamReport(identity: ReportIdentity): Promise<TeamReport | null> {

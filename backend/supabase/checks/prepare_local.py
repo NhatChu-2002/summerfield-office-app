@@ -43,6 +43,9 @@ def prepare(inventory_migrations: Path, project: Path, refresh: bool = False) ->
     names = [path.name for path in schema_files]
     if len(names) != len(set(names)):
         raise ValueError("inventory and HQ migration filenames overlap")
+    versions = [name.split("_", 1)[0] for name in names]
+    if len(versions) != len(set(versions)):
+        raise ValueError("inventory and HQ migration versions overlap")
 
     migrations_dir = project / "supabase" / "migrations"
     tests_dir = project / "supabase" / "tests"

@@ -39,6 +39,12 @@ class PrepareLocalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unexpected migration"):
             prepare(self.inventory, self.project)
 
+    def test_refuses_same_version_with_different_filenames(self):
+        hq_version = next((SUPABASE_DIR / "migrations").glob("*.sql")).name.split("_", 1)[0]
+        (self.inventory / f"{hq_version}_inventory_conflict.sql").write_text("select 1;")
+        with self.assertRaisesRegex(ValueError, "migration versions overlap"):
+            prepare(self.inventory, self.project)
+
 
 if __name__ == "__main__":
     unittest.main()

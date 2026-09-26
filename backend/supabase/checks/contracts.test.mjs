@@ -5,7 +5,7 @@ import { DEPARTMENTS } from '../../../frontend/src/shared/config/departments.ts'
 import { previewOnlyDepartments, referenceDepartments } from '../../../frontend/src/shared/config/reference-departments.ts'
 
 const migration = readFileSync(new URL('../migrations/202609220001_hq_mvp.sql', import.meta.url), 'utf8')
-const statusMigration = readFileSync(new URL('../migrations/202609250001_require_task_write_access_for_status.sql', import.meta.url), 'utf8')
+const statusMigration = readFileSync(new URL('../migrations/202609250003_require_task_write_access_for_status.sql', import.meta.url), 'utf8')
 const supportedCodes = DEPARTMENTS.map(({ code }) => code).sort()
 
 test('HQ task and update constraints match supported membership departments', () => {
