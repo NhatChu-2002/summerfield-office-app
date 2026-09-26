@@ -58,9 +58,8 @@ export function WalkthroughLibrary({ access }: { access: Access }) {
   }
 
   return <div className="vy-walkthroughs">
-    <header className="vy-walk-head">
+    <header className="vy-hero vy-walk-library-hero">
       <div><h1>Store walk-throughs</h1><p>Visits across the stores you can access.</p></div>
-      {stores.some((store) => store.can_edit) && <a className="vy-button vy-button-dark" href="#/walkthroughs/new"><Plus size={16} /> New walk-through</a>}
     </header>
     <div className="vy-walk-toolbar">
       <div className="vy-walk-tabs" role="group" aria-label="Walk-through status">
@@ -69,6 +68,7 @@ export function WalkthroughLibrary({ access }: { access: Access }) {
       <div className="vy-walk-filters">
         {stores.length > 1 && <SelectField ariaLabel="Store" value={storeId} onChange={setStoreId} options={[{ value: '', label: 'All stores' }, ...stores.map((store) => ({ value: store.store_id, label: store.name }))]} size="compact" />}
         <button className="vy-walk-refresh" type="button" aria-label="Refresh walk-throughs" title="Refresh walk-throughs" disabled={loading} onClick={() => setRefresh((value) => value + 1)}><RefreshCw size={17} /></button>
+        {stores.some((store) => store.can_edit) && <a className="vy-walk-new" href="#/walkthroughs/new"><Plus size={16} /> New walk-through</a>}
       </div>
     </div>
     {storesError && <p className="vy-walk-error" role="alert">Stores: {storesError}</p>}
